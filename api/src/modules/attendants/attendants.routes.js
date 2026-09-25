@@ -1,49 +1,51 @@
-import { z } from "zod/v4";
+import {
+  uuidIdSchema,
+  credentialsSchema,
+  createUserBodySchema,
+} from "#utils/schemas.js";
 
-import { UserSchema } from "../../../prisma/generated/zod/index.ts";
-
-import { show, create, login, logout } from "./attendants.service.js";
+import {
+  show,
+  create,
+  login,
+  logout,
+  indexConversations,
+} from "./attendants.service.js";
 
 export default async function attendantsRoutes(app) {
   app.get(
     "/:id",
-    { schema: { params: z.object({ id: z.string().uuid() }) } },
-    async (request, reply) => {
-      const attendant = await show(request.params.id);
-      if (!attendant)
-        return reply.code(404).send({ message: "Attendant not found" });
-      return attendant;
-    },
+    { schema: { tags: ["Atendentes"], params: uuidIdSchema } },
+    (request) => show(request.params.id),
   );
 
   app.post(
     "/",
-    {
-      schema: {
-        body: UserSchema.omit({
-          id: true,
-          createdAt: true,
-          role: true,
-          status: true,
-        }),
-      },
-    },
-    async (request, reply) => {
-      const attendant = await create(request.body);
+    { schema: { tags: ["Atendentes"], body: createUserBodySchema } },
+    (request, reply) => {
       reply.code(201);
-      return attendant;
+      return create(request.body);
     },
   );
 
   app.post(
     "/login",
-    {
-      schema: {
-        body: z.object({ email: z.string().email(), password: z.string() }),
-      },
-    },
-    async (request, reply) => login(request.body),
+    { schema: { tags: ["Atendentes"], body: credentialsSchema } },
+    (request) => login(request.body),
   );
 
-  app.post("/logout", async (request, reply) => logout(request.params.id));
+  app.post(
+    "/logout",
+    { schema: { tags: ["Atendentes"], body: uuidIdSchema } },
+    async (request, reply) => {
+      await logout(request.body.id);
+      reply.code(204).send();
+    },
+  );
+
+  app.get(
+    "/:id/conversations",
+    { schema: { tags: ["Atendentes"], params: uuidIdSchema } },
+    (request) => indexConversations(request.params.id),
+  );
 }

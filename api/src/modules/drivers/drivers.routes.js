@@ -1,50 +1,54 @@
-import { z } from "zod/v4";
+import {
+  uuidIdSchema,
+  credentialsSchema,
+  createUserBodySchema,
+} from "#utils/schemas.js";
 
-import { UserSchema } from "../../../prisma/generated/zod/index.ts";
-
-import { index, show, create, login, logout } from "./drivers.service.js";
+import {
+  index,
+  show,
+  create,
+  login,
+  logout,
+  indexConversations,
+} from "./drivers.service.js";
 
 export default async function driversRoutes(app) {
-  app.get("/", async (request, reply) => index());
+  app.get("/", { schema: { tags: ["Motoristas"] } }, () => index());
 
   app.get(
     "/:id",
-    { schema: { params: z.object({ id: z.string().uuid() }) } },
-    async (request, reply) => {
-      const driver = await show(request.params.id);
-      if (!driver) return reply.code(404).send({ message: "Driver not found" });
-      return driver;
-    },
+    { schema: { tags: ["Motoristas"], params: uuidIdSchema } },
+    (request) => show(request.params.id),
   );
 
   app.post(
     "/",
-    {
-      schema: {
-        body: UserSchema.omit({
-          id: true,
-          createdAt: true,
-          role: true,
-          status: true,
-        }),
-      },
-    },
-    async (request, reply) => {
-      const driver = await create(request.body);
+    { schema: { tags: ["Motoristas"], body: createUserBodySchema } },
+    (request, reply) => {
       reply.code(201);
-      return driver;
+      return create(request.body);
     },
   );
 
   app.post(
     "/login",
-    {
-      schema: {
-        body: z.object({ email: z.string().email(), password: z.string() }),
-      },
-    },
-    async (request, reply) => login(request.body),
+    { schema: { tags: ["Motoristas"], body: credentialsSchema } },
+    (request) => login(request.body),
   );
 
-  app.post("/logout", async (request, reply) => logout(request.params.id));
+  app.post(
+    "/logout",
+    { schema: { tags: ["Motoristas"], body: uuidIdSchema } },
+    async (request, reply) => {
+      await logout(request.body.id);
+      reply.code(204).send();
+    },
+  );
+
+  app.get(
+    "/:id/conversations",
+    { schema: { tags: ["Motoristas"], params: uuidIdSchema } },
+    (request) => indexConversations(request.params.id),
+  );
 }

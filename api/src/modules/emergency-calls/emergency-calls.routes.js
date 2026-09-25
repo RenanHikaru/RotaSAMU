@@ -1,51 +1,61 @@
-import { z } from "zod/v4";
-
-import { EmergencyCallSchema } from "../../../prisma/generated/zod/index.ts";
-
+import { EmergencyCallSchema } from "#prisma/generated/zod/index.ts";
+import { uuidIdSchema } from "#utils/schemas.js";
 import {
-  listEmergencyCalls,
-  findEmergencyCallById,
+  index,
+  show,
   getLocation,
-  createEmergencyCall,
-  concludeEmergencyCall,
+  create,
+  conclude,
+  indexNotifications,
 } from "./emergency-calls.service.js";
 
 export default async function emergencyCallsRoutes(app) {
-  app.get("/", async (request, reply) => listEmergencyCalls());
+  app.get("/", { schema: { tags: ["Chamados de Emergência"] } }, () => index());
 
   app.get(
     "/:id",
-    { schema: { params: z.object({ id: z.string().uuid() }) } },
-    async (request, reply) => {
-      const emergencyCall = await findEmergencyCallById(request.params.id);
-      if (!emergencyCall)
-        return reply.code(404).send({ message: "Emergency call not found" });
-      return emergencyCall;
-    },
+    { schema: { tags: ["Chamados de Emergência"], params: uuidIdSchema } },
+    (request) => show(request.params.id),
   );
 
-  app.get("/get_location", async (request, reply) => getLocation());
+  app.get(
+    "/get_location",
+    {
+      schema: {
+        tags: ["Chamados de Emergência"],
+        querystring: getLocationQuerySchema,
+      },
+    },
+    (request) => getLocation(request.query.id),
+  );
 
   app.post(
     "/",
-    {
-      schema: { body: EmergencyCallSchema.omit({ id: true, createdAt: true }) },
-    },
-    async (request, reply) => {
-      const emergencyCall = await createEmergencyCall(request.body);
+    { schema: { tags: ["Chamados de Emergência"], body: createBodySchema } },
+    (request, reply) => {
       reply.code(201);
-      return emergencyCall;
+      return create(request.body);
     },
   );
 
   app.patch(
     "/:id/conclude",
-    { schema: { params: z.object({ id: z.string().uuid() }) } },
-    async (request, reply) => {
-      const emergencyCall = await concludeEmergencyCall(request.params.id);
-      if (!emergencyCall)
-        return reply.code(404).send({ message: "Emergency call not found" });
-      return emergencyCall;
-    },
+    { schema: { tags: ["Chamados de Emergência"], params: uuidIdSchema } },
+    (request) => conclude(request.params.id),
+  );
+
+  app.get(
+    "/:id/notifications",
+    { schema: { tags: ["Chamados de Emergência"], params: uuidIdSchema } },
+    (request) => indexNotifications(request.params.id),
   );
 }
+
+// Private
+
+const createBodySchema = EmergencyCallSchema.omit({
+  id: true,
+  createdAt: true,
+});
+
+const getLocationQuerySchema = uuidIdSchema;
