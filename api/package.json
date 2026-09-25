@@ -2,6 +2,13 @@
   "name": "api",
   "version": "1.0.0",
   "type": "module",
+  "imports": {
+    "#db/*": "./src/db/*",
+    "#modules/*": "./src/modules/*",
+    "#utils/*": "./src/utils/*",
+    "#config/*": "./src/config/*",
+    "#prisma/*": "./prisma/*"
+  },
   "scripts": {
     "dev": "nodemon src/server.js",
     "start": "node src/server.js"
@@ -17,6 +24,7 @@
     "@fastify/swagger-ui": "^6.1.1",
     "@fastify/type-provider-zod": "^1.0.0",
     "@prisma/adapter-pg": "^7.10.0",
+    "bcrypt": "^6.0.0",
     "fastify": "^5.0.0",
     "pg": "^8.12.0",
     "zod": "^4.4.3"

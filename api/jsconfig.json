@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "#db/*": ["./src/db/*"],
+      "#modules/*": ["./src/modules/*"],
+      "#utils/*": ["./src/utils/*"],
+      "#config/*": ["./src/config/*"],
+      "#prisma/*": ["./prisma/*"]
+    }
+  }
+}
