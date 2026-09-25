@@ -16,65 +16,65 @@ export const TransactionIsolationLevelSchema = z.enum([
   "Serializable",
 ]);
 
-export const UsuarioScalarFieldEnumSchema = z.enum([
+export const UserScalarFieldEnumSchema = z.enum([
   "id",
   "email",
-  "senha",
-  "tipo",
-  "telefone",
+  "password",
+  "role",
+  "phone",
   "status",
-  "criadoEm",
+  "createdAt",
 ]);
 
-export const VeiculoScalarFieldEnumSchema = z.enum([
+export const VehicleScalarFieldEnumSchema = z.enum([
   "id",
-  "placa",
+  "plate",
   "latitude",
   "longitude",
-  "motoristaId",
+  "driverId",
 ]);
 
-export const AtendimentoScalarFieldEnumSchema = z.enum([
+export const EmergencyCallScalarFieldEnumSchema = z.enum([
   "id",
-  "protocolo",
-  "endereco",
-  "localDeRetorno",
-  "oQueAconteceu",
-  "estadoDoPaciente",
-  "idadeAparente",
-  "quantidadeDePacientes",
-  "estadoDaLesao",
-  "observacoes",
-  "atendenteId",
-  "criadoEm",
+  "protocol",
+  "address",
+  "returnLocation",
+  "whatHappened",
+  "patientCondition",
+  "apparentAge",
+  "patientCount",
+  "injuryCondition",
+  "observations",
+  "attendantId",
+  "createdAt",
 ]);
 
-export const VeiculoAtendimentoScalarFieldEnumSchema = z.enum([
+export const VehicleEmergencyCallScalarFieldEnumSchema = z.enum([
   "id",
   "status",
-  "veiculoId",
-  "atendimentoId",
+  "vehicleId",
+  "emergencyCallId",
 ]);
 
-export const ConversaScalarFieldEnumSchema = z.enum([
+export const ConversationScalarFieldEnumSchema = z.enum([
   "id",
-  "atendenteId",
-  "motoristaId",
+  "attendantId",
+  "driverId",
 ]);
 
-export const MensagemScalarFieldEnumSchema = z.enum([
+export const MessageScalarFieldEnumSchema = z.enum([
   "id",
-  "texto",
-  "dataDeEnvio",
-  "quemMandouId",
-  "conversaId",
+  "text",
+  "sentAt",
+  "senderId",
+  "conversationId",
 ]);
 
-export const NotificacaoScalarFieldEnumSchema = z.enum([
+export const NotificationScalarFieldEnumSchema = z.enum([
   "id",
-  "mensagem",
-  "dataDaNotificacao",
-  "atendimentoId",
+  "message",
+  "notifiedAt",
+  "emergencyCallId",
 ]);
 
 export const SortOrderSchema = z.enum(["asc", "desc"]);
@@ -83,501 +83,515 @@ export const QueryModeSchema = z.enum(["default", "insensitive"]);
 
 export const NullsOrderSchema = z.enum(["first", "last"]);
 
-export const TipoUsuarioSchema = z.enum(["MOTORISTA", "ATENDENTE"]);
+export const UserRoleSchema = z.enum(["DRIVER", "ATTENDANT"]);
 
-export type TipoUsuarioType = `${z.infer<typeof TipoUsuarioSchema>}`;
+export type UserRoleType = `${z.infer<typeof UserRoleSchema>}`;
 
-export const StatusUsuarioSchema = z.enum(["ONLINE", "OFFLINE"]);
+export const UserStatusSchema = z.enum(["ONLINE", "OFFLINE"]);
 
-export type StatusUsuarioType = `${z.infer<typeof StatusUsuarioSchema>}`;
+export type UserStatusType = `${z.infer<typeof UserStatusSchema>}`;
 
-export const StatusAtendimentoSchema = z.enum([
-  "NAO_INICIADO",
-  "EM_ANDAMENTO",
-  "FINALIZADO",
+export const EmergencyCallStatusSchema = z.enum([
+  "NOT_STARTED",
+  "IN_PROGRESS",
+  "FINISHED",
 ]);
 
-export type StatusAtendimentoType =
-  `${z.infer<typeof StatusAtendimentoSchema>}`;
+export type EmergencyCallStatusType =
+  `${z.infer<typeof EmergencyCallStatusSchema>}`;
 
 /////////////////////////////////////////
 // MODELS
 /////////////////////////////////////////
 
 /////////////////////////////////////////
-// USUARIO SCHEMA
+// USER SCHEMA
 /////////////////////////////////////////
 
-export const UsuarioSchema = z.object({
-  tipo: TipoUsuarioSchema,
-  status: StatusUsuarioSchema,
+export const UserSchema = z.object({
+  role: UserRoleSchema,
+  status: UserStatusSchema,
   id: z.uuid(),
   email: z.string(),
-  senha: z.string(),
-  telefone: z.string(),
-  criadoEm: z.coerce.date(),
+  password: z.string(),
+  phone: z.string(),
+  createdAt: z.coerce.date(),
 });
 
-export type Usuario = z.infer<typeof UsuarioSchema>;
+export type User = z.infer<typeof UserSchema>;
 
 /////////////////////////////////////////
-// VEICULO SCHEMA
+// VEHICLE SCHEMA
 /////////////////////////////////////////
 
-export const VeiculoSchema = z.object({
+export const VehicleSchema = z.object({
   id: z.uuid(),
-  placa: z.string(),
+  plate: z.string(),
   latitude: z.number(),
   longitude: z.number(),
-  motoristaId: z.string(),
+  driverId: z.string(),
 });
 
-export type Veiculo = z.infer<typeof VeiculoSchema>;
+export type Vehicle = z.infer<typeof VehicleSchema>;
 
 /////////////////////////////////////////
-// ATENDIMENTO SCHEMA
+// EMERGENCY CALL SCHEMA
 /////////////////////////////////////////
 
-export const AtendimentoSchema = z.object({
+export const EmergencyCallSchema = z.object({
   id: z.uuid(),
-  protocolo: z.string(),
-  endereco: z.string(),
-  localDeRetorno: z.string(),
-  oQueAconteceu: z.string(),
-  estadoDoPaciente: z.string(),
-  idadeAparente: z.number().int().nullable(),
-  quantidadeDePacientes: z.number().int(),
-  estadoDaLesao: z.string(),
-  observacoes: z.string().nullable(),
-  atendenteId: z.string(),
-  criadoEm: z.coerce.date(),
+  protocol: z.string(),
+  address: z.string(),
+  returnLocation: z.string(),
+  whatHappened: z.string(),
+  patientCondition: z.string(),
+  apparentAge: z.number().int().nullable(),
+  patientCount: z.number().int(),
+  injuryCondition: z.string(),
+  observations: z.string().nullable(),
+  attendantId: z.string(),
+  createdAt: z.coerce.date(),
 });
 
-export type Atendimento = z.infer<typeof AtendimentoSchema>;
+export type EmergencyCall = z.infer<typeof EmergencyCallSchema>;
 
 /////////////////////////////////////////
-// VEICULO ATENDIMENTO SCHEMA
+// VEHICLE EMERGENCY CALL SCHEMA
 /////////////////////////////////////////
 
-export const VeiculoAtendimentoSchema = z.object({
-  status: StatusAtendimentoSchema,
+export const VehicleEmergencyCallSchema = z.object({
+  status: EmergencyCallStatusSchema,
   id: z.uuid(),
-  veiculoId: z.string(),
-  atendimentoId: z.string(),
+  vehicleId: z.string(),
+  emergencyCallId: z.string(),
 });
 
-export type VeiculoAtendimento = z.infer<typeof VeiculoAtendimentoSchema>;
+export type VehicleEmergencyCall = z.infer<typeof VehicleEmergencyCallSchema>;
 
 /////////////////////////////////////////
-// CONVERSA SCHEMA
+// CONVERSATION SCHEMA
 /////////////////////////////////////////
 
-export const ConversaSchema = z.object({
+export const ConversationSchema = z.object({
   id: z.uuid(),
-  atendenteId: z.string(),
-  motoristaId: z.string(),
+  attendantId: z.string(),
+  driverId: z.string(),
 });
 
-export type Conversa = z.infer<typeof ConversaSchema>;
+export type Conversation = z.infer<typeof ConversationSchema>;
 
 /////////////////////////////////////////
-// MENSAGEM SCHEMA
+// MESSAGE SCHEMA
 /////////////////////////////////////////
 
-export const MensagemSchema = z.object({
+export const MessageSchema = z.object({
   id: z.uuid(),
-  texto: z.string(),
-  dataDeEnvio: z.coerce.date(),
-  quemMandouId: z.string(),
-  conversaId: z.string(),
+  text: z.string(),
+  sentAt: z.coerce.date(),
+  senderId: z.string(),
+  conversationId: z.string(),
 });
 
-export type Mensagem = z.infer<typeof MensagemSchema>;
+export type Message = z.infer<typeof MessageSchema>;
 
 /////////////////////////////////////////
-// NOTIFICACAO SCHEMA
+// NOTIFICATION SCHEMA
 /////////////////////////////////////////
 
-export const NotificacaoSchema = z.object({
+export const NotificationSchema = z.object({
   id: z.uuid(),
-  mensagem: z.string(),
-  dataDaNotificacao: z.coerce.date(),
-  atendimentoId: z.string(),
+  message: z.string(),
+  notifiedAt: z.coerce.date(),
+  emergencyCallId: z.string(),
 });
 
-export type Notificacao = z.infer<typeof NotificacaoSchema>;
+export type Notification = z.infer<typeof NotificationSchema>;
 
 /////////////////////////////////////////
 // SELECT & INCLUDE
 /////////////////////////////////////////
 
-// USUARIO
+// USER
 //------------------------------------------------------
 
-export const UsuarioIncludeSchema: z.ZodType<Prisma.UsuarioInclude> = z
+export const UserIncludeSchema: z.ZodType<Prisma.UserInclude> = z
   .object({
-    veiculo: z.union([z.boolean(), z.lazy(() => VeiculoArgsSchema)]).optional(),
-    atendimentosRegistrados: z
-      .union([z.boolean(), z.lazy(() => AtendimentoFindManyArgsSchema)])
+    vehicle: z.union([z.boolean(), z.lazy(() => VehicleArgsSchema)]).optional(),
+    registeredCalls: z
+      .union([z.boolean(), z.lazy(() => EmergencyCallFindManyArgsSchema)])
       .optional(),
-    conversasComoAtendente: z
-      .union([z.boolean(), z.lazy(() => ConversaFindManyArgsSchema)])
+    conversationsAsAttendant: z
+      .union([z.boolean(), z.lazy(() => ConversationFindManyArgsSchema)])
       .optional(),
-    conversasComoMotorista: z
-      .union([z.boolean(), z.lazy(() => ConversaFindManyArgsSchema)])
+    conversationsAsDriver: z
+      .union([z.boolean(), z.lazy(() => ConversationFindManyArgsSchema)])
       .optional(),
-    mensagensEnviadas: z
-      .union([z.boolean(), z.lazy(() => MensagemFindManyArgsSchema)])
+    sentMessages: z
+      .union([z.boolean(), z.lazy(() => MessageFindManyArgsSchema)])
       .optional(),
     _count: z
-      .union([z.boolean(), z.lazy(() => UsuarioCountOutputTypeArgsSchema)])
+      .union([z.boolean(), z.lazy(() => UserCountOutputTypeArgsSchema)])
       .optional(),
   })
   .strict();
 
-export const UsuarioArgsSchema: z.ZodType<Prisma.UsuarioDefaultArgs> = z
+export const UserArgsSchema: z.ZodType<Prisma.UserDefaultArgs> = z
   .object({
-    select: z.lazy(() => UsuarioSelectSchema).optional(),
-    include: z.lazy(() => UsuarioIncludeSchema).optional(),
+    select: z.lazy(() => UserSelectSchema).optional(),
+    include: z.lazy(() => UserIncludeSchema).optional(),
   })
   .strict();
 
-export const UsuarioCountOutputTypeArgsSchema: z.ZodType<Prisma.UsuarioCountOutputTypeDefaultArgs> =
+export const UserCountOutputTypeArgsSchema: z.ZodType<Prisma.UserCountOutputTypeDefaultArgs> =
   z
     .object({
-      select: z.lazy(() => UsuarioCountOutputTypeSelectSchema).nullish(),
+      select: z.lazy(() => UserCountOutputTypeSelectSchema).nullish(),
     })
     .strict();
 
-export const UsuarioCountOutputTypeSelectSchema: z.ZodType<Prisma.UsuarioCountOutputTypeSelect> =
+export const UserCountOutputTypeSelectSchema: z.ZodType<Prisma.UserCountOutputTypeSelect> =
   z
     .object({
-      atendimentosRegistrados: z.boolean().optional(),
-      conversasComoAtendente: z.boolean().optional(),
-      conversasComoMotorista: z.boolean().optional(),
-      mensagensEnviadas: z.boolean().optional(),
+      registeredCalls: z.boolean().optional(),
+      conversationsAsAttendant: z.boolean().optional(),
+      conversationsAsDriver: z.boolean().optional(),
+      sentMessages: z.boolean().optional(),
     })
     .strict();
 
-export const UsuarioSelectSchema: z.ZodType<Prisma.UsuarioSelect> = z
+export const UserSelectSchema: z.ZodType<Prisma.UserSelect> = z
   .object({
     id: z.boolean().optional(),
     email: z.boolean().optional(),
-    senha: z.boolean().optional(),
-    tipo: z.boolean().optional(),
-    telefone: z.boolean().optional(),
+    password: z.boolean().optional(),
+    role: z.boolean().optional(),
+    phone: z.boolean().optional(),
     status: z.boolean().optional(),
-    criadoEm: z.boolean().optional(),
-    veiculo: z.union([z.boolean(), z.lazy(() => VeiculoArgsSchema)]).optional(),
-    atendimentosRegistrados: z
-      .union([z.boolean(), z.lazy(() => AtendimentoFindManyArgsSchema)])
+    createdAt: z.boolean().optional(),
+    vehicle: z.union([z.boolean(), z.lazy(() => VehicleArgsSchema)]).optional(),
+    registeredCalls: z
+      .union([z.boolean(), z.lazy(() => EmergencyCallFindManyArgsSchema)])
       .optional(),
-    conversasComoAtendente: z
-      .union([z.boolean(), z.lazy(() => ConversaFindManyArgsSchema)])
+    conversationsAsAttendant: z
+      .union([z.boolean(), z.lazy(() => ConversationFindManyArgsSchema)])
       .optional(),
-    conversasComoMotorista: z
-      .union([z.boolean(), z.lazy(() => ConversaFindManyArgsSchema)])
+    conversationsAsDriver: z
+      .union([z.boolean(), z.lazy(() => ConversationFindManyArgsSchema)])
       .optional(),
-    mensagensEnviadas: z
-      .union([z.boolean(), z.lazy(() => MensagemFindManyArgsSchema)])
+    sentMessages: z
+      .union([z.boolean(), z.lazy(() => MessageFindManyArgsSchema)])
       .optional(),
     _count: z
-      .union([z.boolean(), z.lazy(() => UsuarioCountOutputTypeArgsSchema)])
+      .union([z.boolean(), z.lazy(() => UserCountOutputTypeArgsSchema)])
       .optional(),
   })
   .strict();
 
-// VEICULO
+// VEHICLE
 //------------------------------------------------------
 
-export const VeiculoIncludeSchema: z.ZodType<Prisma.VeiculoInclude> = z
+export const VehicleIncludeSchema: z.ZodType<Prisma.VehicleInclude> = z
   .object({
-    motorista: z
-      .union([z.boolean(), z.lazy(() => UsuarioArgsSchema)])
-      .optional(),
-    atendimentos: z
-      .union([z.boolean(), z.lazy(() => VeiculoAtendimentoFindManyArgsSchema)])
+    driver: z.union([z.boolean(), z.lazy(() => UserArgsSchema)]).optional(),
+    emergencyCalls: z
+      .union([
+        z.boolean(),
+        z.lazy(() => VehicleEmergencyCallFindManyArgsSchema),
+      ])
       .optional(),
     _count: z
-      .union([z.boolean(), z.lazy(() => VeiculoCountOutputTypeArgsSchema)])
+      .union([z.boolean(), z.lazy(() => VehicleCountOutputTypeArgsSchema)])
       .optional(),
   })
   .strict();
 
-export const VeiculoArgsSchema: z.ZodType<Prisma.VeiculoDefaultArgs> = z
+export const VehicleArgsSchema: z.ZodType<Prisma.VehicleDefaultArgs> = z
   .object({
-    select: z.lazy(() => VeiculoSelectSchema).optional(),
-    include: z.lazy(() => VeiculoIncludeSchema).optional(),
+    select: z.lazy(() => VehicleSelectSchema).optional(),
+    include: z.lazy(() => VehicleIncludeSchema).optional(),
   })
   .strict();
 
-export const VeiculoCountOutputTypeArgsSchema: z.ZodType<Prisma.VeiculoCountOutputTypeDefaultArgs> =
+export const VehicleCountOutputTypeArgsSchema: z.ZodType<Prisma.VehicleCountOutputTypeDefaultArgs> =
   z
     .object({
-      select: z.lazy(() => VeiculoCountOutputTypeSelectSchema).nullish(),
+      select: z.lazy(() => VehicleCountOutputTypeSelectSchema).nullish(),
     })
     .strict();
 
-export const VeiculoCountOutputTypeSelectSchema: z.ZodType<Prisma.VeiculoCountOutputTypeSelect> =
+export const VehicleCountOutputTypeSelectSchema: z.ZodType<Prisma.VehicleCountOutputTypeSelect> =
   z
     .object({
-      atendimentos: z.boolean().optional(),
+      emergencyCalls: z.boolean().optional(),
     })
     .strict();
 
-export const VeiculoSelectSchema: z.ZodType<Prisma.VeiculoSelect> = z
+export const VehicleSelectSchema: z.ZodType<Prisma.VehicleSelect> = z
   .object({
     id: z.boolean().optional(),
-    placa: z.boolean().optional(),
+    plate: z.boolean().optional(),
     latitude: z.boolean().optional(),
     longitude: z.boolean().optional(),
-    motoristaId: z.boolean().optional(),
-    motorista: z
-      .union([z.boolean(), z.lazy(() => UsuarioArgsSchema)])
-      .optional(),
-    atendimentos: z
-      .union([z.boolean(), z.lazy(() => VeiculoAtendimentoFindManyArgsSchema)])
+    driverId: z.boolean().optional(),
+    driver: z.union([z.boolean(), z.lazy(() => UserArgsSchema)]).optional(),
+    emergencyCalls: z
+      .union([
+        z.boolean(),
+        z.lazy(() => VehicleEmergencyCallFindManyArgsSchema),
+      ])
       .optional(),
     _count: z
-      .union([z.boolean(), z.lazy(() => VeiculoCountOutputTypeArgsSchema)])
+      .union([z.boolean(), z.lazy(() => VehicleCountOutputTypeArgsSchema)])
       .optional(),
   })
   .strict();
 
-// ATENDIMENTO
+// EMERGENCY CALL
 //------------------------------------------------------
 
-export const AtendimentoIncludeSchema: z.ZodType<Prisma.AtendimentoInclude> = z
-  .object({
-    atendente: z
-      .union([z.boolean(), z.lazy(() => UsuarioArgsSchema)])
-      .optional(),
-    veiculos: z
-      .union([z.boolean(), z.lazy(() => VeiculoAtendimentoFindManyArgsSchema)])
-      .optional(),
-    notificacoes: z
-      .union([z.boolean(), z.lazy(() => NotificacaoFindManyArgsSchema)])
-      .optional(),
-    _count: z
-      .union([z.boolean(), z.lazy(() => AtendimentoCountOutputTypeArgsSchema)])
-      .optional(),
-  })
-  .strict();
-
-export const AtendimentoArgsSchema: z.ZodType<Prisma.AtendimentoDefaultArgs> = z
-  .object({
-    select: z.lazy(() => AtendimentoSelectSchema).optional(),
-    include: z.lazy(() => AtendimentoIncludeSchema).optional(),
-  })
-  .strict();
-
-export const AtendimentoCountOutputTypeArgsSchema: z.ZodType<Prisma.AtendimentoCountOutputTypeDefaultArgs> =
+export const EmergencyCallIncludeSchema: z.ZodType<Prisma.EmergencyCallInclude> =
   z
     .object({
-      select: z.lazy(() => AtendimentoCountOutputTypeSelectSchema).nullish(),
-    })
-    .strict();
-
-export const AtendimentoCountOutputTypeSelectSchema: z.ZodType<Prisma.AtendimentoCountOutputTypeSelect> =
-  z
-    .object({
-      veiculos: z.boolean().optional(),
-      notificacoes: z.boolean().optional(),
-    })
-    .strict();
-
-export const AtendimentoSelectSchema: z.ZodType<Prisma.AtendimentoSelect> = z
-  .object({
-    id: z.boolean().optional(),
-    protocolo: z.boolean().optional(),
-    endereco: z.boolean().optional(),
-    localDeRetorno: z.boolean().optional(),
-    oQueAconteceu: z.boolean().optional(),
-    estadoDoPaciente: z.boolean().optional(),
-    idadeAparente: z.boolean().optional(),
-    quantidadeDePacientes: z.boolean().optional(),
-    estadoDaLesao: z.boolean().optional(),
-    observacoes: z.boolean().optional(),
-    atendenteId: z.boolean().optional(),
-    criadoEm: z.boolean().optional(),
-    atendente: z
-      .union([z.boolean(), z.lazy(() => UsuarioArgsSchema)])
-      .optional(),
-    veiculos: z
-      .union([z.boolean(), z.lazy(() => VeiculoAtendimentoFindManyArgsSchema)])
-      .optional(),
-    notificacoes: z
-      .union([z.boolean(), z.lazy(() => NotificacaoFindManyArgsSchema)])
-      .optional(),
-    _count: z
-      .union([z.boolean(), z.lazy(() => AtendimentoCountOutputTypeArgsSchema)])
-      .optional(),
-  })
-  .strict();
-
-// VEICULO ATENDIMENTO
-//------------------------------------------------------
-
-export const VeiculoAtendimentoIncludeSchema: z.ZodType<Prisma.VeiculoAtendimentoInclude> =
-  z
-    .object({
-      veiculo: z
-        .union([z.boolean(), z.lazy(() => VeiculoArgsSchema)])
+      attendant: z
+        .union([z.boolean(), z.lazy(() => UserArgsSchema)])
         .optional(),
-      atendimento: z
-        .union([z.boolean(), z.lazy(() => AtendimentoArgsSchema)])
+      vehicles: z
+        .union([
+          z.boolean(),
+          z.lazy(() => VehicleEmergencyCallFindManyArgsSchema),
+        ])
+        .optional(),
+      notifications: z
+        .union([z.boolean(), z.lazy(() => NotificationFindManyArgsSchema)])
+        .optional(),
+      _count: z
+        .union([
+          z.boolean(),
+          z.lazy(() => EmergencyCallCountOutputTypeArgsSchema),
+        ])
         .optional(),
     })
     .strict();
 
-export const VeiculoAtendimentoArgsSchema: z.ZodType<Prisma.VeiculoAtendimentoDefaultArgs> =
+export const EmergencyCallArgsSchema: z.ZodType<Prisma.EmergencyCallDefaultArgs> =
   z
     .object({
-      select: z.lazy(() => VeiculoAtendimentoSelectSchema).optional(),
-      include: z.lazy(() => VeiculoAtendimentoIncludeSchema).optional(),
+      select: z.lazy(() => EmergencyCallSelectSchema).optional(),
+      include: z.lazy(() => EmergencyCallIncludeSchema).optional(),
     })
     .strict();
 
-export const VeiculoAtendimentoSelectSchema: z.ZodType<Prisma.VeiculoAtendimentoSelect> =
+export const EmergencyCallCountOutputTypeArgsSchema: z.ZodType<Prisma.EmergencyCallCountOutputTypeDefaultArgs> =
+  z
+    .object({
+      select: z.lazy(() => EmergencyCallCountOutputTypeSelectSchema).nullish(),
+    })
+    .strict();
+
+export const EmergencyCallCountOutputTypeSelectSchema: z.ZodType<Prisma.EmergencyCallCountOutputTypeSelect> =
+  z
+    .object({
+      vehicles: z.boolean().optional(),
+      notifications: z.boolean().optional(),
+    })
+    .strict();
+
+export const EmergencyCallSelectSchema: z.ZodType<Prisma.EmergencyCallSelect> =
+  z
+    .object({
+      id: z.boolean().optional(),
+      protocol: z.boolean().optional(),
+      address: z.boolean().optional(),
+      returnLocation: z.boolean().optional(),
+      whatHappened: z.boolean().optional(),
+      patientCondition: z.boolean().optional(),
+      apparentAge: z.boolean().optional(),
+      patientCount: z.boolean().optional(),
+      injuryCondition: z.boolean().optional(),
+      observations: z.boolean().optional(),
+      attendantId: z.boolean().optional(),
+      createdAt: z.boolean().optional(),
+      attendant: z
+        .union([z.boolean(), z.lazy(() => UserArgsSchema)])
+        .optional(),
+      vehicles: z
+        .union([
+          z.boolean(),
+          z.lazy(() => VehicleEmergencyCallFindManyArgsSchema),
+        ])
+        .optional(),
+      notifications: z
+        .union([z.boolean(), z.lazy(() => NotificationFindManyArgsSchema)])
+        .optional(),
+      _count: z
+        .union([
+          z.boolean(),
+          z.lazy(() => EmergencyCallCountOutputTypeArgsSchema),
+        ])
+        .optional(),
+    })
+    .strict();
+
+// VEHICLE EMERGENCY CALL
+//------------------------------------------------------
+
+export const VehicleEmergencyCallIncludeSchema: z.ZodType<Prisma.VehicleEmergencyCallInclude> =
+  z
+    .object({
+      vehicle: z
+        .union([z.boolean(), z.lazy(() => VehicleArgsSchema)])
+        .optional(),
+      emergencyCall: z
+        .union([z.boolean(), z.lazy(() => EmergencyCallArgsSchema)])
+        .optional(),
+    })
+    .strict();
+
+export const VehicleEmergencyCallArgsSchema: z.ZodType<Prisma.VehicleEmergencyCallDefaultArgs> =
+  z
+    .object({
+      select: z.lazy(() => VehicleEmergencyCallSelectSchema).optional(),
+      include: z.lazy(() => VehicleEmergencyCallIncludeSchema).optional(),
+    })
+    .strict();
+
+export const VehicleEmergencyCallSelectSchema: z.ZodType<Prisma.VehicleEmergencyCallSelect> =
   z
     .object({
       id: z.boolean().optional(),
       status: z.boolean().optional(),
-      veiculoId: z.boolean().optional(),
-      atendimentoId: z.boolean().optional(),
-      veiculo: z
-        .union([z.boolean(), z.lazy(() => VeiculoArgsSchema)])
+      vehicleId: z.boolean().optional(),
+      emergencyCallId: z.boolean().optional(),
+      vehicle: z
+        .union([z.boolean(), z.lazy(() => VehicleArgsSchema)])
         .optional(),
-      atendimento: z
-        .union([z.boolean(), z.lazy(() => AtendimentoArgsSchema)])
+      emergencyCall: z
+        .union([z.boolean(), z.lazy(() => EmergencyCallArgsSchema)])
         .optional(),
     })
     .strict();
 
-// CONVERSA
+// CONVERSATION
 //------------------------------------------------------
 
-export const ConversaIncludeSchema: z.ZodType<Prisma.ConversaInclude> = z
-  .object({
-    atendente: z
-      .union([z.boolean(), z.lazy(() => UsuarioArgsSchema)])
-      .optional(),
-    motorista: z
-      .union([z.boolean(), z.lazy(() => UsuarioArgsSchema)])
-      .optional(),
-    mensagens: z
-      .union([z.boolean(), z.lazy(() => MensagemFindManyArgsSchema)])
-      .optional(),
-    _count: z
-      .union([z.boolean(), z.lazy(() => ConversaCountOutputTypeArgsSchema)])
-      .optional(),
-  })
-  .strict();
-
-export const ConversaArgsSchema: z.ZodType<Prisma.ConversaDefaultArgs> = z
-  .object({
-    select: z.lazy(() => ConversaSelectSchema).optional(),
-    include: z.lazy(() => ConversaIncludeSchema).optional(),
-  })
-  .strict();
-
-export const ConversaCountOutputTypeArgsSchema: z.ZodType<Prisma.ConversaCountOutputTypeDefaultArgs> =
+export const ConversationIncludeSchema: z.ZodType<Prisma.ConversationInclude> =
   z
     .object({
-      select: z.lazy(() => ConversaCountOutputTypeSelectSchema).nullish(),
+      attendant: z
+        .union([z.boolean(), z.lazy(() => UserArgsSchema)])
+        .optional(),
+      driver: z.union([z.boolean(), z.lazy(() => UserArgsSchema)]).optional(),
+      messages: z
+        .union([z.boolean(), z.lazy(() => MessageFindManyArgsSchema)])
+        .optional(),
+      _count: z
+        .union([
+          z.boolean(),
+          z.lazy(() => ConversationCountOutputTypeArgsSchema),
+        ])
+        .optional(),
     })
     .strict();
 
-export const ConversaCountOutputTypeSelectSchema: z.ZodType<Prisma.ConversaCountOutputTypeSelect> =
+export const ConversationArgsSchema: z.ZodType<Prisma.ConversationDefaultArgs> =
   z
     .object({
-      mensagens: z.boolean().optional(),
+      select: z.lazy(() => ConversationSelectSchema).optional(),
+      include: z.lazy(() => ConversationIncludeSchema).optional(),
     })
     .strict();
 
-export const ConversaSelectSchema: z.ZodType<Prisma.ConversaSelect> = z
+export const ConversationCountOutputTypeArgsSchema: z.ZodType<Prisma.ConversationCountOutputTypeDefaultArgs> =
+  z
+    .object({
+      select: z.lazy(() => ConversationCountOutputTypeSelectSchema).nullish(),
+    })
+    .strict();
+
+export const ConversationCountOutputTypeSelectSchema: z.ZodType<Prisma.ConversationCountOutputTypeSelect> =
+  z
+    .object({
+      messages: z.boolean().optional(),
+    })
+    .strict();
+
+export const ConversationSelectSchema: z.ZodType<Prisma.ConversationSelect> = z
   .object({
     id: z.boolean().optional(),
-    atendenteId: z.boolean().optional(),
-    motoristaId: z.boolean().optional(),
-    atendente: z
-      .union([z.boolean(), z.lazy(() => UsuarioArgsSchema)])
-      .optional(),
-    motorista: z
-      .union([z.boolean(), z.lazy(() => UsuarioArgsSchema)])
-      .optional(),
-    mensagens: z
-      .union([z.boolean(), z.lazy(() => MensagemFindManyArgsSchema)])
+    attendantId: z.boolean().optional(),
+    driverId: z.boolean().optional(),
+    attendant: z.union([z.boolean(), z.lazy(() => UserArgsSchema)]).optional(),
+    driver: z.union([z.boolean(), z.lazy(() => UserArgsSchema)]).optional(),
+    messages: z
+      .union([z.boolean(), z.lazy(() => MessageFindManyArgsSchema)])
       .optional(),
     _count: z
-      .union([z.boolean(), z.lazy(() => ConversaCountOutputTypeArgsSchema)])
+      .union([z.boolean(), z.lazy(() => ConversationCountOutputTypeArgsSchema)])
       .optional(),
   })
   .strict();
 
-// MENSAGEM
+// MESSAGE
 //------------------------------------------------------
 
-export const MensagemIncludeSchema: z.ZodType<Prisma.MensagemInclude> = z
+export const MessageIncludeSchema: z.ZodType<Prisma.MessageInclude> = z
   .object({
-    quemMandou: z
-      .union([z.boolean(), z.lazy(() => UsuarioArgsSchema)])
-      .optional(),
-    conversa: z
-      .union([z.boolean(), z.lazy(() => ConversaArgsSchema)])
+    sender: z.union([z.boolean(), z.lazy(() => UserArgsSchema)]).optional(),
+    conversation: z
+      .union([z.boolean(), z.lazy(() => ConversationArgsSchema)])
       .optional(),
   })
   .strict();
 
-export const MensagemArgsSchema: z.ZodType<Prisma.MensagemDefaultArgs> = z
+export const MessageArgsSchema: z.ZodType<Prisma.MessageDefaultArgs> = z
   .object({
-    select: z.lazy(() => MensagemSelectSchema).optional(),
-    include: z.lazy(() => MensagemIncludeSchema).optional(),
+    select: z.lazy(() => MessageSelectSchema).optional(),
+    include: z.lazy(() => MessageIncludeSchema).optional(),
   })
   .strict();
 
-export const MensagemSelectSchema: z.ZodType<Prisma.MensagemSelect> = z
+export const MessageSelectSchema: z.ZodType<Prisma.MessageSelect> = z
   .object({
     id: z.boolean().optional(),
-    texto: z.boolean().optional(),
-    dataDeEnvio: z.boolean().optional(),
-    quemMandouId: z.boolean().optional(),
-    conversaId: z.boolean().optional(),
-    quemMandou: z
-      .union([z.boolean(), z.lazy(() => UsuarioArgsSchema)])
-      .optional(),
-    conversa: z
-      .union([z.boolean(), z.lazy(() => ConversaArgsSchema)])
+    text: z.boolean().optional(),
+    sentAt: z.boolean().optional(),
+    senderId: z.boolean().optional(),
+    conversationId: z.boolean().optional(),
+    sender: z.union([z.boolean(), z.lazy(() => UserArgsSchema)]).optional(),
+    conversation: z
+      .union([z.boolean(), z.lazy(() => ConversationArgsSchema)])
       .optional(),
   })
   .strict();
 
-// NOTIFICACAO
+// NOTIFICATION
 //------------------------------------------------------
 
-export const NotificacaoIncludeSchema: z.ZodType<Prisma.NotificacaoInclude> = z
-  .object({
-    atendimento: z
-      .union([z.boolean(), z.lazy(() => AtendimentoArgsSchema)])
-      .optional(),
-  })
-  .strict();
+export const NotificationIncludeSchema: z.ZodType<Prisma.NotificationInclude> =
+  z
+    .object({
+      emergencyCall: z
+        .union([z.boolean(), z.lazy(() => EmergencyCallArgsSchema)])
+        .optional(),
+    })
+    .strict();
 
-export const NotificacaoArgsSchema: z.ZodType<Prisma.NotificacaoDefaultArgs> = z
-  .object({
-    select: z.lazy(() => NotificacaoSelectSchema).optional(),
-    include: z.lazy(() => NotificacaoIncludeSchema).optional(),
-  })
-  .strict();
+export const NotificationArgsSchema: z.ZodType<Prisma.NotificationDefaultArgs> =
+  z
+    .object({
+      select: z.lazy(() => NotificationSelectSchema).optional(),
+      include: z.lazy(() => NotificationIncludeSchema).optional(),
+    })
+    .strict();
 
-export const NotificacaoSelectSchema: z.ZodType<Prisma.NotificacaoSelect> = z
+export const NotificationSelectSchema: z.ZodType<Prisma.NotificationSelect> = z
   .object({
     id: z.boolean().optional(),
-    mensagem: z.boolean().optional(),
-    dataDaNotificacao: z.boolean().optional(),
-    atendimentoId: z.boolean().optional(),
-    atendimento: z
-      .union([z.boolean(), z.lazy(() => AtendimentoArgsSchema)])
+    message: z.boolean().optional(),
+    notifiedAt: z.boolean().optional(),
+    emergencyCallId: z.boolean().optional(),
+    emergencyCall: z
+      .union([z.boolean(), z.lazy(() => EmergencyCallArgsSchema)])
       .optional(),
   })
   .strict();
@@ -586,91 +600,89 @@ export const NotificacaoSelectSchema: z.ZodType<Prisma.NotificacaoSelect> = z
 // INPUT TYPES
 /////////////////////////////////////////
 
-export const UsuarioWhereInputSchema: z.ZodType<Prisma.UsuarioWhereInput> =
+export const UserWhereInputSchema: z.ZodType<Prisma.UserWhereInput> =
   z.strictObject({
     AND: z
       .union([
-        z.lazy(() => UsuarioWhereInputSchema),
-        z.lazy(() => UsuarioWhereInputSchema).array(),
+        z.lazy(() => UserWhereInputSchema),
+        z.lazy(() => UserWhereInputSchema).array(),
       ])
       .optional(),
     OR: z
-      .lazy(() => UsuarioWhereInputSchema)
+      .lazy(() => UserWhereInputSchema)
       .array()
       .optional(),
     NOT: z
       .union([
-        z.lazy(() => UsuarioWhereInputSchema),
-        z.lazy(() => UsuarioWhereInputSchema).array(),
+        z.lazy(() => UserWhereInputSchema),
+        z.lazy(() => UserWhereInputSchema).array(),
       ])
       .optional(),
     id: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
     email: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
-    senha: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
-    tipo: z
-      .union([
-        z.lazy(() => EnumTipoUsuarioFilterSchema),
-        z.lazy(() => TipoUsuarioSchema),
-      ])
-      .optional(),
-    telefone: z
+    password: z
       .union([z.lazy(() => StringFilterSchema), z.string()])
       .optional(),
-    status: z
+    role: z
       .union([
-        z.lazy(() => EnumStatusUsuarioFilterSchema),
-        z.lazy(() => StatusUsuarioSchema),
+        z.lazy(() => EnumUserRoleFilterSchema),
+        z.lazy(() => UserRoleSchema),
       ])
       .optional(),
-    criadoEm: z
+    phone: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
+    status: z
+      .union([
+        z.lazy(() => EnumUserStatusFilterSchema),
+        z.lazy(() => UserStatusSchema),
+      ])
+      .optional(),
+    createdAt: z
       .union([z.lazy(() => DateTimeFilterSchema), z.coerce.date()])
       .optional(),
-    veiculo: z
+    vehicle: z
       .union([
-        z.lazy(() => VeiculoNullableScalarRelationFilterSchema),
-        z.lazy(() => VeiculoWhereInputSchema),
+        z.lazy(() => VehicleNullableScalarRelationFilterSchema),
+        z.lazy(() => VehicleWhereInputSchema),
       ])
       .optional()
       .nullable(),
-    atendimentosRegistrados: z
-      .lazy(() => AtendimentoListRelationFilterSchema)
+    registeredCalls: z
+      .lazy(() => EmergencyCallListRelationFilterSchema)
       .optional(),
-    conversasComoAtendente: z
-      .lazy(() => ConversaListRelationFilterSchema)
+    conversationsAsAttendant: z
+      .lazy(() => ConversationListRelationFilterSchema)
       .optional(),
-    conversasComoMotorista: z
-      .lazy(() => ConversaListRelationFilterSchema)
+    conversationsAsDriver: z
+      .lazy(() => ConversationListRelationFilterSchema)
       .optional(),
-    mensagensEnviadas: z
-      .lazy(() => MensagemListRelationFilterSchema)
-      .optional(),
+    sentMessages: z.lazy(() => MessageListRelationFilterSchema).optional(),
   });
 
-export const UsuarioOrderByWithRelationInputSchema: z.ZodType<Prisma.UsuarioOrderByWithRelationInput> =
+export const UserOrderByWithRelationInputSchema: z.ZodType<Prisma.UserOrderByWithRelationInput> =
   z.strictObject({
     id: z.lazy(() => SortOrderSchema).optional(),
     email: z.lazy(() => SortOrderSchema).optional(),
-    senha: z.lazy(() => SortOrderSchema).optional(),
-    tipo: z.lazy(() => SortOrderSchema).optional(),
-    telefone: z.lazy(() => SortOrderSchema).optional(),
+    password: z.lazy(() => SortOrderSchema).optional(),
+    role: z.lazy(() => SortOrderSchema).optional(),
+    phone: z.lazy(() => SortOrderSchema).optional(),
     status: z.lazy(() => SortOrderSchema).optional(),
-    criadoEm: z.lazy(() => SortOrderSchema).optional(),
-    veiculo: z.lazy(() => VeiculoOrderByWithRelationInputSchema).optional(),
-    atendimentosRegistrados: z
-      .lazy(() => AtendimentoOrderByRelationAggregateInputSchema)
+    createdAt: z.lazy(() => SortOrderSchema).optional(),
+    vehicle: z.lazy(() => VehicleOrderByWithRelationInputSchema).optional(),
+    registeredCalls: z
+      .lazy(() => EmergencyCallOrderByRelationAggregateInputSchema)
       .optional(),
-    conversasComoAtendente: z
-      .lazy(() => ConversaOrderByRelationAggregateInputSchema)
+    conversationsAsAttendant: z
+      .lazy(() => ConversationOrderByRelationAggregateInputSchema)
       .optional(),
-    conversasComoMotorista: z
-      .lazy(() => ConversaOrderByRelationAggregateInputSchema)
+    conversationsAsDriver: z
+      .lazy(() => ConversationOrderByRelationAggregateInputSchema)
       .optional(),
-    mensagensEnviadas: z
-      .lazy(() => MensagemOrderByRelationAggregateInputSchema)
+    sentMessages: z
+      .lazy(() => MessageOrderByRelationAggregateInputSchema)
       .optional(),
   });
 
-export const UsuarioWhereUniqueInputSchema: z.ZodType<Prisma.UsuarioWhereUniqueInput> =
+export const UserWhereUniqueInputSchema: z.ZodType<Prisma.UserWhereUniqueInput> =
   z
     .union([
       z.object({
@@ -690,93 +702,91 @@ export const UsuarioWhereUniqueInputSchema: z.ZodType<Prisma.UsuarioWhereUniqueI
         email: z.string().optional(),
         AND: z
           .union([
-            z.lazy(() => UsuarioWhereInputSchema),
-            z.lazy(() => UsuarioWhereInputSchema).array(),
+            z.lazy(() => UserWhereInputSchema),
+            z.lazy(() => UserWhereInputSchema).array(),
           ])
           .optional(),
         OR: z
-          .lazy(() => UsuarioWhereInputSchema)
+          .lazy(() => UserWhereInputSchema)
           .array()
           .optional(),
         NOT: z
           .union([
-            z.lazy(() => UsuarioWhereInputSchema),
-            z.lazy(() => UsuarioWhereInputSchema).array(),
+            z.lazy(() => UserWhereInputSchema),
+            z.lazy(() => UserWhereInputSchema).array(),
           ])
           .optional(),
-        senha: z
+        password: z
           .union([z.lazy(() => StringFilterSchema), z.string()])
           .optional(),
-        tipo: z
+        role: z
           .union([
-            z.lazy(() => EnumTipoUsuarioFilterSchema),
-            z.lazy(() => TipoUsuarioSchema),
+            z.lazy(() => EnumUserRoleFilterSchema),
+            z.lazy(() => UserRoleSchema),
           ])
           .optional(),
-        telefone: z
+        phone: z
           .union([z.lazy(() => StringFilterSchema), z.string()])
           .optional(),
         status: z
           .union([
-            z.lazy(() => EnumStatusUsuarioFilterSchema),
-            z.lazy(() => StatusUsuarioSchema),
+            z.lazy(() => EnumUserStatusFilterSchema),
+            z.lazy(() => UserStatusSchema),
           ])
           .optional(),
-        criadoEm: z
+        createdAt: z
           .union([z.lazy(() => DateTimeFilterSchema), z.coerce.date()])
           .optional(),
-        veiculo: z
+        vehicle: z
           .union([
-            z.lazy(() => VeiculoNullableScalarRelationFilterSchema),
-            z.lazy(() => VeiculoWhereInputSchema),
+            z.lazy(() => VehicleNullableScalarRelationFilterSchema),
+            z.lazy(() => VehicleWhereInputSchema),
           ])
           .optional()
           .nullable(),
-        atendimentosRegistrados: z
-          .lazy(() => AtendimentoListRelationFilterSchema)
+        registeredCalls: z
+          .lazy(() => EmergencyCallListRelationFilterSchema)
           .optional(),
-        conversasComoAtendente: z
-          .lazy(() => ConversaListRelationFilterSchema)
+        conversationsAsAttendant: z
+          .lazy(() => ConversationListRelationFilterSchema)
           .optional(),
-        conversasComoMotorista: z
-          .lazy(() => ConversaListRelationFilterSchema)
+        conversationsAsDriver: z
+          .lazy(() => ConversationListRelationFilterSchema)
           .optional(),
-        mensagensEnviadas: z
-          .lazy(() => MensagemListRelationFilterSchema)
-          .optional(),
+        sentMessages: z.lazy(() => MessageListRelationFilterSchema).optional(),
       }),
     );
 
-export const UsuarioOrderByWithAggregationInputSchema: z.ZodType<Prisma.UsuarioOrderByWithAggregationInput> =
+export const UserOrderByWithAggregationInputSchema: z.ZodType<Prisma.UserOrderByWithAggregationInput> =
   z.strictObject({
     id: z.lazy(() => SortOrderSchema).optional(),
     email: z.lazy(() => SortOrderSchema).optional(),
-    senha: z.lazy(() => SortOrderSchema).optional(),
-    tipo: z.lazy(() => SortOrderSchema).optional(),
-    telefone: z.lazy(() => SortOrderSchema).optional(),
+    password: z.lazy(() => SortOrderSchema).optional(),
+    role: z.lazy(() => SortOrderSchema).optional(),
+    phone: z.lazy(() => SortOrderSchema).optional(),
     status: z.lazy(() => SortOrderSchema).optional(),
-    criadoEm: z.lazy(() => SortOrderSchema).optional(),
-    _count: z.lazy(() => UsuarioCountOrderByAggregateInputSchema).optional(),
-    _max: z.lazy(() => UsuarioMaxOrderByAggregateInputSchema).optional(),
-    _min: z.lazy(() => UsuarioMinOrderByAggregateInputSchema).optional(),
+    createdAt: z.lazy(() => SortOrderSchema).optional(),
+    _count: z.lazy(() => UserCountOrderByAggregateInputSchema).optional(),
+    _max: z.lazy(() => UserMaxOrderByAggregateInputSchema).optional(),
+    _min: z.lazy(() => UserMinOrderByAggregateInputSchema).optional(),
   });
 
-export const UsuarioScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.UsuarioScalarWhereWithAggregatesInput> =
+export const UserScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.UserScalarWhereWithAggregatesInput> =
   z.strictObject({
     AND: z
       .union([
-        z.lazy(() => UsuarioScalarWhereWithAggregatesInputSchema),
-        z.lazy(() => UsuarioScalarWhereWithAggregatesInputSchema).array(),
+        z.lazy(() => UserScalarWhereWithAggregatesInputSchema),
+        z.lazy(() => UserScalarWhereWithAggregatesInputSchema).array(),
       ])
       .optional(),
     OR: z
-      .lazy(() => UsuarioScalarWhereWithAggregatesInputSchema)
+      .lazy(() => UserScalarWhereWithAggregatesInputSchema)
       .array()
       .optional(),
     NOT: z
       .union([
-        z.lazy(() => UsuarioScalarWhereWithAggregatesInputSchema),
-        z.lazy(() => UsuarioScalarWhereWithAggregatesInputSchema).array(),
+        z.lazy(() => UserScalarWhereWithAggregatesInputSchema),
+        z.lazy(() => UserScalarWhereWithAggregatesInputSchema).array(),
       ])
       .optional(),
     id: z
@@ -785,25 +795,25 @@ export const UsuarioScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.Usuar
     email: z
       .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
       .optional(),
-    senha: z
+    password: z
       .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
       .optional(),
-    tipo: z
+    role: z
       .union([
-        z.lazy(() => EnumTipoUsuarioWithAggregatesFilterSchema),
-        z.lazy(() => TipoUsuarioSchema),
+        z.lazy(() => EnumUserRoleWithAggregatesFilterSchema),
+        z.lazy(() => UserRoleSchema),
       ])
       .optional(),
-    telefone: z
+    phone: z
       .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
       .optional(),
     status: z
       .union([
-        z.lazy(() => EnumStatusUsuarioWithAggregatesFilterSchema),
-        z.lazy(() => StatusUsuarioSchema),
+        z.lazy(() => EnumUserStatusWithAggregatesFilterSchema),
+        z.lazy(() => UserStatusSchema),
       ])
       .optional(),
-    criadoEm: z
+    createdAt: z
       .union([
         z.lazy(() => DateTimeWithAggregatesFilterSchema),
         z.coerce.date(),
@@ -811,106 +821,106 @@ export const UsuarioScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.Usuar
       .optional(),
   });
 
-export const VeiculoWhereInputSchema: z.ZodType<Prisma.VeiculoWhereInput> =
+export const VehicleWhereInputSchema: z.ZodType<Prisma.VehicleWhereInput> =
   z.strictObject({
     AND: z
       .union([
-        z.lazy(() => VeiculoWhereInputSchema),
-        z.lazy(() => VeiculoWhereInputSchema).array(),
+        z.lazy(() => VehicleWhereInputSchema),
+        z.lazy(() => VehicleWhereInputSchema).array(),
       ])
       .optional(),
     OR: z
-      .lazy(() => VeiculoWhereInputSchema)
+      .lazy(() => VehicleWhereInputSchema)
       .array()
       .optional(),
     NOT: z
       .union([
-        z.lazy(() => VeiculoWhereInputSchema),
-        z.lazy(() => VeiculoWhereInputSchema).array(),
+        z.lazy(() => VehicleWhereInputSchema),
+        z.lazy(() => VehicleWhereInputSchema).array(),
       ])
       .optional(),
     id: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
-    placa: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
+    plate: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
     latitude: z.union([z.lazy(() => FloatFilterSchema), z.number()]).optional(),
     longitude: z
       .union([z.lazy(() => FloatFilterSchema), z.number()])
       .optional(),
-    motoristaId: z
+    driverId: z
       .union([z.lazy(() => StringFilterSchema), z.string()])
       .optional(),
-    motorista: z
+    driver: z
       .union([
-        z.lazy(() => UsuarioScalarRelationFilterSchema),
-        z.lazy(() => UsuarioWhereInputSchema),
+        z.lazy(() => UserScalarRelationFilterSchema),
+        z.lazy(() => UserWhereInputSchema),
       ])
       .optional(),
-    atendimentos: z
-      .lazy(() => VeiculoAtendimentoListRelationFilterSchema)
+    emergencyCalls: z
+      .lazy(() => VehicleEmergencyCallListRelationFilterSchema)
       .optional(),
   });
 
-export const VeiculoOrderByWithRelationInputSchema: z.ZodType<Prisma.VeiculoOrderByWithRelationInput> =
+export const VehicleOrderByWithRelationInputSchema: z.ZodType<Prisma.VehicleOrderByWithRelationInput> =
   z.strictObject({
     id: z.lazy(() => SortOrderSchema).optional(),
-    placa: z.lazy(() => SortOrderSchema).optional(),
+    plate: z.lazy(() => SortOrderSchema).optional(),
     latitude: z.lazy(() => SortOrderSchema).optional(),
     longitude: z.lazy(() => SortOrderSchema).optional(),
-    motoristaId: z.lazy(() => SortOrderSchema).optional(),
-    motorista: z.lazy(() => UsuarioOrderByWithRelationInputSchema).optional(),
-    atendimentos: z
-      .lazy(() => VeiculoAtendimentoOrderByRelationAggregateInputSchema)
+    driverId: z.lazy(() => SortOrderSchema).optional(),
+    driver: z.lazy(() => UserOrderByWithRelationInputSchema).optional(),
+    emergencyCalls: z
+      .lazy(() => VehicleEmergencyCallOrderByRelationAggregateInputSchema)
       .optional(),
   });
 
-export const VeiculoWhereUniqueInputSchema: z.ZodType<Prisma.VeiculoWhereUniqueInput> =
+export const VehicleWhereUniqueInputSchema: z.ZodType<Prisma.VehicleWhereUniqueInput> =
   z
     .union([
       z.object({
         id: z.uuid(),
-        placa: z.string(),
-        motoristaId: z.string(),
+        plate: z.string(),
+        driverId: z.string(),
       }),
       z.object({
         id: z.uuid(),
-        placa: z.string(),
+        plate: z.string(),
       }),
       z.object({
         id: z.uuid(),
-        motoristaId: z.string(),
+        driverId: z.string(),
       }),
       z.object({
         id: z.uuid(),
       }),
       z.object({
-        placa: z.string(),
-        motoristaId: z.string(),
+        plate: z.string(),
+        driverId: z.string(),
       }),
       z.object({
-        placa: z.string(),
+        plate: z.string(),
       }),
       z.object({
-        motoristaId: z.string(),
+        driverId: z.string(),
       }),
     ])
     .and(
       z.strictObject({
         id: z.uuid().optional(),
-        placa: z.string().optional(),
-        motoristaId: z.string().optional(),
+        plate: z.string().optional(),
+        driverId: z.string().optional(),
         AND: z
           .union([
-            z.lazy(() => VeiculoWhereInputSchema),
-            z.lazy(() => VeiculoWhereInputSchema).array(),
+            z.lazy(() => VehicleWhereInputSchema),
+            z.lazy(() => VehicleWhereInputSchema).array(),
           ])
           .optional(),
         OR: z
-          .lazy(() => VeiculoWhereInputSchema)
+          .lazy(() => VehicleWhereInputSchema)
           .array()
           .optional(),
         NOT: z
           .union([
-            z.lazy(() => VeiculoWhereInputSchema),
-            z.lazy(() => VeiculoWhereInputSchema).array(),
+            z.lazy(() => VehicleWhereInputSchema),
+            z.lazy(() => VehicleWhereInputSchema).array(),
           ])
           .optional(),
         latitude: z
@@ -919,54 +929,54 @@ export const VeiculoWhereUniqueInputSchema: z.ZodType<Prisma.VeiculoWhereUniqueI
         longitude: z
           .union([z.lazy(() => FloatFilterSchema), z.number()])
           .optional(),
-        motorista: z
+        driver: z
           .union([
-            z.lazy(() => UsuarioScalarRelationFilterSchema),
-            z.lazy(() => UsuarioWhereInputSchema),
+            z.lazy(() => UserScalarRelationFilterSchema),
+            z.lazy(() => UserWhereInputSchema),
           ])
           .optional(),
-        atendimentos: z
-          .lazy(() => VeiculoAtendimentoListRelationFilterSchema)
+        emergencyCalls: z
+          .lazy(() => VehicleEmergencyCallListRelationFilterSchema)
           .optional(),
       }),
     );
 
-export const VeiculoOrderByWithAggregationInputSchema: z.ZodType<Prisma.VeiculoOrderByWithAggregationInput> =
+export const VehicleOrderByWithAggregationInputSchema: z.ZodType<Prisma.VehicleOrderByWithAggregationInput> =
   z.strictObject({
     id: z.lazy(() => SortOrderSchema).optional(),
-    placa: z.lazy(() => SortOrderSchema).optional(),
+    plate: z.lazy(() => SortOrderSchema).optional(),
     latitude: z.lazy(() => SortOrderSchema).optional(),
     longitude: z.lazy(() => SortOrderSchema).optional(),
-    motoristaId: z.lazy(() => SortOrderSchema).optional(),
-    _count: z.lazy(() => VeiculoCountOrderByAggregateInputSchema).optional(),
-    _avg: z.lazy(() => VeiculoAvgOrderByAggregateInputSchema).optional(),
-    _max: z.lazy(() => VeiculoMaxOrderByAggregateInputSchema).optional(),
-    _min: z.lazy(() => VeiculoMinOrderByAggregateInputSchema).optional(),
-    _sum: z.lazy(() => VeiculoSumOrderByAggregateInputSchema).optional(),
+    driverId: z.lazy(() => SortOrderSchema).optional(),
+    _count: z.lazy(() => VehicleCountOrderByAggregateInputSchema).optional(),
+    _avg: z.lazy(() => VehicleAvgOrderByAggregateInputSchema).optional(),
+    _max: z.lazy(() => VehicleMaxOrderByAggregateInputSchema).optional(),
+    _min: z.lazy(() => VehicleMinOrderByAggregateInputSchema).optional(),
+    _sum: z.lazy(() => VehicleSumOrderByAggregateInputSchema).optional(),
   });
 
-export const VeiculoScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.VeiculoScalarWhereWithAggregatesInput> =
+export const VehicleScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.VehicleScalarWhereWithAggregatesInput> =
   z.strictObject({
     AND: z
       .union([
-        z.lazy(() => VeiculoScalarWhereWithAggregatesInputSchema),
-        z.lazy(() => VeiculoScalarWhereWithAggregatesInputSchema).array(),
+        z.lazy(() => VehicleScalarWhereWithAggregatesInputSchema),
+        z.lazy(() => VehicleScalarWhereWithAggregatesInputSchema).array(),
       ])
       .optional(),
     OR: z
-      .lazy(() => VeiculoScalarWhereWithAggregatesInputSchema)
+      .lazy(() => VehicleScalarWhereWithAggregatesInputSchema)
       .array()
       .optional(),
     NOT: z
       .union([
-        z.lazy(() => VeiculoScalarWhereWithAggregatesInputSchema),
-        z.lazy(() => VeiculoScalarWhereWithAggregatesInputSchema).array(),
+        z.lazy(() => VehicleScalarWhereWithAggregatesInputSchema),
+        z.lazy(() => VehicleScalarWhereWithAggregatesInputSchema).array(),
       ])
       .optional(),
     id: z
       .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
       .optional(),
-    placa: z
+    plate: z
       .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
       .optional(),
     latitude: z
@@ -975,281 +985,281 @@ export const VeiculoScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.Veicu
     longitude: z
       .union([z.lazy(() => FloatWithAggregatesFilterSchema), z.number()])
       .optional(),
-    motoristaId: z
+    driverId: z
       .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
       .optional(),
   });
 
-export const AtendimentoWhereInputSchema: z.ZodType<Prisma.AtendimentoWhereInput> =
+export const EmergencyCallWhereInputSchema: z.ZodType<Prisma.EmergencyCallWhereInput> =
   z.strictObject({
     AND: z
       .union([
-        z.lazy(() => AtendimentoWhereInputSchema),
-        z.lazy(() => AtendimentoWhereInputSchema).array(),
+        z.lazy(() => EmergencyCallWhereInputSchema),
+        z.lazy(() => EmergencyCallWhereInputSchema).array(),
       ])
       .optional(),
     OR: z
-      .lazy(() => AtendimentoWhereInputSchema)
+      .lazy(() => EmergencyCallWhereInputSchema)
       .array()
       .optional(),
     NOT: z
       .union([
-        z.lazy(() => AtendimentoWhereInputSchema),
-        z.lazy(() => AtendimentoWhereInputSchema).array(),
+        z.lazy(() => EmergencyCallWhereInputSchema),
+        z.lazy(() => EmergencyCallWhereInputSchema).array(),
       ])
       .optional(),
     id: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
-    protocolo: z
+    protocol: z
       .union([z.lazy(() => StringFilterSchema), z.string()])
       .optional(),
-    endereco: z
+    address: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
+    returnLocation: z
       .union([z.lazy(() => StringFilterSchema), z.string()])
       .optional(),
-    localDeRetorno: z
+    whatHappened: z
       .union([z.lazy(() => StringFilterSchema), z.string()])
       .optional(),
-    oQueAconteceu: z
+    patientCondition: z
       .union([z.lazy(() => StringFilterSchema), z.string()])
       .optional(),
-    estadoDoPaciente: z
-      .union([z.lazy(() => StringFilterSchema), z.string()])
-      .optional(),
-    idadeAparente: z
+    apparentAge: z
       .union([z.lazy(() => IntNullableFilterSchema), z.number()])
       .optional()
       .nullable(),
-    quantidadeDePacientes: z
+    patientCount: z
       .union([z.lazy(() => IntFilterSchema), z.number()])
       .optional(),
-    estadoDaLesao: z
+    injuryCondition: z
       .union([z.lazy(() => StringFilterSchema), z.string()])
       .optional(),
-    observacoes: z
+    observations: z
       .union([z.lazy(() => StringNullableFilterSchema), z.string()])
       .optional()
       .nullable(),
-    atendenteId: z
+    attendantId: z
       .union([z.lazy(() => StringFilterSchema), z.string()])
       .optional(),
-    criadoEm: z
+    createdAt: z
       .union([z.lazy(() => DateTimeFilterSchema), z.coerce.date()])
       .optional(),
-    atendente: z
+    attendant: z
       .union([
-        z.lazy(() => UsuarioScalarRelationFilterSchema),
-        z.lazy(() => UsuarioWhereInputSchema),
+        z.lazy(() => UserScalarRelationFilterSchema),
+        z.lazy(() => UserWhereInputSchema),
       ])
       .optional(),
-    veiculos: z
-      .lazy(() => VeiculoAtendimentoListRelationFilterSchema)
+    vehicles: z
+      .lazy(() => VehicleEmergencyCallListRelationFilterSchema)
       .optional(),
-    notificacoes: z.lazy(() => NotificacaoListRelationFilterSchema).optional(),
+    notifications: z
+      .lazy(() => NotificationListRelationFilterSchema)
+      .optional(),
   });
 
-export const AtendimentoOrderByWithRelationInputSchema: z.ZodType<Prisma.AtendimentoOrderByWithRelationInput> =
+export const EmergencyCallOrderByWithRelationInputSchema: z.ZodType<Prisma.EmergencyCallOrderByWithRelationInput> =
   z.strictObject({
     id: z.lazy(() => SortOrderSchema).optional(),
-    protocolo: z.lazy(() => SortOrderSchema).optional(),
-    endereco: z.lazy(() => SortOrderSchema).optional(),
-    localDeRetorno: z.lazy(() => SortOrderSchema).optional(),
-    oQueAconteceu: z.lazy(() => SortOrderSchema).optional(),
-    estadoDoPaciente: z.lazy(() => SortOrderSchema).optional(),
-    idadeAparente: z
+    protocol: z.lazy(() => SortOrderSchema).optional(),
+    address: z.lazy(() => SortOrderSchema).optional(),
+    returnLocation: z.lazy(() => SortOrderSchema).optional(),
+    whatHappened: z.lazy(() => SortOrderSchema).optional(),
+    patientCondition: z.lazy(() => SortOrderSchema).optional(),
+    apparentAge: z
       .union([
         z.lazy(() => SortOrderSchema),
         z.lazy(() => SortOrderInputSchema),
       ])
       .optional(),
-    quantidadeDePacientes: z.lazy(() => SortOrderSchema).optional(),
-    estadoDaLesao: z.lazy(() => SortOrderSchema).optional(),
-    observacoes: z
+    patientCount: z.lazy(() => SortOrderSchema).optional(),
+    injuryCondition: z.lazy(() => SortOrderSchema).optional(),
+    observations: z
       .union([
         z.lazy(() => SortOrderSchema),
         z.lazy(() => SortOrderInputSchema),
       ])
       .optional(),
-    atendenteId: z.lazy(() => SortOrderSchema).optional(),
-    criadoEm: z.lazy(() => SortOrderSchema).optional(),
-    atendente: z.lazy(() => UsuarioOrderByWithRelationInputSchema).optional(),
-    veiculos: z
-      .lazy(() => VeiculoAtendimentoOrderByRelationAggregateInputSchema)
+    attendantId: z.lazy(() => SortOrderSchema).optional(),
+    createdAt: z.lazy(() => SortOrderSchema).optional(),
+    attendant: z.lazy(() => UserOrderByWithRelationInputSchema).optional(),
+    vehicles: z
+      .lazy(() => VehicleEmergencyCallOrderByRelationAggregateInputSchema)
       .optional(),
-    notificacoes: z
-      .lazy(() => NotificacaoOrderByRelationAggregateInputSchema)
+    notifications: z
+      .lazy(() => NotificationOrderByRelationAggregateInputSchema)
       .optional(),
   });
 
-export const AtendimentoWhereUniqueInputSchema: z.ZodType<Prisma.AtendimentoWhereUniqueInput> =
+export const EmergencyCallWhereUniqueInputSchema: z.ZodType<Prisma.EmergencyCallWhereUniqueInput> =
   z
     .union([
       z.object({
         id: z.uuid(),
-        protocolo: z.string(),
+        protocol: z.string(),
       }),
       z.object({
         id: z.uuid(),
       }),
       z.object({
-        protocolo: z.string(),
+        protocol: z.string(),
       }),
     ])
     .and(
       z.strictObject({
         id: z.uuid().optional(),
-        protocolo: z.string().optional(),
+        protocol: z.string().optional(),
         AND: z
           .union([
-            z.lazy(() => AtendimentoWhereInputSchema),
-            z.lazy(() => AtendimentoWhereInputSchema).array(),
+            z.lazy(() => EmergencyCallWhereInputSchema),
+            z.lazy(() => EmergencyCallWhereInputSchema).array(),
           ])
           .optional(),
         OR: z
-          .lazy(() => AtendimentoWhereInputSchema)
+          .lazy(() => EmergencyCallWhereInputSchema)
           .array()
           .optional(),
         NOT: z
           .union([
-            z.lazy(() => AtendimentoWhereInputSchema),
-            z.lazy(() => AtendimentoWhereInputSchema).array(),
+            z.lazy(() => EmergencyCallWhereInputSchema),
+            z.lazy(() => EmergencyCallWhereInputSchema).array(),
           ])
           .optional(),
-        endereco: z
+        address: z
           .union([z.lazy(() => StringFilterSchema), z.string()])
           .optional(),
-        localDeRetorno: z
+        returnLocation: z
           .union([z.lazy(() => StringFilterSchema), z.string()])
           .optional(),
-        oQueAconteceu: z
+        whatHappened: z
           .union([z.lazy(() => StringFilterSchema), z.string()])
           .optional(),
-        estadoDoPaciente: z
+        patientCondition: z
           .union([z.lazy(() => StringFilterSchema), z.string()])
           .optional(),
-        idadeAparente: z
+        apparentAge: z
           .union([z.lazy(() => IntNullableFilterSchema), z.number().int()])
           .optional()
           .nullable(),
-        quantidadeDePacientes: z
+        patientCount: z
           .union([z.lazy(() => IntFilterSchema), z.number().int()])
           .optional(),
-        estadoDaLesao: z
+        injuryCondition: z
           .union([z.lazy(() => StringFilterSchema), z.string()])
           .optional(),
-        observacoes: z
+        observations: z
           .union([z.lazy(() => StringNullableFilterSchema), z.string()])
           .optional()
           .nullable(),
-        atendenteId: z
+        attendantId: z
           .union([z.lazy(() => StringFilterSchema), z.string()])
           .optional(),
-        criadoEm: z
+        createdAt: z
           .union([z.lazy(() => DateTimeFilterSchema), z.coerce.date()])
           .optional(),
-        atendente: z
+        attendant: z
           .union([
-            z.lazy(() => UsuarioScalarRelationFilterSchema),
-            z.lazy(() => UsuarioWhereInputSchema),
+            z.lazy(() => UserScalarRelationFilterSchema),
+            z.lazy(() => UserWhereInputSchema),
           ])
           .optional(),
-        veiculos: z
-          .lazy(() => VeiculoAtendimentoListRelationFilterSchema)
+        vehicles: z
+          .lazy(() => VehicleEmergencyCallListRelationFilterSchema)
           .optional(),
-        notificacoes: z
-          .lazy(() => NotificacaoListRelationFilterSchema)
+        notifications: z
+          .lazy(() => NotificationListRelationFilterSchema)
           .optional(),
       }),
     );
 
-export const AtendimentoOrderByWithAggregationInputSchema: z.ZodType<Prisma.AtendimentoOrderByWithAggregationInput> =
+export const EmergencyCallOrderByWithAggregationInputSchema: z.ZodType<Prisma.EmergencyCallOrderByWithAggregationInput> =
   z.strictObject({
     id: z.lazy(() => SortOrderSchema).optional(),
-    protocolo: z.lazy(() => SortOrderSchema).optional(),
-    endereco: z.lazy(() => SortOrderSchema).optional(),
-    localDeRetorno: z.lazy(() => SortOrderSchema).optional(),
-    oQueAconteceu: z.lazy(() => SortOrderSchema).optional(),
-    estadoDoPaciente: z.lazy(() => SortOrderSchema).optional(),
-    idadeAparente: z
+    protocol: z.lazy(() => SortOrderSchema).optional(),
+    address: z.lazy(() => SortOrderSchema).optional(),
+    returnLocation: z.lazy(() => SortOrderSchema).optional(),
+    whatHappened: z.lazy(() => SortOrderSchema).optional(),
+    patientCondition: z.lazy(() => SortOrderSchema).optional(),
+    apparentAge: z
       .union([
         z.lazy(() => SortOrderSchema),
         z.lazy(() => SortOrderInputSchema),
       ])
       .optional(),
-    quantidadeDePacientes: z.lazy(() => SortOrderSchema).optional(),
-    estadoDaLesao: z.lazy(() => SortOrderSchema).optional(),
-    observacoes: z
+    patientCount: z.lazy(() => SortOrderSchema).optional(),
+    injuryCondition: z.lazy(() => SortOrderSchema).optional(),
+    observations: z
       .union([
         z.lazy(() => SortOrderSchema),
         z.lazy(() => SortOrderInputSchema),
       ])
       .optional(),
-    atendenteId: z.lazy(() => SortOrderSchema).optional(),
-    criadoEm: z.lazy(() => SortOrderSchema).optional(),
+    attendantId: z.lazy(() => SortOrderSchema).optional(),
+    createdAt: z.lazy(() => SortOrderSchema).optional(),
     _count: z
-      .lazy(() => AtendimentoCountOrderByAggregateInputSchema)
+      .lazy(() => EmergencyCallCountOrderByAggregateInputSchema)
       .optional(),
-    _avg: z.lazy(() => AtendimentoAvgOrderByAggregateInputSchema).optional(),
-    _max: z.lazy(() => AtendimentoMaxOrderByAggregateInputSchema).optional(),
-    _min: z.lazy(() => AtendimentoMinOrderByAggregateInputSchema).optional(),
-    _sum: z.lazy(() => AtendimentoSumOrderByAggregateInputSchema).optional(),
+    _avg: z.lazy(() => EmergencyCallAvgOrderByAggregateInputSchema).optional(),
+    _max: z.lazy(() => EmergencyCallMaxOrderByAggregateInputSchema).optional(),
+    _min: z.lazy(() => EmergencyCallMinOrderByAggregateInputSchema).optional(),
+    _sum: z.lazy(() => EmergencyCallSumOrderByAggregateInputSchema).optional(),
   });
 
-export const AtendimentoScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.AtendimentoScalarWhereWithAggregatesInput> =
+export const EmergencyCallScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.EmergencyCallScalarWhereWithAggregatesInput> =
   z.strictObject({
     AND: z
       .union([
-        z.lazy(() => AtendimentoScalarWhereWithAggregatesInputSchema),
-        z.lazy(() => AtendimentoScalarWhereWithAggregatesInputSchema).array(),
+        z.lazy(() => EmergencyCallScalarWhereWithAggregatesInputSchema),
+        z.lazy(() => EmergencyCallScalarWhereWithAggregatesInputSchema).array(),
       ])
       .optional(),
     OR: z
-      .lazy(() => AtendimentoScalarWhereWithAggregatesInputSchema)
+      .lazy(() => EmergencyCallScalarWhereWithAggregatesInputSchema)
       .array()
       .optional(),
     NOT: z
       .union([
-        z.lazy(() => AtendimentoScalarWhereWithAggregatesInputSchema),
-        z.lazy(() => AtendimentoScalarWhereWithAggregatesInputSchema).array(),
+        z.lazy(() => EmergencyCallScalarWhereWithAggregatesInputSchema),
+        z.lazy(() => EmergencyCallScalarWhereWithAggregatesInputSchema).array(),
       ])
       .optional(),
     id: z
       .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
       .optional(),
-    protocolo: z
+    protocol: z
       .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
       .optional(),
-    endereco: z
+    address: z
       .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
       .optional(),
-    localDeRetorno: z
+    returnLocation: z
       .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
       .optional(),
-    oQueAconteceu: z
+    whatHappened: z
       .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
       .optional(),
-    estadoDoPaciente: z
+    patientCondition: z
       .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
       .optional(),
-    idadeAparente: z
+    apparentAge: z
       .union([z.lazy(() => IntNullableWithAggregatesFilterSchema), z.number()])
       .optional()
       .nullable(),
-    quantidadeDePacientes: z
+    patientCount: z
       .union([z.lazy(() => IntWithAggregatesFilterSchema), z.number()])
       .optional(),
-    estadoDaLesao: z
+    injuryCondition: z
       .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
       .optional(),
-    observacoes: z
+    observations: z
       .union([
         z.lazy(() => StringNullableWithAggregatesFilterSchema),
         z.string(),
       ])
       .optional()
       .nullable(),
-    atendenteId: z
+    attendantId: z
       .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
       .optional(),
-    criadoEm: z
+    createdAt: z
       .union([
         z.lazy(() => DateTimeWithAggregatesFilterSchema),
         z.coerce.date(),
@@ -1257,64 +1267,64 @@ export const AtendimentoScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.A
       .optional(),
   });
 
-export const VeiculoAtendimentoWhereInputSchema: z.ZodType<Prisma.VeiculoAtendimentoWhereInput> =
+export const VehicleEmergencyCallWhereInputSchema: z.ZodType<Prisma.VehicleEmergencyCallWhereInput> =
   z.strictObject({
     AND: z
       .union([
-        z.lazy(() => VeiculoAtendimentoWhereInputSchema),
-        z.lazy(() => VeiculoAtendimentoWhereInputSchema).array(),
+        z.lazy(() => VehicleEmergencyCallWhereInputSchema),
+        z.lazy(() => VehicleEmergencyCallWhereInputSchema).array(),
       ])
       .optional(),
     OR: z
-      .lazy(() => VeiculoAtendimentoWhereInputSchema)
+      .lazy(() => VehicleEmergencyCallWhereInputSchema)
       .array()
       .optional(),
     NOT: z
       .union([
-        z.lazy(() => VeiculoAtendimentoWhereInputSchema),
-        z.lazy(() => VeiculoAtendimentoWhereInputSchema).array(),
+        z.lazy(() => VehicleEmergencyCallWhereInputSchema),
+        z.lazy(() => VehicleEmergencyCallWhereInputSchema).array(),
       ])
       .optional(),
     id: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
     status: z
       .union([
-        z.lazy(() => EnumStatusAtendimentoFilterSchema),
-        z.lazy(() => StatusAtendimentoSchema),
+        z.lazy(() => EnumEmergencyCallStatusFilterSchema),
+        z.lazy(() => EmergencyCallStatusSchema),
       ])
       .optional(),
-    veiculoId: z
+    vehicleId: z
       .union([z.lazy(() => StringFilterSchema), z.string()])
       .optional(),
-    atendimentoId: z
+    emergencyCallId: z
       .union([z.lazy(() => StringFilterSchema), z.string()])
       .optional(),
-    veiculo: z
+    vehicle: z
       .union([
-        z.lazy(() => VeiculoScalarRelationFilterSchema),
-        z.lazy(() => VeiculoWhereInputSchema),
+        z.lazy(() => VehicleScalarRelationFilterSchema),
+        z.lazy(() => VehicleWhereInputSchema),
       ])
       .optional(),
-    atendimento: z
+    emergencyCall: z
       .union([
-        z.lazy(() => AtendimentoScalarRelationFilterSchema),
-        z.lazy(() => AtendimentoWhereInputSchema),
+        z.lazy(() => EmergencyCallScalarRelationFilterSchema),
+        z.lazy(() => EmergencyCallWhereInputSchema),
       ])
       .optional(),
   });
 
-export const VeiculoAtendimentoOrderByWithRelationInputSchema: z.ZodType<Prisma.VeiculoAtendimentoOrderByWithRelationInput> =
+export const VehicleEmergencyCallOrderByWithRelationInputSchema: z.ZodType<Prisma.VehicleEmergencyCallOrderByWithRelationInput> =
   z.strictObject({
     id: z.lazy(() => SortOrderSchema).optional(),
     status: z.lazy(() => SortOrderSchema).optional(),
-    veiculoId: z.lazy(() => SortOrderSchema).optional(),
-    atendimentoId: z.lazy(() => SortOrderSchema).optional(),
-    veiculo: z.lazy(() => VeiculoOrderByWithRelationInputSchema).optional(),
-    atendimento: z
-      .lazy(() => AtendimentoOrderByWithRelationInputSchema)
+    vehicleId: z.lazy(() => SortOrderSchema).optional(),
+    emergencyCallId: z.lazy(() => SortOrderSchema).optional(),
+    vehicle: z.lazy(() => VehicleOrderByWithRelationInputSchema).optional(),
+    emergencyCall: z
+      .lazy(() => EmergencyCallOrderByWithRelationInputSchema)
       .optional(),
   });
 
-export const VeiculoAtendimentoWhereUniqueInputSchema: z.ZodType<Prisma.VeiculoAtendimentoWhereUniqueInput> =
+export const VehicleEmergencyCallWhereUniqueInputSchema: z.ZodType<Prisma.VehicleEmergencyCallWhereUniqueInput> =
   z
     .object({
       id: z.uuid(),
@@ -1324,83 +1334,83 @@ export const VeiculoAtendimentoWhereUniqueInputSchema: z.ZodType<Prisma.VeiculoA
         id: z.uuid().optional(),
         AND: z
           .union([
-            z.lazy(() => VeiculoAtendimentoWhereInputSchema),
-            z.lazy(() => VeiculoAtendimentoWhereInputSchema).array(),
+            z.lazy(() => VehicleEmergencyCallWhereInputSchema),
+            z.lazy(() => VehicleEmergencyCallWhereInputSchema).array(),
           ])
           .optional(),
         OR: z
-          .lazy(() => VeiculoAtendimentoWhereInputSchema)
+          .lazy(() => VehicleEmergencyCallWhereInputSchema)
           .array()
           .optional(),
         NOT: z
           .union([
-            z.lazy(() => VeiculoAtendimentoWhereInputSchema),
-            z.lazy(() => VeiculoAtendimentoWhereInputSchema).array(),
+            z.lazy(() => VehicleEmergencyCallWhereInputSchema),
+            z.lazy(() => VehicleEmergencyCallWhereInputSchema).array(),
           ])
           .optional(),
         status: z
           .union([
-            z.lazy(() => EnumStatusAtendimentoFilterSchema),
-            z.lazy(() => StatusAtendimentoSchema),
+            z.lazy(() => EnumEmergencyCallStatusFilterSchema),
+            z.lazy(() => EmergencyCallStatusSchema),
           ])
           .optional(),
-        veiculoId: z
+        vehicleId: z
           .union([z.lazy(() => StringFilterSchema), z.string()])
           .optional(),
-        atendimentoId: z
+        emergencyCallId: z
           .union([z.lazy(() => StringFilterSchema), z.string()])
           .optional(),
-        veiculo: z
+        vehicle: z
           .union([
-            z.lazy(() => VeiculoScalarRelationFilterSchema),
-            z.lazy(() => VeiculoWhereInputSchema),
+            z.lazy(() => VehicleScalarRelationFilterSchema),
+            z.lazy(() => VehicleWhereInputSchema),
           ])
           .optional(),
-        atendimento: z
+        emergencyCall: z
           .union([
-            z.lazy(() => AtendimentoScalarRelationFilterSchema),
-            z.lazy(() => AtendimentoWhereInputSchema),
+            z.lazy(() => EmergencyCallScalarRelationFilterSchema),
+            z.lazy(() => EmergencyCallWhereInputSchema),
           ])
           .optional(),
       }),
     );
 
-export const VeiculoAtendimentoOrderByWithAggregationInputSchema: z.ZodType<Prisma.VeiculoAtendimentoOrderByWithAggregationInput> =
+export const VehicleEmergencyCallOrderByWithAggregationInputSchema: z.ZodType<Prisma.VehicleEmergencyCallOrderByWithAggregationInput> =
   z.strictObject({
     id: z.lazy(() => SortOrderSchema).optional(),
     status: z.lazy(() => SortOrderSchema).optional(),
-    veiculoId: z.lazy(() => SortOrderSchema).optional(),
-    atendimentoId: z.lazy(() => SortOrderSchema).optional(),
+    vehicleId: z.lazy(() => SortOrderSchema).optional(),
+    emergencyCallId: z.lazy(() => SortOrderSchema).optional(),
     _count: z
-      .lazy(() => VeiculoAtendimentoCountOrderByAggregateInputSchema)
+      .lazy(() => VehicleEmergencyCallCountOrderByAggregateInputSchema)
       .optional(),
     _max: z
-      .lazy(() => VeiculoAtendimentoMaxOrderByAggregateInputSchema)
+      .lazy(() => VehicleEmergencyCallMaxOrderByAggregateInputSchema)
       .optional(),
     _min: z
-      .lazy(() => VeiculoAtendimentoMinOrderByAggregateInputSchema)
+      .lazy(() => VehicleEmergencyCallMinOrderByAggregateInputSchema)
       .optional(),
   });
 
-export const VeiculoAtendimentoScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.VeiculoAtendimentoScalarWhereWithAggregatesInput> =
+export const VehicleEmergencyCallScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.VehicleEmergencyCallScalarWhereWithAggregatesInput> =
   z.strictObject({
     AND: z
       .union([
-        z.lazy(() => VeiculoAtendimentoScalarWhereWithAggregatesInputSchema),
+        z.lazy(() => VehicleEmergencyCallScalarWhereWithAggregatesInputSchema),
         z
-          .lazy(() => VeiculoAtendimentoScalarWhereWithAggregatesInputSchema)
+          .lazy(() => VehicleEmergencyCallScalarWhereWithAggregatesInputSchema)
           .array(),
       ])
       .optional(),
     OR: z
-      .lazy(() => VeiculoAtendimentoScalarWhereWithAggregatesInputSchema)
+      .lazy(() => VehicleEmergencyCallScalarWhereWithAggregatesInputSchema)
       .array()
       .optional(),
     NOT: z
       .union([
-        z.lazy(() => VeiculoAtendimentoScalarWhereWithAggregatesInputSchema),
+        z.lazy(() => VehicleEmergencyCallScalarWhereWithAggregatesInputSchema),
         z
-          .lazy(() => VeiculoAtendimentoScalarWhereWithAggregatesInputSchema)
+          .lazy(() => VehicleEmergencyCallScalarWhereWithAggregatesInputSchema)
           .array(),
       ])
       .optional(),
@@ -1409,71 +1419,71 @@ export const VeiculoAtendimentoScalarWhereWithAggregatesInputSchema: z.ZodType<P
       .optional(),
     status: z
       .union([
-        z.lazy(() => EnumStatusAtendimentoWithAggregatesFilterSchema),
-        z.lazy(() => StatusAtendimentoSchema),
+        z.lazy(() => EnumEmergencyCallStatusWithAggregatesFilterSchema),
+        z.lazy(() => EmergencyCallStatusSchema),
       ])
       .optional(),
-    veiculoId: z
+    vehicleId: z
       .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
       .optional(),
-    atendimentoId: z
+    emergencyCallId: z
       .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
       .optional(),
   });
 
-export const ConversaWhereInputSchema: z.ZodType<Prisma.ConversaWhereInput> =
+export const ConversationWhereInputSchema: z.ZodType<Prisma.ConversationWhereInput> =
   z.strictObject({
     AND: z
       .union([
-        z.lazy(() => ConversaWhereInputSchema),
-        z.lazy(() => ConversaWhereInputSchema).array(),
+        z.lazy(() => ConversationWhereInputSchema),
+        z.lazy(() => ConversationWhereInputSchema).array(),
       ])
       .optional(),
     OR: z
-      .lazy(() => ConversaWhereInputSchema)
+      .lazy(() => ConversationWhereInputSchema)
       .array()
       .optional(),
     NOT: z
       .union([
-        z.lazy(() => ConversaWhereInputSchema),
-        z.lazy(() => ConversaWhereInputSchema).array(),
+        z.lazy(() => ConversationWhereInputSchema),
+        z.lazy(() => ConversationWhereInputSchema).array(),
       ])
       .optional(),
     id: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
-    atendenteId: z
+    attendantId: z
       .union([z.lazy(() => StringFilterSchema), z.string()])
       .optional(),
-    motoristaId: z
+    driverId: z
       .union([z.lazy(() => StringFilterSchema), z.string()])
       .optional(),
-    atendente: z
+    attendant: z
       .union([
-        z.lazy(() => UsuarioScalarRelationFilterSchema),
-        z.lazy(() => UsuarioWhereInputSchema),
+        z.lazy(() => UserScalarRelationFilterSchema),
+        z.lazy(() => UserWhereInputSchema),
       ])
       .optional(),
-    motorista: z
+    driver: z
       .union([
-        z.lazy(() => UsuarioScalarRelationFilterSchema),
-        z.lazy(() => UsuarioWhereInputSchema),
+        z.lazy(() => UserScalarRelationFilterSchema),
+        z.lazy(() => UserWhereInputSchema),
       ])
       .optional(),
-    mensagens: z.lazy(() => MensagemListRelationFilterSchema).optional(),
+    messages: z.lazy(() => MessageListRelationFilterSchema).optional(),
   });
 
-export const ConversaOrderByWithRelationInputSchema: z.ZodType<Prisma.ConversaOrderByWithRelationInput> =
+export const ConversationOrderByWithRelationInputSchema: z.ZodType<Prisma.ConversationOrderByWithRelationInput> =
   z.strictObject({
     id: z.lazy(() => SortOrderSchema).optional(),
-    atendenteId: z.lazy(() => SortOrderSchema).optional(),
-    motoristaId: z.lazy(() => SortOrderSchema).optional(),
-    atendente: z.lazy(() => UsuarioOrderByWithRelationInputSchema).optional(),
-    motorista: z.lazy(() => UsuarioOrderByWithRelationInputSchema).optional(),
-    mensagens: z
-      .lazy(() => MensagemOrderByRelationAggregateInputSchema)
+    attendantId: z.lazy(() => SortOrderSchema).optional(),
+    driverId: z.lazy(() => SortOrderSchema).optional(),
+    attendant: z.lazy(() => UserOrderByWithRelationInputSchema).optional(),
+    driver: z.lazy(() => UserOrderByWithRelationInputSchema).optional(),
+    messages: z
+      .lazy(() => MessageOrderByRelationAggregateInputSchema)
       .optional(),
   });
 
-export const ConversaWhereUniqueInputSchema: z.ZodType<Prisma.ConversaWhereUniqueInput> =
+export const ConversationWhereUniqueInputSchema: z.ZodType<Prisma.ConversationWhereUniqueInput> =
   z
     .object({
       id: z.uuid(),
@@ -1483,428 +1493,432 @@ export const ConversaWhereUniqueInputSchema: z.ZodType<Prisma.ConversaWhereUniqu
         id: z.uuid().optional(),
         AND: z
           .union([
-            z.lazy(() => ConversaWhereInputSchema),
-            z.lazy(() => ConversaWhereInputSchema).array(),
+            z.lazy(() => ConversationWhereInputSchema),
+            z.lazy(() => ConversationWhereInputSchema).array(),
           ])
           .optional(),
         OR: z
-          .lazy(() => ConversaWhereInputSchema)
+          .lazy(() => ConversationWhereInputSchema)
           .array()
           .optional(),
         NOT: z
           .union([
-            z.lazy(() => ConversaWhereInputSchema),
-            z.lazy(() => ConversaWhereInputSchema).array(),
+            z.lazy(() => ConversationWhereInputSchema),
+            z.lazy(() => ConversationWhereInputSchema).array(),
           ])
           .optional(),
-        atendenteId: z
+        attendantId: z
           .union([z.lazy(() => StringFilterSchema), z.string()])
           .optional(),
-        motoristaId: z
+        driverId: z
           .union([z.lazy(() => StringFilterSchema), z.string()])
           .optional(),
-        atendente: z
+        attendant: z
           .union([
-            z.lazy(() => UsuarioScalarRelationFilterSchema),
-            z.lazy(() => UsuarioWhereInputSchema),
+            z.lazy(() => UserScalarRelationFilterSchema),
+            z.lazy(() => UserWhereInputSchema),
           ])
           .optional(),
-        motorista: z
+        driver: z
           .union([
-            z.lazy(() => UsuarioScalarRelationFilterSchema),
-            z.lazy(() => UsuarioWhereInputSchema),
+            z.lazy(() => UserScalarRelationFilterSchema),
+            z.lazy(() => UserWhereInputSchema),
           ])
           .optional(),
-        mensagens: z.lazy(() => MensagemListRelationFilterSchema).optional(),
+        messages: z.lazy(() => MessageListRelationFilterSchema).optional(),
       }),
     );
 
-export const ConversaOrderByWithAggregationInputSchema: z.ZodType<Prisma.ConversaOrderByWithAggregationInput> =
+export const ConversationOrderByWithAggregationInputSchema: z.ZodType<Prisma.ConversationOrderByWithAggregationInput> =
   z.strictObject({
     id: z.lazy(() => SortOrderSchema).optional(),
-    atendenteId: z.lazy(() => SortOrderSchema).optional(),
-    motoristaId: z.lazy(() => SortOrderSchema).optional(),
-    _count: z.lazy(() => ConversaCountOrderByAggregateInputSchema).optional(),
-    _max: z.lazy(() => ConversaMaxOrderByAggregateInputSchema).optional(),
-    _min: z.lazy(() => ConversaMinOrderByAggregateInputSchema).optional(),
-  });
-
-export const ConversaScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.ConversaScalarWhereWithAggregatesInput> =
-  z.strictObject({
-    AND: z
-      .union([
-        z.lazy(() => ConversaScalarWhereWithAggregatesInputSchema),
-        z.lazy(() => ConversaScalarWhereWithAggregatesInputSchema).array(),
-      ])
-      .optional(),
-    OR: z
-      .lazy(() => ConversaScalarWhereWithAggregatesInputSchema)
-      .array()
-      .optional(),
-    NOT: z
-      .union([
-        z.lazy(() => ConversaScalarWhereWithAggregatesInputSchema),
-        z.lazy(() => ConversaScalarWhereWithAggregatesInputSchema).array(),
-      ])
-      .optional(),
-    id: z
-      .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
-      .optional(),
-    atendenteId: z
-      .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
-      .optional(),
-    motoristaId: z
-      .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
-      .optional(),
-  });
-
-export const MensagemWhereInputSchema: z.ZodType<Prisma.MensagemWhereInput> =
-  z.strictObject({
-    AND: z
-      .union([
-        z.lazy(() => MensagemWhereInputSchema),
-        z.lazy(() => MensagemWhereInputSchema).array(),
-      ])
-      .optional(),
-    OR: z
-      .lazy(() => MensagemWhereInputSchema)
-      .array()
-      .optional(),
-    NOT: z
-      .union([
-        z.lazy(() => MensagemWhereInputSchema),
-        z.lazy(() => MensagemWhereInputSchema).array(),
-      ])
-      .optional(),
-    id: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
-    texto: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
-    dataDeEnvio: z
-      .union([z.lazy(() => DateTimeFilterSchema), z.coerce.date()])
-      .optional(),
-    quemMandouId: z
-      .union([z.lazy(() => StringFilterSchema), z.string()])
-      .optional(),
-    conversaId: z
-      .union([z.lazy(() => StringFilterSchema), z.string()])
-      .optional(),
-    quemMandou: z
-      .union([
-        z.lazy(() => UsuarioScalarRelationFilterSchema),
-        z.lazy(() => UsuarioWhereInputSchema),
-      ])
-      .optional(),
-    conversa: z
-      .union([
-        z.lazy(() => ConversaScalarRelationFilterSchema),
-        z.lazy(() => ConversaWhereInputSchema),
-      ])
-      .optional(),
-  });
-
-export const MensagemOrderByWithRelationInputSchema: z.ZodType<Prisma.MensagemOrderByWithRelationInput> =
-  z.strictObject({
-    id: z.lazy(() => SortOrderSchema).optional(),
-    texto: z.lazy(() => SortOrderSchema).optional(),
-    dataDeEnvio: z.lazy(() => SortOrderSchema).optional(),
-    quemMandouId: z.lazy(() => SortOrderSchema).optional(),
-    conversaId: z.lazy(() => SortOrderSchema).optional(),
-    quemMandou: z.lazy(() => UsuarioOrderByWithRelationInputSchema).optional(),
-    conversa: z.lazy(() => ConversaOrderByWithRelationInputSchema).optional(),
-  });
-
-export const MensagemWhereUniqueInputSchema: z.ZodType<Prisma.MensagemWhereUniqueInput> =
-  z
-    .object({
-      id: z.uuid(),
-    })
-    .and(
-      z.strictObject({
-        id: z.uuid().optional(),
-        AND: z
-          .union([
-            z.lazy(() => MensagemWhereInputSchema),
-            z.lazy(() => MensagemWhereInputSchema).array(),
-          ])
-          .optional(),
-        OR: z
-          .lazy(() => MensagemWhereInputSchema)
-          .array()
-          .optional(),
-        NOT: z
-          .union([
-            z.lazy(() => MensagemWhereInputSchema),
-            z.lazy(() => MensagemWhereInputSchema).array(),
-          ])
-          .optional(),
-        texto: z
-          .union([z.lazy(() => StringFilterSchema), z.string()])
-          .optional(),
-        dataDeEnvio: z
-          .union([z.lazy(() => DateTimeFilterSchema), z.coerce.date()])
-          .optional(),
-        quemMandouId: z
-          .union([z.lazy(() => StringFilterSchema), z.string()])
-          .optional(),
-        conversaId: z
-          .union([z.lazy(() => StringFilterSchema), z.string()])
-          .optional(),
-        quemMandou: z
-          .union([
-            z.lazy(() => UsuarioScalarRelationFilterSchema),
-            z.lazy(() => UsuarioWhereInputSchema),
-          ])
-          .optional(),
-        conversa: z
-          .union([
-            z.lazy(() => ConversaScalarRelationFilterSchema),
-            z.lazy(() => ConversaWhereInputSchema),
-          ])
-          .optional(),
-      }),
-    );
-
-export const MensagemOrderByWithAggregationInputSchema: z.ZodType<Prisma.MensagemOrderByWithAggregationInput> =
-  z.strictObject({
-    id: z.lazy(() => SortOrderSchema).optional(),
-    texto: z.lazy(() => SortOrderSchema).optional(),
-    dataDeEnvio: z.lazy(() => SortOrderSchema).optional(),
-    quemMandouId: z.lazy(() => SortOrderSchema).optional(),
-    conversaId: z.lazy(() => SortOrderSchema).optional(),
-    _count: z.lazy(() => MensagemCountOrderByAggregateInputSchema).optional(),
-    _max: z.lazy(() => MensagemMaxOrderByAggregateInputSchema).optional(),
-    _min: z.lazy(() => MensagemMinOrderByAggregateInputSchema).optional(),
-  });
-
-export const MensagemScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.MensagemScalarWhereWithAggregatesInput> =
-  z.strictObject({
-    AND: z
-      .union([
-        z.lazy(() => MensagemScalarWhereWithAggregatesInputSchema),
-        z.lazy(() => MensagemScalarWhereWithAggregatesInputSchema).array(),
-      ])
-      .optional(),
-    OR: z
-      .lazy(() => MensagemScalarWhereWithAggregatesInputSchema)
-      .array()
-      .optional(),
-    NOT: z
-      .union([
-        z.lazy(() => MensagemScalarWhereWithAggregatesInputSchema),
-        z.lazy(() => MensagemScalarWhereWithAggregatesInputSchema).array(),
-      ])
-      .optional(),
-    id: z
-      .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
-      .optional(),
-    texto: z
-      .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
-      .optional(),
-    dataDeEnvio: z
-      .union([
-        z.lazy(() => DateTimeWithAggregatesFilterSchema),
-        z.coerce.date(),
-      ])
-      .optional(),
-    quemMandouId: z
-      .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
-      .optional(),
-    conversaId: z
-      .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
-      .optional(),
-  });
-
-export const NotificacaoWhereInputSchema: z.ZodType<Prisma.NotificacaoWhereInput> =
-  z.strictObject({
-    AND: z
-      .union([
-        z.lazy(() => NotificacaoWhereInputSchema),
-        z.lazy(() => NotificacaoWhereInputSchema).array(),
-      ])
-      .optional(),
-    OR: z
-      .lazy(() => NotificacaoWhereInputSchema)
-      .array()
-      .optional(),
-    NOT: z
-      .union([
-        z.lazy(() => NotificacaoWhereInputSchema),
-        z.lazy(() => NotificacaoWhereInputSchema).array(),
-      ])
-      .optional(),
-    id: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
-    mensagem: z
-      .union([z.lazy(() => StringFilterSchema), z.string()])
-      .optional(),
-    dataDaNotificacao: z
-      .union([z.lazy(() => DateTimeFilterSchema), z.coerce.date()])
-      .optional(),
-    atendimentoId: z
-      .union([z.lazy(() => StringFilterSchema), z.string()])
-      .optional(),
-    atendimento: z
-      .union([
-        z.lazy(() => AtendimentoScalarRelationFilterSchema),
-        z.lazy(() => AtendimentoWhereInputSchema),
-      ])
-      .optional(),
-  });
-
-export const NotificacaoOrderByWithRelationInputSchema: z.ZodType<Prisma.NotificacaoOrderByWithRelationInput> =
-  z.strictObject({
-    id: z.lazy(() => SortOrderSchema).optional(),
-    mensagem: z.lazy(() => SortOrderSchema).optional(),
-    dataDaNotificacao: z.lazy(() => SortOrderSchema).optional(),
-    atendimentoId: z.lazy(() => SortOrderSchema).optional(),
-    atendimento: z
-      .lazy(() => AtendimentoOrderByWithRelationInputSchema)
-      .optional(),
-  });
-
-export const NotificacaoWhereUniqueInputSchema: z.ZodType<Prisma.NotificacaoWhereUniqueInput> =
-  z
-    .object({
-      id: z.uuid(),
-    })
-    .and(
-      z.strictObject({
-        id: z.uuid().optional(),
-        AND: z
-          .union([
-            z.lazy(() => NotificacaoWhereInputSchema),
-            z.lazy(() => NotificacaoWhereInputSchema).array(),
-          ])
-          .optional(),
-        OR: z
-          .lazy(() => NotificacaoWhereInputSchema)
-          .array()
-          .optional(),
-        NOT: z
-          .union([
-            z.lazy(() => NotificacaoWhereInputSchema),
-            z.lazy(() => NotificacaoWhereInputSchema).array(),
-          ])
-          .optional(),
-        mensagem: z
-          .union([z.lazy(() => StringFilterSchema), z.string()])
-          .optional(),
-        dataDaNotificacao: z
-          .union([z.lazy(() => DateTimeFilterSchema), z.coerce.date()])
-          .optional(),
-        atendimentoId: z
-          .union([z.lazy(() => StringFilterSchema), z.string()])
-          .optional(),
-        atendimento: z
-          .union([
-            z.lazy(() => AtendimentoScalarRelationFilterSchema),
-            z.lazy(() => AtendimentoWhereInputSchema),
-          ])
-          .optional(),
-      }),
-    );
-
-export const NotificacaoOrderByWithAggregationInputSchema: z.ZodType<Prisma.NotificacaoOrderByWithAggregationInput> =
-  z.strictObject({
-    id: z.lazy(() => SortOrderSchema).optional(),
-    mensagem: z.lazy(() => SortOrderSchema).optional(),
-    dataDaNotificacao: z.lazy(() => SortOrderSchema).optional(),
-    atendimentoId: z.lazy(() => SortOrderSchema).optional(),
+    attendantId: z.lazy(() => SortOrderSchema).optional(),
+    driverId: z.lazy(() => SortOrderSchema).optional(),
     _count: z
-      .lazy(() => NotificacaoCountOrderByAggregateInputSchema)
+      .lazy(() => ConversationCountOrderByAggregateInputSchema)
       .optional(),
-    _max: z.lazy(() => NotificacaoMaxOrderByAggregateInputSchema).optional(),
-    _min: z.lazy(() => NotificacaoMinOrderByAggregateInputSchema).optional(),
+    _max: z.lazy(() => ConversationMaxOrderByAggregateInputSchema).optional(),
+    _min: z.lazy(() => ConversationMinOrderByAggregateInputSchema).optional(),
   });
 
-export const NotificacaoScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.NotificacaoScalarWhereWithAggregatesInput> =
+export const ConversationScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.ConversationScalarWhereWithAggregatesInput> =
   z.strictObject({
     AND: z
       .union([
-        z.lazy(() => NotificacaoScalarWhereWithAggregatesInputSchema),
-        z.lazy(() => NotificacaoScalarWhereWithAggregatesInputSchema).array(),
+        z.lazy(() => ConversationScalarWhereWithAggregatesInputSchema),
+        z.lazy(() => ConversationScalarWhereWithAggregatesInputSchema).array(),
       ])
       .optional(),
     OR: z
-      .lazy(() => NotificacaoScalarWhereWithAggregatesInputSchema)
+      .lazy(() => ConversationScalarWhereWithAggregatesInputSchema)
       .array()
       .optional(),
     NOT: z
       .union([
-        z.lazy(() => NotificacaoScalarWhereWithAggregatesInputSchema),
-        z.lazy(() => NotificacaoScalarWhereWithAggregatesInputSchema).array(),
+        z.lazy(() => ConversationScalarWhereWithAggregatesInputSchema),
+        z.lazy(() => ConversationScalarWhereWithAggregatesInputSchema).array(),
       ])
       .optional(),
     id: z
       .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
       .optional(),
-    mensagem: z
+    attendantId: z
       .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
       .optional(),
-    dataDaNotificacao: z
+    driverId: z
+      .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
+      .optional(),
+  });
+
+export const MessageWhereInputSchema: z.ZodType<Prisma.MessageWhereInput> =
+  z.strictObject({
+    AND: z
+      .union([
+        z.lazy(() => MessageWhereInputSchema),
+        z.lazy(() => MessageWhereInputSchema).array(),
+      ])
+      .optional(),
+    OR: z
+      .lazy(() => MessageWhereInputSchema)
+      .array()
+      .optional(),
+    NOT: z
+      .union([
+        z.lazy(() => MessageWhereInputSchema),
+        z.lazy(() => MessageWhereInputSchema).array(),
+      ])
+      .optional(),
+    id: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
+    text: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
+    sentAt: z
+      .union([z.lazy(() => DateTimeFilterSchema), z.coerce.date()])
+      .optional(),
+    senderId: z
+      .union([z.lazy(() => StringFilterSchema), z.string()])
+      .optional(),
+    conversationId: z
+      .union([z.lazy(() => StringFilterSchema), z.string()])
+      .optional(),
+    sender: z
+      .union([
+        z.lazy(() => UserScalarRelationFilterSchema),
+        z.lazy(() => UserWhereInputSchema),
+      ])
+      .optional(),
+    conversation: z
+      .union([
+        z.lazy(() => ConversationScalarRelationFilterSchema),
+        z.lazy(() => ConversationWhereInputSchema),
+      ])
+      .optional(),
+  });
+
+export const MessageOrderByWithRelationInputSchema: z.ZodType<Prisma.MessageOrderByWithRelationInput> =
+  z.strictObject({
+    id: z.lazy(() => SortOrderSchema).optional(),
+    text: z.lazy(() => SortOrderSchema).optional(),
+    sentAt: z.lazy(() => SortOrderSchema).optional(),
+    senderId: z.lazy(() => SortOrderSchema).optional(),
+    conversationId: z.lazy(() => SortOrderSchema).optional(),
+    sender: z.lazy(() => UserOrderByWithRelationInputSchema).optional(),
+    conversation: z
+      .lazy(() => ConversationOrderByWithRelationInputSchema)
+      .optional(),
+  });
+
+export const MessageWhereUniqueInputSchema: z.ZodType<Prisma.MessageWhereUniqueInput> =
+  z
+    .object({
+      id: z.uuid(),
+    })
+    .and(
+      z.strictObject({
+        id: z.uuid().optional(),
+        AND: z
+          .union([
+            z.lazy(() => MessageWhereInputSchema),
+            z.lazy(() => MessageWhereInputSchema).array(),
+          ])
+          .optional(),
+        OR: z
+          .lazy(() => MessageWhereInputSchema)
+          .array()
+          .optional(),
+        NOT: z
+          .union([
+            z.lazy(() => MessageWhereInputSchema),
+            z.lazy(() => MessageWhereInputSchema).array(),
+          ])
+          .optional(),
+        text: z
+          .union([z.lazy(() => StringFilterSchema), z.string()])
+          .optional(),
+        sentAt: z
+          .union([z.lazy(() => DateTimeFilterSchema), z.coerce.date()])
+          .optional(),
+        senderId: z
+          .union([z.lazy(() => StringFilterSchema), z.string()])
+          .optional(),
+        conversationId: z
+          .union([z.lazy(() => StringFilterSchema), z.string()])
+          .optional(),
+        sender: z
+          .union([
+            z.lazy(() => UserScalarRelationFilterSchema),
+            z.lazy(() => UserWhereInputSchema),
+          ])
+          .optional(),
+        conversation: z
+          .union([
+            z.lazy(() => ConversationScalarRelationFilterSchema),
+            z.lazy(() => ConversationWhereInputSchema),
+          ])
+          .optional(),
+      }),
+    );
+
+export const MessageOrderByWithAggregationInputSchema: z.ZodType<Prisma.MessageOrderByWithAggregationInput> =
+  z.strictObject({
+    id: z.lazy(() => SortOrderSchema).optional(),
+    text: z.lazy(() => SortOrderSchema).optional(),
+    sentAt: z.lazy(() => SortOrderSchema).optional(),
+    senderId: z.lazy(() => SortOrderSchema).optional(),
+    conversationId: z.lazy(() => SortOrderSchema).optional(),
+    _count: z.lazy(() => MessageCountOrderByAggregateInputSchema).optional(),
+    _max: z.lazy(() => MessageMaxOrderByAggregateInputSchema).optional(),
+    _min: z.lazy(() => MessageMinOrderByAggregateInputSchema).optional(),
+  });
+
+export const MessageScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.MessageScalarWhereWithAggregatesInput> =
+  z.strictObject({
+    AND: z
+      .union([
+        z.lazy(() => MessageScalarWhereWithAggregatesInputSchema),
+        z.lazy(() => MessageScalarWhereWithAggregatesInputSchema).array(),
+      ])
+      .optional(),
+    OR: z
+      .lazy(() => MessageScalarWhereWithAggregatesInputSchema)
+      .array()
+      .optional(),
+    NOT: z
+      .union([
+        z.lazy(() => MessageScalarWhereWithAggregatesInputSchema),
+        z.lazy(() => MessageScalarWhereWithAggregatesInputSchema).array(),
+      ])
+      .optional(),
+    id: z
+      .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
+      .optional(),
+    text: z
+      .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
+      .optional(),
+    sentAt: z
       .union([
         z.lazy(() => DateTimeWithAggregatesFilterSchema),
         z.coerce.date(),
       ])
       .optional(),
-    atendimentoId: z
+    senderId: z
+      .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
+      .optional(),
+    conversationId: z
       .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
       .optional(),
   });
 
-export const UsuarioCreateInputSchema: z.ZodType<Prisma.UsuarioCreateInput> =
+export const NotificationWhereInputSchema: z.ZodType<Prisma.NotificationWhereInput> =
+  z.strictObject({
+    AND: z
+      .union([
+        z.lazy(() => NotificationWhereInputSchema),
+        z.lazy(() => NotificationWhereInputSchema).array(),
+      ])
+      .optional(),
+    OR: z
+      .lazy(() => NotificationWhereInputSchema)
+      .array()
+      .optional(),
+    NOT: z
+      .union([
+        z.lazy(() => NotificationWhereInputSchema),
+        z.lazy(() => NotificationWhereInputSchema).array(),
+      ])
+      .optional(),
+    id: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
+    message: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
+    notifiedAt: z
+      .union([z.lazy(() => DateTimeFilterSchema), z.coerce.date()])
+      .optional(),
+    emergencyCallId: z
+      .union([z.lazy(() => StringFilterSchema), z.string()])
+      .optional(),
+    emergencyCall: z
+      .union([
+        z.lazy(() => EmergencyCallScalarRelationFilterSchema),
+        z.lazy(() => EmergencyCallWhereInputSchema),
+      ])
+      .optional(),
+  });
+
+export const NotificationOrderByWithRelationInputSchema: z.ZodType<Prisma.NotificationOrderByWithRelationInput> =
+  z.strictObject({
+    id: z.lazy(() => SortOrderSchema).optional(),
+    message: z.lazy(() => SortOrderSchema).optional(),
+    notifiedAt: z.lazy(() => SortOrderSchema).optional(),
+    emergencyCallId: z.lazy(() => SortOrderSchema).optional(),
+    emergencyCall: z
+      .lazy(() => EmergencyCallOrderByWithRelationInputSchema)
+      .optional(),
+  });
+
+export const NotificationWhereUniqueInputSchema: z.ZodType<Prisma.NotificationWhereUniqueInput> =
+  z
+    .object({
+      id: z.uuid(),
+    })
+    .and(
+      z.strictObject({
+        id: z.uuid().optional(),
+        AND: z
+          .union([
+            z.lazy(() => NotificationWhereInputSchema),
+            z.lazy(() => NotificationWhereInputSchema).array(),
+          ])
+          .optional(),
+        OR: z
+          .lazy(() => NotificationWhereInputSchema)
+          .array()
+          .optional(),
+        NOT: z
+          .union([
+            z.lazy(() => NotificationWhereInputSchema),
+            z.lazy(() => NotificationWhereInputSchema).array(),
+          ])
+          .optional(),
+        message: z
+          .union([z.lazy(() => StringFilterSchema), z.string()])
+          .optional(),
+        notifiedAt: z
+          .union([z.lazy(() => DateTimeFilterSchema), z.coerce.date()])
+          .optional(),
+        emergencyCallId: z
+          .union([z.lazy(() => StringFilterSchema), z.string()])
+          .optional(),
+        emergencyCall: z
+          .union([
+            z.lazy(() => EmergencyCallScalarRelationFilterSchema),
+            z.lazy(() => EmergencyCallWhereInputSchema),
+          ])
+          .optional(),
+      }),
+    );
+
+export const NotificationOrderByWithAggregationInputSchema: z.ZodType<Prisma.NotificationOrderByWithAggregationInput> =
+  z.strictObject({
+    id: z.lazy(() => SortOrderSchema).optional(),
+    message: z.lazy(() => SortOrderSchema).optional(),
+    notifiedAt: z.lazy(() => SortOrderSchema).optional(),
+    emergencyCallId: z.lazy(() => SortOrderSchema).optional(),
+    _count: z
+      .lazy(() => NotificationCountOrderByAggregateInputSchema)
+      .optional(),
+    _max: z.lazy(() => NotificationMaxOrderByAggregateInputSchema).optional(),
+    _min: z.lazy(() => NotificationMinOrderByAggregateInputSchema).optional(),
+  });
+
+export const NotificationScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.NotificationScalarWhereWithAggregatesInput> =
+  z.strictObject({
+    AND: z
+      .union([
+        z.lazy(() => NotificationScalarWhereWithAggregatesInputSchema),
+        z.lazy(() => NotificationScalarWhereWithAggregatesInputSchema).array(),
+      ])
+      .optional(),
+    OR: z
+      .lazy(() => NotificationScalarWhereWithAggregatesInputSchema)
+      .array()
+      .optional(),
+    NOT: z
+      .union([
+        z.lazy(() => NotificationScalarWhereWithAggregatesInputSchema),
+        z.lazy(() => NotificationScalarWhereWithAggregatesInputSchema).array(),
+      ])
+      .optional(),
+    id: z
+      .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
+      .optional(),
+    message: z
+      .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
+      .optional(),
+    notifiedAt: z
+      .union([
+        z.lazy(() => DateTimeWithAggregatesFilterSchema),
+        z.coerce.date(),
+      ])
+      .optional(),
+    emergencyCallId: z
+      .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
+      .optional(),
+  });
+
+export const UserCreateInputSchema: z.ZodType<Prisma.UserCreateInput> =
   z.strictObject({
     id: z.uuid().optional(),
     email: z.string(),
-    senha: z.string(),
-    tipo: z.lazy(() => TipoUsuarioSchema),
-    telefone: z.string(),
-    status: z.lazy(() => StatusUsuarioSchema).optional(),
-    criadoEm: z.coerce.date().optional(),
-    veiculo: z
-      .lazy(() => VeiculoCreateNestedOneWithoutMotoristaInputSchema)
+    password: z.string(),
+    role: z.lazy(() => UserRoleSchema),
+    phone: z.string(),
+    status: z.lazy(() => UserStatusSchema).optional(),
+    createdAt: z.coerce.date().optional(),
+    vehicle: z
+      .lazy(() => VehicleCreateNestedOneWithoutDriverInputSchema)
       .optional(),
-    atendimentosRegistrados: z
-      .lazy(() => AtendimentoCreateNestedManyWithoutAtendenteInputSchema)
+    registeredCalls: z
+      .lazy(() => EmergencyCallCreateNestedManyWithoutAttendantInputSchema)
       .optional(),
-    conversasComoAtendente: z
-      .lazy(() => ConversaCreateNestedManyWithoutAtendenteInputSchema)
+    conversationsAsAttendant: z
+      .lazy(() => ConversationCreateNestedManyWithoutAttendantInputSchema)
       .optional(),
-    conversasComoMotorista: z
-      .lazy(() => ConversaCreateNestedManyWithoutMotoristaInputSchema)
+    conversationsAsDriver: z
+      .lazy(() => ConversationCreateNestedManyWithoutDriverInputSchema)
       .optional(),
-    mensagensEnviadas: z
-      .lazy(() => MensagemCreateNestedManyWithoutQuemMandouInputSchema)
+    sentMessages: z
+      .lazy(() => MessageCreateNestedManyWithoutSenderInputSchema)
       .optional(),
   });
 
-export const UsuarioUncheckedCreateInputSchema: z.ZodType<Prisma.UsuarioUncheckedCreateInput> =
+export const UserUncheckedCreateInputSchema: z.ZodType<Prisma.UserUncheckedCreateInput> =
   z.strictObject({
     id: z.uuid().optional(),
     email: z.string(),
-    senha: z.string(),
-    tipo: z.lazy(() => TipoUsuarioSchema),
-    telefone: z.string(),
-    status: z.lazy(() => StatusUsuarioSchema).optional(),
-    criadoEm: z.coerce.date().optional(),
-    veiculo: z
-      .lazy(() => VeiculoUncheckedCreateNestedOneWithoutMotoristaInputSchema)
+    password: z.string(),
+    role: z.lazy(() => UserRoleSchema),
+    phone: z.string(),
+    status: z.lazy(() => UserStatusSchema).optional(),
+    createdAt: z.coerce.date().optional(),
+    vehicle: z
+      .lazy(() => VehicleUncheckedCreateNestedOneWithoutDriverInputSchema)
       .optional(),
-    atendimentosRegistrados: z
+    registeredCalls: z
       .lazy(
-        () => AtendimentoUncheckedCreateNestedManyWithoutAtendenteInputSchema,
+        () => EmergencyCallUncheckedCreateNestedManyWithoutAttendantInputSchema,
       )
       .optional(),
-    conversasComoAtendente: z
-      .lazy(() => ConversaUncheckedCreateNestedManyWithoutAtendenteInputSchema)
+    conversationsAsAttendant: z
+      .lazy(
+        () => ConversationUncheckedCreateNestedManyWithoutAttendantInputSchema,
+      )
       .optional(),
-    conversasComoMotorista: z
-      .lazy(() => ConversaUncheckedCreateNestedManyWithoutMotoristaInputSchema)
+    conversationsAsDriver: z
+      .lazy(() => ConversationUncheckedCreateNestedManyWithoutDriverInputSchema)
       .optional(),
-    mensagensEnviadas: z
-      .lazy(() => MensagemUncheckedCreateNestedManyWithoutQuemMandouInputSchema)
+    sentMessages: z
+      .lazy(() => MessageUncheckedCreateNestedManyWithoutSenderInputSchema)
       .optional(),
   });
 
-export const UsuarioUpdateInputSchema: z.ZodType<Prisma.UsuarioUpdateInput> =
+export const UserUpdateInputSchema: z.ZodType<Prisma.UserUpdateInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
@@ -1912,48 +1926,48 @@ export const UsuarioUpdateInputSchema: z.ZodType<Prisma.UsuarioUpdateInput> =
     email: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    senha: z
+    password: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    tipo: z
+    role: z
       .union([
-        z.lazy(() => TipoUsuarioSchema),
-        z.lazy(() => EnumTipoUsuarioFieldUpdateOperationsInputSchema),
+        z.lazy(() => UserRoleSchema),
+        z.lazy(() => EnumUserRoleFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    telefone: z
+    phone: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
     status: z
       .union([
-        z.lazy(() => StatusUsuarioSchema),
-        z.lazy(() => EnumStatusUsuarioFieldUpdateOperationsInputSchema),
+        z.lazy(() => UserStatusSchema),
+        z.lazy(() => EnumUserStatusFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    criadoEm: z
+    createdAt: z
       .union([
         z.coerce.date(),
         z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    veiculo: z
-      .lazy(() => VeiculoUpdateOneWithoutMotoristaNestedInputSchema)
+    vehicle: z
+      .lazy(() => VehicleUpdateOneWithoutDriverNestedInputSchema)
       .optional(),
-    atendimentosRegistrados: z
-      .lazy(() => AtendimentoUpdateManyWithoutAtendenteNestedInputSchema)
+    registeredCalls: z
+      .lazy(() => EmergencyCallUpdateManyWithoutAttendantNestedInputSchema)
       .optional(),
-    conversasComoAtendente: z
-      .lazy(() => ConversaUpdateManyWithoutAtendenteNestedInputSchema)
+    conversationsAsAttendant: z
+      .lazy(() => ConversationUpdateManyWithoutAttendantNestedInputSchema)
       .optional(),
-    conversasComoMotorista: z
-      .lazy(() => ConversaUpdateManyWithoutMotoristaNestedInputSchema)
+    conversationsAsDriver: z
+      .lazy(() => ConversationUpdateManyWithoutDriverNestedInputSchema)
       .optional(),
-    mensagensEnviadas: z
-      .lazy(() => MensagemUpdateManyWithoutQuemMandouNestedInputSchema)
+    sentMessages: z
+      .lazy(() => MessageUpdateManyWithoutSenderNestedInputSchema)
       .optional(),
   });
 
-export const UsuarioUncheckedUpdateInputSchema: z.ZodType<Prisma.UsuarioUncheckedUpdateInput> =
+export const UserUncheckedUpdateInputSchema: z.ZodType<Prisma.UserUncheckedUpdateInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
@@ -1961,61 +1975,63 @@ export const UsuarioUncheckedUpdateInputSchema: z.ZodType<Prisma.UsuarioUnchecke
     email: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    senha: z
+    password: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    tipo: z
+    role: z
       .union([
-        z.lazy(() => TipoUsuarioSchema),
-        z.lazy(() => EnumTipoUsuarioFieldUpdateOperationsInputSchema),
+        z.lazy(() => UserRoleSchema),
+        z.lazy(() => EnumUserRoleFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    telefone: z
+    phone: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
     status: z
       .union([
-        z.lazy(() => StatusUsuarioSchema),
-        z.lazy(() => EnumStatusUsuarioFieldUpdateOperationsInputSchema),
+        z.lazy(() => UserStatusSchema),
+        z.lazy(() => EnumUserStatusFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    criadoEm: z
+    createdAt: z
       .union([
         z.coerce.date(),
         z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    veiculo: z
-      .lazy(() => VeiculoUncheckedUpdateOneWithoutMotoristaNestedInputSchema)
+    vehicle: z
+      .lazy(() => VehicleUncheckedUpdateOneWithoutDriverNestedInputSchema)
       .optional(),
-    atendimentosRegistrados: z
+    registeredCalls: z
       .lazy(
-        () => AtendimentoUncheckedUpdateManyWithoutAtendenteNestedInputSchema,
+        () => EmergencyCallUncheckedUpdateManyWithoutAttendantNestedInputSchema,
       )
       .optional(),
-    conversasComoAtendente: z
-      .lazy(() => ConversaUncheckedUpdateManyWithoutAtendenteNestedInputSchema)
+    conversationsAsAttendant: z
+      .lazy(
+        () => ConversationUncheckedUpdateManyWithoutAttendantNestedInputSchema,
+      )
       .optional(),
-    conversasComoMotorista: z
-      .lazy(() => ConversaUncheckedUpdateManyWithoutMotoristaNestedInputSchema)
+    conversationsAsDriver: z
+      .lazy(() => ConversationUncheckedUpdateManyWithoutDriverNestedInputSchema)
       .optional(),
-    mensagensEnviadas: z
-      .lazy(() => MensagemUncheckedUpdateManyWithoutQuemMandouNestedInputSchema)
+    sentMessages: z
+      .lazy(() => MessageUncheckedUpdateManyWithoutSenderNestedInputSchema)
       .optional(),
   });
 
-export const UsuarioCreateManyInputSchema: z.ZodType<Prisma.UsuarioCreateManyInput> =
+export const UserCreateManyInputSchema: z.ZodType<Prisma.UserCreateManyInput> =
   z.strictObject({
     id: z.uuid().optional(),
     email: z.string(),
-    senha: z.string(),
-    tipo: z.lazy(() => TipoUsuarioSchema),
-    telefone: z.string(),
-    status: z.lazy(() => StatusUsuarioSchema).optional(),
-    criadoEm: z.coerce.date().optional(),
+    password: z.string(),
+    role: z.lazy(() => UserRoleSchema),
+    phone: z.string(),
+    status: z.lazy(() => UserStatusSchema).optional(),
+    createdAt: z.coerce.date().optional(),
   });
 
-export const UsuarioUpdateManyMutationInputSchema: z.ZodType<Prisma.UsuarioUpdateManyMutationInput> =
+export const UserUpdateManyMutationInputSchema: z.ZodType<Prisma.UserUpdateManyMutationInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
@@ -2023,25 +2039,25 @@ export const UsuarioUpdateManyMutationInputSchema: z.ZodType<Prisma.UsuarioUpdat
     email: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    senha: z
+    password: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    tipo: z
+    role: z
       .union([
-        z.lazy(() => TipoUsuarioSchema),
-        z.lazy(() => EnumTipoUsuarioFieldUpdateOperationsInputSchema),
+        z.lazy(() => UserRoleSchema),
+        z.lazy(() => EnumUserRoleFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    telefone: z
+    phone: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
     status: z
       .union([
-        z.lazy(() => StatusUsuarioSchema),
-        z.lazy(() => EnumStatusUsuarioFieldUpdateOperationsInputSchema),
+        z.lazy(() => UserStatusSchema),
+        z.lazy(() => EnumUserStatusFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    criadoEm: z
+    createdAt: z
       .union([
         z.coerce.date(),
         z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
@@ -2049,7 +2065,7 @@ export const UsuarioUpdateManyMutationInputSchema: z.ZodType<Prisma.UsuarioUpdat
       .optional(),
   });
 
-export const UsuarioUncheckedUpdateManyInputSchema: z.ZodType<Prisma.UsuarioUncheckedUpdateManyInput> =
+export const UserUncheckedUpdateManyInputSchema: z.ZodType<Prisma.UserUncheckedUpdateManyInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
@@ -2057,25 +2073,25 @@ export const UsuarioUncheckedUpdateManyInputSchema: z.ZodType<Prisma.UsuarioUnch
     email: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    senha: z
+    password: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    tipo: z
+    role: z
       .union([
-        z.lazy(() => TipoUsuarioSchema),
-        z.lazy(() => EnumTipoUsuarioFieldUpdateOperationsInputSchema),
+        z.lazy(() => UserRoleSchema),
+        z.lazy(() => EnumUserRoleFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    telefone: z
+    phone: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
     status: z
       .union([
-        z.lazy(() => StatusUsuarioSchema),
-        z.lazy(() => EnumStatusUsuarioFieldUpdateOperationsInputSchema),
+        z.lazy(() => UserStatusSchema),
+        z.lazy(() => EnumUserStatusFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    criadoEm: z
+    createdAt: z
       .union([
         z.coerce.date(),
         z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
@@ -2083,39 +2099,39 @@ export const UsuarioUncheckedUpdateManyInputSchema: z.ZodType<Prisma.UsuarioUnch
       .optional(),
   });
 
-export const VeiculoCreateInputSchema: z.ZodType<Prisma.VeiculoCreateInput> =
+export const VehicleCreateInputSchema: z.ZodType<Prisma.VehicleCreateInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    placa: z.string(),
+    plate: z.string(),
     latitude: z.number(),
     longitude: z.number(),
-    motorista: z.lazy(() => UsuarioCreateNestedOneWithoutVeiculoInputSchema),
-    atendimentos: z
-      .lazy(() => VeiculoAtendimentoCreateNestedManyWithoutVeiculoInputSchema)
+    driver: z.lazy(() => UserCreateNestedOneWithoutVehicleInputSchema),
+    emergencyCalls: z
+      .lazy(() => VehicleEmergencyCallCreateNestedManyWithoutVehicleInputSchema)
       .optional(),
   });
 
-export const VeiculoUncheckedCreateInputSchema: z.ZodType<Prisma.VeiculoUncheckedCreateInput> =
+export const VehicleUncheckedCreateInputSchema: z.ZodType<Prisma.VehicleUncheckedCreateInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    placa: z.string(),
+    plate: z.string(),
     latitude: z.number(),
     longitude: z.number(),
-    motoristaId: z.string(),
-    atendimentos: z
+    driverId: z.string(),
+    emergencyCalls: z
       .lazy(
         () =>
-          VeiculoAtendimentoUncheckedCreateNestedManyWithoutVeiculoInputSchema,
+          VehicleEmergencyCallUncheckedCreateNestedManyWithoutVehicleInputSchema,
       )
       .optional(),
   });
 
-export const VeiculoUpdateInputSchema: z.ZodType<Prisma.VeiculoUpdateInput> =
+export const VehicleUpdateInputSchema: z.ZodType<Prisma.VehicleUpdateInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    placa: z
+    plate: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
     latitude: z
@@ -2124,20 +2140,20 @@ export const VeiculoUpdateInputSchema: z.ZodType<Prisma.VeiculoUpdateInput> =
     longitude: z
       .union([z.number(), z.lazy(() => FloatFieldUpdateOperationsInputSchema)])
       .optional(),
-    motorista: z
-      .lazy(() => UsuarioUpdateOneRequiredWithoutVeiculoNestedInputSchema)
+    driver: z
+      .lazy(() => UserUpdateOneRequiredWithoutVehicleNestedInputSchema)
       .optional(),
-    atendimentos: z
-      .lazy(() => VeiculoAtendimentoUpdateManyWithoutVeiculoNestedInputSchema)
+    emergencyCalls: z
+      .lazy(() => VehicleEmergencyCallUpdateManyWithoutVehicleNestedInputSchema)
       .optional(),
   });
 
-export const VeiculoUncheckedUpdateInputSchema: z.ZodType<Prisma.VeiculoUncheckedUpdateInput> =
+export const VehicleUncheckedUpdateInputSchema: z.ZodType<Prisma.VehicleUncheckedUpdateInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    placa: z
+    plate: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
     latitude: z
@@ -2146,32 +2162,32 @@ export const VeiculoUncheckedUpdateInputSchema: z.ZodType<Prisma.VeiculoUnchecke
     longitude: z
       .union([z.number(), z.lazy(() => FloatFieldUpdateOperationsInputSchema)])
       .optional(),
-    motoristaId: z
+    driverId: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    atendimentos: z
+    emergencyCalls: z
       .lazy(
         () =>
-          VeiculoAtendimentoUncheckedUpdateManyWithoutVeiculoNestedInputSchema,
+          VehicleEmergencyCallUncheckedUpdateManyWithoutVehicleNestedInputSchema,
       )
       .optional(),
   });
 
-export const VeiculoCreateManyInputSchema: z.ZodType<Prisma.VeiculoCreateManyInput> =
+export const VehicleCreateManyInputSchema: z.ZodType<Prisma.VehicleCreateManyInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    placa: z.string(),
+    plate: z.string(),
     latitude: z.number(),
     longitude: z.number(),
-    motoristaId: z.string(),
+    driverId: z.string(),
   });
 
-export const VeiculoUpdateManyMutationInputSchema: z.ZodType<Prisma.VeiculoUpdateManyMutationInput> =
+export const VehicleUpdateManyMutationInputSchema: z.ZodType<Prisma.VehicleUpdateManyMutationInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    placa: z
+    plate: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
     latitude: z
@@ -2182,12 +2198,12 @@ export const VeiculoUpdateManyMutationInputSchema: z.ZodType<Prisma.VeiculoUpdat
       .optional(),
   });
 
-export const VeiculoUncheckedUpdateManyInputSchema: z.ZodType<Prisma.VeiculoUncheckedUpdateManyInput> =
+export const VehicleUncheckedUpdateManyInputSchema: z.ZodType<Prisma.VehicleUncheckedUpdateManyInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    placa: z
+    plate: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
     latitude: z
@@ -2196,254 +2212,255 @@ export const VeiculoUncheckedUpdateManyInputSchema: z.ZodType<Prisma.VeiculoUnch
     longitude: z
       .union([z.number(), z.lazy(() => FloatFieldUpdateOperationsInputSchema)])
       .optional(),
-    motoristaId: z
+    driverId: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
   });
 
-export const AtendimentoCreateInputSchema: z.ZodType<Prisma.AtendimentoCreateInput> =
+export const EmergencyCallCreateInputSchema: z.ZodType<Prisma.EmergencyCallCreateInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    protocolo: z.string(),
-    endereco: z.string(),
-    localDeRetorno: z.string(),
-    oQueAconteceu: z.string(),
-    estadoDoPaciente: z.string(),
-    idadeAparente: z.number().int().optional().nullable(),
-    quantidadeDePacientes: z.number().int(),
-    estadoDaLesao: z.string(),
-    observacoes: z.string().optional().nullable(),
-    criadoEm: z.coerce.date().optional(),
-    atendente: z.lazy(
-      () => UsuarioCreateNestedOneWithoutAtendimentosRegistradosInputSchema,
+    protocol: z.string(),
+    address: z.string(),
+    returnLocation: z.string(),
+    whatHappened: z.string(),
+    patientCondition: z.string(),
+    apparentAge: z.number().int().optional().nullable(),
+    patientCount: z.number().int(),
+    injuryCondition: z.string(),
+    observations: z.string().optional().nullable(),
+    createdAt: z.coerce.date().optional(),
+    attendant: z.lazy(
+      () => UserCreateNestedOneWithoutRegisteredCallsInputSchema,
     ),
-    veiculos: z
-      .lazy(
-        () => VeiculoAtendimentoCreateNestedManyWithoutAtendimentoInputSchema,
-      )
-      .optional(),
-    notificacoes: z
-      .lazy(() => NotificacaoCreateNestedManyWithoutAtendimentoInputSchema)
-      .optional(),
-  });
-
-export const AtendimentoUncheckedCreateInputSchema: z.ZodType<Prisma.AtendimentoUncheckedCreateInput> =
-  z.strictObject({
-    id: z.uuid().optional(),
-    protocolo: z.string(),
-    endereco: z.string(),
-    localDeRetorno: z.string(),
-    oQueAconteceu: z.string(),
-    estadoDoPaciente: z.string(),
-    idadeAparente: z.number().int().optional().nullable(),
-    quantidadeDePacientes: z.number().int(),
-    estadoDaLesao: z.string(),
-    observacoes: z.string().optional().nullable(),
-    atendenteId: z.string(),
-    criadoEm: z.coerce.date().optional(),
-    veiculos: z
+    vehicles: z
       .lazy(
         () =>
-          VeiculoAtendimentoUncheckedCreateNestedManyWithoutAtendimentoInputSchema,
+          VehicleEmergencyCallCreateNestedManyWithoutEmergencyCallInputSchema,
       )
       .optional(),
-    notificacoes: z
+    notifications: z
+      .lazy(() => NotificationCreateNestedManyWithoutEmergencyCallInputSchema)
+      .optional(),
+  });
+
+export const EmergencyCallUncheckedCreateInputSchema: z.ZodType<Prisma.EmergencyCallUncheckedCreateInput> =
+  z.strictObject({
+    id: z.uuid().optional(),
+    protocol: z.string(),
+    address: z.string(),
+    returnLocation: z.string(),
+    whatHappened: z.string(),
+    patientCondition: z.string(),
+    apparentAge: z.number().int().optional().nullable(),
+    patientCount: z.number().int(),
+    injuryCondition: z.string(),
+    observations: z.string().optional().nullable(),
+    attendantId: z.string(),
+    createdAt: z.coerce.date().optional(),
+    vehicles: z
       .lazy(
-        () => NotificacaoUncheckedCreateNestedManyWithoutAtendimentoInputSchema,
+        () =>
+          VehicleEmergencyCallUncheckedCreateNestedManyWithoutEmergencyCallInputSchema,
+      )
+      .optional(),
+    notifications: z
+      .lazy(
+        () =>
+          NotificationUncheckedCreateNestedManyWithoutEmergencyCallInputSchema,
       )
       .optional(),
   });
 
-export const AtendimentoUpdateInputSchema: z.ZodType<Prisma.AtendimentoUpdateInput> =
+export const EmergencyCallUpdateInputSchema: z.ZodType<Prisma.EmergencyCallUpdateInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    protocolo: z
+    protocol: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    endereco: z
+    address: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    localDeRetorno: z
+    returnLocation: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    oQueAconteceu: z
+    whatHappened: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    estadoDoPaciente: z
+    patientCondition: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    idadeAparente: z
+    apparentAge: z
       .union([
         z.number().int(),
         z.lazy(() => NullableIntFieldUpdateOperationsInputSchema),
       ])
       .optional()
       .nullable(),
-    quantidadeDePacientes: z
+    patientCount: z
       .union([
         z.number().int(),
         z.lazy(() => IntFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    estadoDaLesao: z
+    injuryCondition: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    observacoes: z
+    observations: z
       .union([
         z.string(),
         z.lazy(() => NullableStringFieldUpdateOperationsInputSchema),
       ])
       .optional()
       .nullable(),
-    criadoEm: z
+    createdAt: z
       .union([
         z.coerce.date(),
         z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    atendente: z
+    attendant: z
+      .lazy(() => UserUpdateOneRequiredWithoutRegisteredCallsNestedInputSchema)
+      .optional(),
+    vehicles: z
       .lazy(
         () =>
-          UsuarioUpdateOneRequiredWithoutAtendimentosRegistradosNestedInputSchema,
+          VehicleEmergencyCallUpdateManyWithoutEmergencyCallNestedInputSchema,
       )
       .optional(),
-    veiculos: z
-      .lazy(
-        () => VeiculoAtendimentoUpdateManyWithoutAtendimentoNestedInputSchema,
-      )
-      .optional(),
-    notificacoes: z
-      .lazy(() => NotificacaoUpdateManyWithoutAtendimentoNestedInputSchema)
+    notifications: z
+      .lazy(() => NotificationUpdateManyWithoutEmergencyCallNestedInputSchema)
       .optional(),
   });
 
-export const AtendimentoUncheckedUpdateInputSchema: z.ZodType<Prisma.AtendimentoUncheckedUpdateInput> =
+export const EmergencyCallUncheckedUpdateInputSchema: z.ZodType<Prisma.EmergencyCallUncheckedUpdateInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    protocolo: z
+    protocol: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    endereco: z
+    address: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    localDeRetorno: z
+    returnLocation: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    oQueAconteceu: z
+    whatHappened: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    estadoDoPaciente: z
+    patientCondition: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    idadeAparente: z
+    apparentAge: z
       .union([
         z.number().int(),
         z.lazy(() => NullableIntFieldUpdateOperationsInputSchema),
       ])
       .optional()
       .nullable(),
-    quantidadeDePacientes: z
+    patientCount: z
       .union([
         z.number().int(),
         z.lazy(() => IntFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    estadoDaLesao: z
+    injuryCondition: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    observacoes: z
+    observations: z
       .union([
         z.string(),
         z.lazy(() => NullableStringFieldUpdateOperationsInputSchema),
       ])
       .optional()
       .nullable(),
-    atendenteId: z
+    attendantId: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    criadoEm: z
+    createdAt: z
       .union([
         z.coerce.date(),
         z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    veiculos: z
+    vehicles: z
       .lazy(
         () =>
-          VeiculoAtendimentoUncheckedUpdateManyWithoutAtendimentoNestedInputSchema,
+          VehicleEmergencyCallUncheckedUpdateManyWithoutEmergencyCallNestedInputSchema,
       )
       .optional(),
-    notificacoes: z
+    notifications: z
       .lazy(
-        () => NotificacaoUncheckedUpdateManyWithoutAtendimentoNestedInputSchema,
+        () =>
+          NotificationUncheckedUpdateManyWithoutEmergencyCallNestedInputSchema,
       )
       .optional(),
   });
 
-export const AtendimentoCreateManyInputSchema: z.ZodType<Prisma.AtendimentoCreateManyInput> =
+export const EmergencyCallCreateManyInputSchema: z.ZodType<Prisma.EmergencyCallCreateManyInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    protocolo: z.string(),
-    endereco: z.string(),
-    localDeRetorno: z.string(),
-    oQueAconteceu: z.string(),
-    estadoDoPaciente: z.string(),
-    idadeAparente: z.number().int().optional().nullable(),
-    quantidadeDePacientes: z.number().int(),
-    estadoDaLesao: z.string(),
-    observacoes: z.string().optional().nullable(),
-    atendenteId: z.string(),
-    criadoEm: z.coerce.date().optional(),
+    protocol: z.string(),
+    address: z.string(),
+    returnLocation: z.string(),
+    whatHappened: z.string(),
+    patientCondition: z.string(),
+    apparentAge: z.number().int().optional().nullable(),
+    patientCount: z.number().int(),
+    injuryCondition: z.string(),
+    observations: z.string().optional().nullable(),
+    attendantId: z.string(),
+    createdAt: z.coerce.date().optional(),
   });
 
-export const AtendimentoUpdateManyMutationInputSchema: z.ZodType<Prisma.AtendimentoUpdateManyMutationInput> =
+export const EmergencyCallUpdateManyMutationInputSchema: z.ZodType<Prisma.EmergencyCallUpdateManyMutationInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    protocolo: z
+    protocol: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    endereco: z
+    address: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    localDeRetorno: z
+    returnLocation: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    oQueAconteceu: z
+    whatHappened: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    estadoDoPaciente: z
+    patientCondition: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    idadeAparente: z
+    apparentAge: z
       .union([
         z.number().int(),
         z.lazy(() => NullableIntFieldUpdateOperationsInputSchema),
       ])
       .optional()
       .nullable(),
-    quantidadeDePacientes: z
+    patientCount: z
       .union([
         z.number().int(),
         z.lazy(() => IntFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    estadoDaLesao: z
+    injuryCondition: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    observacoes: z
+    observations: z
       .union([
         z.string(),
         z.lazy(() => NullableStringFieldUpdateOperationsInputSchema),
       ])
       .optional()
       .nullable(),
-    criadoEm: z
+    createdAt: z
       .union([
         z.coerce.date(),
         z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
@@ -2451,53 +2468,53 @@ export const AtendimentoUpdateManyMutationInputSchema: z.ZodType<Prisma.Atendime
       .optional(),
   });
 
-export const AtendimentoUncheckedUpdateManyInputSchema: z.ZodType<Prisma.AtendimentoUncheckedUpdateManyInput> =
+export const EmergencyCallUncheckedUpdateManyInputSchema: z.ZodType<Prisma.EmergencyCallUncheckedUpdateManyInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    protocolo: z
+    protocol: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    endereco: z
+    address: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    localDeRetorno: z
+    returnLocation: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    oQueAconteceu: z
+    whatHappened: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    estadoDoPaciente: z
+    patientCondition: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    idadeAparente: z
+    apparentAge: z
       .union([
         z.number().int(),
         z.lazy(() => NullableIntFieldUpdateOperationsInputSchema),
       ])
       .optional()
       .nullable(),
-    quantidadeDePacientes: z
+    patientCount: z
       .union([
         z.number().int(),
         z.lazy(() => IntFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    estadoDaLesao: z
+    injuryCondition: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    observacoes: z
+    observations: z
       .union([
         z.string(),
         z.lazy(() => NullableStringFieldUpdateOperationsInputSchema),
       ])
       .optional()
       .nullable(),
-    atendenteId: z
+    attendantId: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    criadoEm: z
+    createdAt: z
       .union([
         z.coerce.date(),
         z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
@@ -2505,379 +2522,388 @@ export const AtendimentoUncheckedUpdateManyInputSchema: z.ZodType<Prisma.Atendim
       .optional(),
   });
 
-export const VeiculoAtendimentoCreateInputSchema: z.ZodType<Prisma.VeiculoAtendimentoCreateInput> =
+export const VehicleEmergencyCallCreateInputSchema: z.ZodType<Prisma.VehicleEmergencyCallCreateInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    status: z.lazy(() => StatusAtendimentoSchema).optional(),
-    veiculo: z.lazy(() => VeiculoCreateNestedOneWithoutAtendimentosInputSchema),
-    atendimento: z.lazy(
-      () => AtendimentoCreateNestedOneWithoutVeiculosInputSchema,
+    status: z.lazy(() => EmergencyCallStatusSchema).optional(),
+    vehicle: z.lazy(
+      () => VehicleCreateNestedOneWithoutEmergencyCallsInputSchema,
+    ),
+    emergencyCall: z.lazy(
+      () => EmergencyCallCreateNestedOneWithoutVehiclesInputSchema,
     ),
   });
 
-export const VeiculoAtendimentoUncheckedCreateInputSchema: z.ZodType<Prisma.VeiculoAtendimentoUncheckedCreateInput> =
+export const VehicleEmergencyCallUncheckedCreateInputSchema: z.ZodType<Prisma.VehicleEmergencyCallUncheckedCreateInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    status: z.lazy(() => StatusAtendimentoSchema).optional(),
-    veiculoId: z.string(),
-    atendimentoId: z.string(),
+    status: z.lazy(() => EmergencyCallStatusSchema).optional(),
+    vehicleId: z.string(),
+    emergencyCallId: z.string(),
   });
 
-export const VeiculoAtendimentoUpdateInputSchema: z.ZodType<Prisma.VeiculoAtendimentoUpdateInput> =
+export const VehicleEmergencyCallUpdateInputSchema: z.ZodType<Prisma.VehicleEmergencyCallUpdateInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
     status: z
       .union([
-        z.lazy(() => StatusAtendimentoSchema),
-        z.lazy(() => EnumStatusAtendimentoFieldUpdateOperationsInputSchema),
+        z.lazy(() => EmergencyCallStatusSchema),
+        z.lazy(() => EnumEmergencyCallStatusFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    veiculo: z
-      .lazy(() => VeiculoUpdateOneRequiredWithoutAtendimentosNestedInputSchema)
+    vehicle: z
+      .lazy(
+        () => VehicleUpdateOneRequiredWithoutEmergencyCallsNestedInputSchema,
+      )
       .optional(),
-    atendimento: z
-      .lazy(() => AtendimentoUpdateOneRequiredWithoutVeiculosNestedInputSchema)
+    emergencyCall: z
+      .lazy(
+        () => EmergencyCallUpdateOneRequiredWithoutVehiclesNestedInputSchema,
+      )
       .optional(),
   });
 
-export const VeiculoAtendimentoUncheckedUpdateInputSchema: z.ZodType<Prisma.VeiculoAtendimentoUncheckedUpdateInput> =
+export const VehicleEmergencyCallUncheckedUpdateInputSchema: z.ZodType<Prisma.VehicleEmergencyCallUncheckedUpdateInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
     status: z
       .union([
-        z.lazy(() => StatusAtendimentoSchema),
-        z.lazy(() => EnumStatusAtendimentoFieldUpdateOperationsInputSchema),
+        z.lazy(() => EmergencyCallStatusSchema),
+        z.lazy(() => EnumEmergencyCallStatusFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    veiculoId: z
+    vehicleId: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    atendimentoId: z
+    emergencyCallId: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
   });
 
-export const VeiculoAtendimentoCreateManyInputSchema: z.ZodType<Prisma.VeiculoAtendimentoCreateManyInput> =
+export const VehicleEmergencyCallCreateManyInputSchema: z.ZodType<Prisma.VehicleEmergencyCallCreateManyInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    status: z.lazy(() => StatusAtendimentoSchema).optional(),
-    veiculoId: z.string(),
-    atendimentoId: z.string(),
+    status: z.lazy(() => EmergencyCallStatusSchema).optional(),
+    vehicleId: z.string(),
+    emergencyCallId: z.string(),
   });
 
-export const VeiculoAtendimentoUpdateManyMutationInputSchema: z.ZodType<Prisma.VeiculoAtendimentoUpdateManyMutationInput> =
+export const VehicleEmergencyCallUpdateManyMutationInputSchema: z.ZodType<Prisma.VehicleEmergencyCallUpdateManyMutationInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
     status: z
       .union([
-        z.lazy(() => StatusAtendimentoSchema),
-        z.lazy(() => EnumStatusAtendimentoFieldUpdateOperationsInputSchema),
+        z.lazy(() => EmergencyCallStatusSchema),
+        z.lazy(() => EnumEmergencyCallStatusFieldUpdateOperationsInputSchema),
       ])
       .optional(),
   });
 
-export const VeiculoAtendimentoUncheckedUpdateManyInputSchema: z.ZodType<Prisma.VeiculoAtendimentoUncheckedUpdateManyInput> =
+export const VehicleEmergencyCallUncheckedUpdateManyInputSchema: z.ZodType<Prisma.VehicleEmergencyCallUncheckedUpdateManyInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
     status: z
       .union([
-        z.lazy(() => StatusAtendimentoSchema),
-        z.lazy(() => EnumStatusAtendimentoFieldUpdateOperationsInputSchema),
+        z.lazy(() => EmergencyCallStatusSchema),
+        z.lazy(() => EnumEmergencyCallStatusFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    veiculoId: z
+    vehicleId: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    atendimentoId: z
+    emergencyCallId: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
   });
 
-export const ConversaCreateInputSchema: z.ZodType<Prisma.ConversaCreateInput> =
+export const ConversationCreateInputSchema: z.ZodType<Prisma.ConversationCreateInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    atendente: z.lazy(
-      () => UsuarioCreateNestedOneWithoutConversasComoAtendenteInputSchema,
+    attendant: z.lazy(
+      () => UserCreateNestedOneWithoutConversationsAsAttendantInputSchema,
     ),
-    motorista: z.lazy(
-      () => UsuarioCreateNestedOneWithoutConversasComoMotoristaInputSchema,
+    driver: z.lazy(
+      () => UserCreateNestedOneWithoutConversationsAsDriverInputSchema,
     ),
-    mensagens: z
-      .lazy(() => MensagemCreateNestedManyWithoutConversaInputSchema)
+    messages: z
+      .lazy(() => MessageCreateNestedManyWithoutConversationInputSchema)
       .optional(),
   });
 
-export const ConversaUncheckedCreateInputSchema: z.ZodType<Prisma.ConversaUncheckedCreateInput> =
+export const ConversationUncheckedCreateInputSchema: z.ZodType<Prisma.ConversationUncheckedCreateInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    atendenteId: z.string(),
-    motoristaId: z.string(),
-    mensagens: z
-      .lazy(() => MensagemUncheckedCreateNestedManyWithoutConversaInputSchema)
+    attendantId: z.string(),
+    driverId: z.string(),
+    messages: z
+      .lazy(
+        () => MessageUncheckedCreateNestedManyWithoutConversationInputSchema,
+      )
       .optional(),
   });
 
-export const ConversaUpdateInputSchema: z.ZodType<Prisma.ConversaUpdateInput> =
+export const ConversationUpdateInputSchema: z.ZodType<Prisma.ConversationUpdateInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    atendente: z
+    attendant: z
       .lazy(
         () =>
-          UsuarioUpdateOneRequiredWithoutConversasComoAtendenteNestedInputSchema,
+          UserUpdateOneRequiredWithoutConversationsAsAttendantNestedInputSchema,
       )
       .optional(),
-    motorista: z
+    driver: z
       .lazy(
         () =>
-          UsuarioUpdateOneRequiredWithoutConversasComoMotoristaNestedInputSchema,
+          UserUpdateOneRequiredWithoutConversationsAsDriverNestedInputSchema,
       )
       .optional(),
-    mensagens: z
-      .lazy(() => MensagemUpdateManyWithoutConversaNestedInputSchema)
+    messages: z
+      .lazy(() => MessageUpdateManyWithoutConversationNestedInputSchema)
       .optional(),
   });
 
-export const ConversaUncheckedUpdateInputSchema: z.ZodType<Prisma.ConversaUncheckedUpdateInput> =
+export const ConversationUncheckedUpdateInputSchema: z.ZodType<Prisma.ConversationUncheckedUpdateInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    atendenteId: z
+    attendantId: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    motoristaId: z
+    driverId: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    mensagens: z
-      .lazy(() => MensagemUncheckedUpdateManyWithoutConversaNestedInputSchema)
-      .optional(),
-  });
-
-export const ConversaCreateManyInputSchema: z.ZodType<Prisma.ConversaCreateManyInput> =
-  z.strictObject({
-    id: z.uuid().optional(),
-    atendenteId: z.string(),
-    motoristaId: z.string(),
-  });
-
-export const ConversaUpdateManyMutationInputSchema: z.ZodType<Prisma.ConversaUpdateManyMutationInput> =
-  z.strictObject({
-    id: z
-      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-  });
-
-export const ConversaUncheckedUpdateManyInputSchema: z.ZodType<Prisma.ConversaUncheckedUpdateManyInput> =
-  z.strictObject({
-    id: z
-      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    atendenteId: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    motoristaId: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-  });
-
-export const MensagemCreateInputSchema: z.ZodType<Prisma.MensagemCreateInput> =
-  z.strictObject({
-    id: z.uuid().optional(),
-    texto: z.string(),
-    dataDeEnvio: z.coerce.date().optional(),
-    quemMandou: z.lazy(
-      () => UsuarioCreateNestedOneWithoutMensagensEnviadasInputSchema,
-    ),
-    conversa: z.lazy(() => ConversaCreateNestedOneWithoutMensagensInputSchema),
-  });
-
-export const MensagemUncheckedCreateInputSchema: z.ZodType<Prisma.MensagemUncheckedCreateInput> =
-  z.strictObject({
-    id: z.uuid().optional(),
-    texto: z.string(),
-    dataDeEnvio: z.coerce.date().optional(),
-    quemMandouId: z.string(),
-    conversaId: z.string(),
-  });
-
-export const MensagemUpdateInputSchema: z.ZodType<Prisma.MensagemUpdateInput> =
-  z.strictObject({
-    id: z
-      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    texto: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    dataDeEnvio: z
-      .union([
-        z.coerce.date(),
-        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
-      ])
-      .optional(),
-    quemMandou: z
+    messages: z
       .lazy(
-        () => UsuarioUpdateOneRequiredWithoutMensagensEnviadasNestedInputSchema,
+        () => MessageUncheckedUpdateManyWithoutConversationNestedInputSchema,
       )
       .optional(),
-    conversa: z
-      .lazy(() => ConversaUpdateOneRequiredWithoutMensagensNestedInputSchema)
-      .optional(),
   });
 
-export const MensagemUncheckedUpdateInputSchema: z.ZodType<Prisma.MensagemUncheckedUpdateInput> =
-  z.strictObject({
-    id: z
-      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    texto: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    dataDeEnvio: z
-      .union([
-        z.coerce.date(),
-        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
-      ])
-      .optional(),
-    quemMandouId: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    conversaId: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-  });
-
-export const MensagemCreateManyInputSchema: z.ZodType<Prisma.MensagemCreateManyInput> =
+export const ConversationCreateManyInputSchema: z.ZodType<Prisma.ConversationCreateManyInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    texto: z.string(),
-    dataDeEnvio: z.coerce.date().optional(),
-    quemMandouId: z.string(),
-    conversaId: z.string(),
+    attendantId: z.string(),
+    driverId: z.string(),
   });
 
-export const MensagemUpdateManyMutationInputSchema: z.ZodType<Prisma.MensagemUpdateManyMutationInput> =
+export const ConversationUpdateManyMutationInputSchema: z.ZodType<Prisma.ConversationUpdateManyMutationInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    texto: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    dataDeEnvio: z
-      .union([
-        z.coerce.date(),
-        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
-      ])
-      .optional(),
   });
 
-export const MensagemUncheckedUpdateManyInputSchema: z.ZodType<Prisma.MensagemUncheckedUpdateManyInput> =
+export const ConversationUncheckedUpdateManyInputSchema: z.ZodType<Prisma.ConversationUncheckedUpdateManyInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    texto: z
+    attendantId: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    dataDeEnvio: z
-      .union([
-        z.coerce.date(),
-        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
-      ])
-      .optional(),
-    quemMandouId: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    conversaId: z
+    driverId: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
   });
 
-export const NotificacaoCreateInputSchema: z.ZodType<Prisma.NotificacaoCreateInput> =
+export const MessageCreateInputSchema: z.ZodType<Prisma.MessageCreateInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    mensagem: z.string(),
-    dataDaNotificacao: z.coerce.date().optional(),
-    atendimento: z.lazy(
-      () => AtendimentoCreateNestedOneWithoutNotificacoesInputSchema,
+    text: z.string(),
+    sentAt: z.coerce.date().optional(),
+    sender: z.lazy(() => UserCreateNestedOneWithoutSentMessagesInputSchema),
+    conversation: z.lazy(
+      () => ConversationCreateNestedOneWithoutMessagesInputSchema,
     ),
   });
 
-export const NotificacaoUncheckedCreateInputSchema: z.ZodType<Prisma.NotificacaoUncheckedCreateInput> =
+export const MessageUncheckedCreateInputSchema: z.ZodType<Prisma.MessageUncheckedCreateInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    mensagem: z.string(),
-    dataDaNotificacao: z.coerce.date().optional(),
-    atendimentoId: z.string(),
+    text: z.string(),
+    sentAt: z.coerce.date().optional(),
+    senderId: z.string(),
+    conversationId: z.string(),
   });
 
-export const NotificacaoUpdateInputSchema: z.ZodType<Prisma.NotificacaoUpdateInput> =
+export const MessageUpdateInputSchema: z.ZodType<Prisma.MessageUpdateInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    mensagem: z
+    text: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    dataDaNotificacao: z
+    sentAt: z
       .union([
         z.coerce.date(),
         z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    atendimento: z
+    sender: z
+      .lazy(() => UserUpdateOneRequiredWithoutSentMessagesNestedInputSchema)
+      .optional(),
+    conversation: z
+      .lazy(() => ConversationUpdateOneRequiredWithoutMessagesNestedInputSchema)
+      .optional(),
+  });
+
+export const MessageUncheckedUpdateInputSchema: z.ZodType<Prisma.MessageUncheckedUpdateInput> =
+  z.strictObject({
+    id: z
+      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    text: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    sentAt: z
+      .union([
+        z.coerce.date(),
+        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
+      ])
+      .optional(),
+    senderId: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    conversationId: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+  });
+
+export const MessageCreateManyInputSchema: z.ZodType<Prisma.MessageCreateManyInput> =
+  z.strictObject({
+    id: z.uuid().optional(),
+    text: z.string(),
+    sentAt: z.coerce.date().optional(),
+    senderId: z.string(),
+    conversationId: z.string(),
+  });
+
+export const MessageUpdateManyMutationInputSchema: z.ZodType<Prisma.MessageUpdateManyMutationInput> =
+  z.strictObject({
+    id: z
+      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    text: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    sentAt: z
+      .union([
+        z.coerce.date(),
+        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
+      ])
+      .optional(),
+  });
+
+export const MessageUncheckedUpdateManyInputSchema: z.ZodType<Prisma.MessageUncheckedUpdateManyInput> =
+  z.strictObject({
+    id: z
+      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    text: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    sentAt: z
+      .union([
+        z.coerce.date(),
+        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
+      ])
+      .optional(),
+    senderId: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    conversationId: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+  });
+
+export const NotificationCreateInputSchema: z.ZodType<Prisma.NotificationCreateInput> =
+  z.strictObject({
+    id: z.uuid().optional(),
+    message: z.string(),
+    notifiedAt: z.coerce.date().optional(),
+    emergencyCall: z.lazy(
+      () => EmergencyCallCreateNestedOneWithoutNotificationsInputSchema,
+    ),
+  });
+
+export const NotificationUncheckedCreateInputSchema: z.ZodType<Prisma.NotificationUncheckedCreateInput> =
+  z.strictObject({
+    id: z.uuid().optional(),
+    message: z.string(),
+    notifiedAt: z.coerce.date().optional(),
+    emergencyCallId: z.string(),
+  });
+
+export const NotificationUpdateInputSchema: z.ZodType<Prisma.NotificationUpdateInput> =
+  z.strictObject({
+    id: z
+      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    message: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    notifiedAt: z
+      .union([
+        z.coerce.date(),
+        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
+      ])
+      .optional(),
+    emergencyCall: z
       .lazy(
-        () => AtendimentoUpdateOneRequiredWithoutNotificacoesNestedInputSchema,
+        () =>
+          EmergencyCallUpdateOneRequiredWithoutNotificationsNestedInputSchema,
       )
       .optional(),
   });
 
-export const NotificacaoUncheckedUpdateInputSchema: z.ZodType<Prisma.NotificacaoUncheckedUpdateInput> =
+export const NotificationUncheckedUpdateInputSchema: z.ZodType<Prisma.NotificationUncheckedUpdateInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    mensagem: z
+    message: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    dataDaNotificacao: z
+    notifiedAt: z
       .union([
         z.coerce.date(),
         z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    atendimentoId: z
+    emergencyCallId: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
   });
 
-export const NotificacaoCreateManyInputSchema: z.ZodType<Prisma.NotificacaoCreateManyInput> =
+export const NotificationCreateManyInputSchema: z.ZodType<Prisma.NotificationCreateManyInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    mensagem: z.string(),
-    dataDaNotificacao: z.coerce.date().optional(),
-    atendimentoId: z.string(),
+    message: z.string(),
+    notifiedAt: z.coerce.date().optional(),
+    emergencyCallId: z.string(),
   });
 
-export const NotificacaoUpdateManyMutationInputSchema: z.ZodType<Prisma.NotificacaoUpdateManyMutationInput> =
+export const NotificationUpdateManyMutationInputSchema: z.ZodType<Prisma.NotificationUpdateManyMutationInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    mensagem: z
+    message: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    dataDaNotificacao: z
+    notifiedAt: z
       .union([
         z.coerce.date(),
         z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
@@ -2885,21 +2911,21 @@ export const NotificacaoUpdateManyMutationInputSchema: z.ZodType<Prisma.Notifica
       .optional(),
   });
 
-export const NotificacaoUncheckedUpdateManyInputSchema: z.ZodType<Prisma.NotificacaoUncheckedUpdateManyInput> =
+export const NotificationUncheckedUpdateManyInputSchema: z.ZodType<Prisma.NotificationUncheckedUpdateManyInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    mensagem: z
+    message: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    dataDaNotificacao: z
+    notifiedAt: z
       .union([
         z.coerce.date(),
         z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    atendimentoId: z
+    emergencyCallId: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
   });
@@ -2922,40 +2948,40 @@ export const StringFilterSchema: z.ZodType<Prisma.StringFilter> =
       .optional(),
   });
 
-export const EnumTipoUsuarioFilterSchema: z.ZodType<Prisma.EnumTipoUsuarioFilter> =
+export const EnumUserRoleFilterSchema: z.ZodType<Prisma.EnumUserRoleFilter> =
   z.strictObject({
-    equals: z.lazy(() => TipoUsuarioSchema).optional(),
+    equals: z.lazy(() => UserRoleSchema).optional(),
     in: z
-      .lazy(() => TipoUsuarioSchema)
+      .lazy(() => UserRoleSchema)
       .array()
       .optional(),
     notIn: z
-      .lazy(() => TipoUsuarioSchema)
+      .lazy(() => UserRoleSchema)
       .array()
       .optional(),
     not: z
       .union([
-        z.lazy(() => TipoUsuarioSchema),
-        z.lazy(() => NestedEnumTipoUsuarioFilterSchema),
+        z.lazy(() => UserRoleSchema),
+        z.lazy(() => NestedEnumUserRoleFilterSchema),
       ])
       .optional(),
   });
 
-export const EnumStatusUsuarioFilterSchema: z.ZodType<Prisma.EnumStatusUsuarioFilter> =
+export const EnumUserStatusFilterSchema: z.ZodType<Prisma.EnumUserStatusFilter> =
   z.strictObject({
-    equals: z.lazy(() => StatusUsuarioSchema).optional(),
+    equals: z.lazy(() => UserStatusSchema).optional(),
     in: z
-      .lazy(() => StatusUsuarioSchema)
+      .lazy(() => UserStatusSchema)
       .array()
       .optional(),
     notIn: z
-      .lazy(() => StatusUsuarioSchema)
+      .lazy(() => UserStatusSchema)
       .array()
       .optional(),
     not: z
       .union([
-        z.lazy(() => StatusUsuarioSchema),
-        z.lazy(() => NestedEnumStatusUsuarioFilterSchema),
+        z.lazy(() => UserStatusSchema),
+        z.lazy(() => NestedEnumUserStatusFilterSchema),
       ])
       .optional(),
   });
@@ -2974,85 +3000,85 @@ export const DateTimeFilterSchema: z.ZodType<Prisma.DateTimeFilter> =
       .optional(),
   });
 
-export const VeiculoNullableScalarRelationFilterSchema: z.ZodType<Prisma.VeiculoNullableScalarRelationFilter> =
+export const VehicleNullableScalarRelationFilterSchema: z.ZodType<Prisma.VehicleNullableScalarRelationFilter> =
   z.strictObject({
     is: z
-      .lazy(() => VeiculoWhereInputSchema)
+      .lazy(() => VehicleWhereInputSchema)
       .optional()
       .nullable(),
     isNot: z
-      .lazy(() => VeiculoWhereInputSchema)
+      .lazy(() => VehicleWhereInputSchema)
       .optional()
       .nullable(),
   });
 
-export const AtendimentoListRelationFilterSchema: z.ZodType<Prisma.AtendimentoListRelationFilter> =
+export const EmergencyCallListRelationFilterSchema: z.ZodType<Prisma.EmergencyCallListRelationFilter> =
   z.strictObject({
-    every: z.lazy(() => AtendimentoWhereInputSchema).optional(),
-    some: z.lazy(() => AtendimentoWhereInputSchema).optional(),
-    none: z.lazy(() => AtendimentoWhereInputSchema).optional(),
+    every: z.lazy(() => EmergencyCallWhereInputSchema).optional(),
+    some: z.lazy(() => EmergencyCallWhereInputSchema).optional(),
+    none: z.lazy(() => EmergencyCallWhereInputSchema).optional(),
   });
 
-export const ConversaListRelationFilterSchema: z.ZodType<Prisma.ConversaListRelationFilter> =
+export const ConversationListRelationFilterSchema: z.ZodType<Prisma.ConversationListRelationFilter> =
   z.strictObject({
-    every: z.lazy(() => ConversaWhereInputSchema).optional(),
-    some: z.lazy(() => ConversaWhereInputSchema).optional(),
-    none: z.lazy(() => ConversaWhereInputSchema).optional(),
+    every: z.lazy(() => ConversationWhereInputSchema).optional(),
+    some: z.lazy(() => ConversationWhereInputSchema).optional(),
+    none: z.lazy(() => ConversationWhereInputSchema).optional(),
   });
 
-export const MensagemListRelationFilterSchema: z.ZodType<Prisma.MensagemListRelationFilter> =
+export const MessageListRelationFilterSchema: z.ZodType<Prisma.MessageListRelationFilter> =
   z.strictObject({
-    every: z.lazy(() => MensagemWhereInputSchema).optional(),
-    some: z.lazy(() => MensagemWhereInputSchema).optional(),
-    none: z.lazy(() => MensagemWhereInputSchema).optional(),
+    every: z.lazy(() => MessageWhereInputSchema).optional(),
+    some: z.lazy(() => MessageWhereInputSchema).optional(),
+    none: z.lazy(() => MessageWhereInputSchema).optional(),
   });
 
-export const AtendimentoOrderByRelationAggregateInputSchema: z.ZodType<Prisma.AtendimentoOrderByRelationAggregateInput> =
+export const EmergencyCallOrderByRelationAggregateInputSchema: z.ZodType<Prisma.EmergencyCallOrderByRelationAggregateInput> =
   z.strictObject({
     _count: z.lazy(() => SortOrderSchema).optional(),
   });
 
-export const ConversaOrderByRelationAggregateInputSchema: z.ZodType<Prisma.ConversaOrderByRelationAggregateInput> =
+export const ConversationOrderByRelationAggregateInputSchema: z.ZodType<Prisma.ConversationOrderByRelationAggregateInput> =
   z.strictObject({
     _count: z.lazy(() => SortOrderSchema).optional(),
   });
 
-export const MensagemOrderByRelationAggregateInputSchema: z.ZodType<Prisma.MensagemOrderByRelationAggregateInput> =
+export const MessageOrderByRelationAggregateInputSchema: z.ZodType<Prisma.MessageOrderByRelationAggregateInput> =
   z.strictObject({
     _count: z.lazy(() => SortOrderSchema).optional(),
   });
 
-export const UsuarioCountOrderByAggregateInputSchema: z.ZodType<Prisma.UsuarioCountOrderByAggregateInput> =
+export const UserCountOrderByAggregateInputSchema: z.ZodType<Prisma.UserCountOrderByAggregateInput> =
   z.strictObject({
     id: z.lazy(() => SortOrderSchema).optional(),
     email: z.lazy(() => SortOrderSchema).optional(),
-    senha: z.lazy(() => SortOrderSchema).optional(),
-    tipo: z.lazy(() => SortOrderSchema).optional(),
-    telefone: z.lazy(() => SortOrderSchema).optional(),
+    password: z.lazy(() => SortOrderSchema).optional(),
+    role: z.lazy(() => SortOrderSchema).optional(),
+    phone: z.lazy(() => SortOrderSchema).optional(),
     status: z.lazy(() => SortOrderSchema).optional(),
-    criadoEm: z.lazy(() => SortOrderSchema).optional(),
+    createdAt: z.lazy(() => SortOrderSchema).optional(),
   });
 
-export const UsuarioMaxOrderByAggregateInputSchema: z.ZodType<Prisma.UsuarioMaxOrderByAggregateInput> =
+export const UserMaxOrderByAggregateInputSchema: z.ZodType<Prisma.UserMaxOrderByAggregateInput> =
   z.strictObject({
     id: z.lazy(() => SortOrderSchema).optional(),
     email: z.lazy(() => SortOrderSchema).optional(),
-    senha: z.lazy(() => SortOrderSchema).optional(),
-    tipo: z.lazy(() => SortOrderSchema).optional(),
-    telefone: z.lazy(() => SortOrderSchema).optional(),
+    password: z.lazy(() => SortOrderSchema).optional(),
+    role: z.lazy(() => SortOrderSchema).optional(),
+    phone: z.lazy(() => SortOrderSchema).optional(),
     status: z.lazy(() => SortOrderSchema).optional(),
-    criadoEm: z.lazy(() => SortOrderSchema).optional(),
+    createdAt: z.lazy(() => SortOrderSchema).optional(),
   });
 
-export const UsuarioMinOrderByAggregateInputSchema: z.ZodType<Prisma.UsuarioMinOrderByAggregateInput> =
+export const UserMinOrderByAggregateInputSchema: z.ZodType<Prisma.UserMinOrderByAggregateInput> =
   z.strictObject({
     id: z.lazy(() => SortOrderSchema).optional(),
     email: z.lazy(() => SortOrderSchema).optional(),
-    senha: z.lazy(() => SortOrderSchema).optional(),
-    tipo: z.lazy(() => SortOrderSchema).optional(),
-    telefone: z.lazy(() => SortOrderSchema).optional(),
+    password: z.lazy(() => SortOrderSchema).optional(),
+    role: z.lazy(() => SortOrderSchema).optional(),
+    phone: z.lazy(() => SortOrderSchema).optional(),
     status: z.lazy(() => SortOrderSchema).optional(),
-    criadoEm: z.lazy(() => SortOrderSchema).optional(),
+    createdAt: z.lazy(() => SortOrderSchema).optional(),
   });
 
 export const StringWithAggregatesFilterSchema: z.ZodType<Prisma.StringWithAggregatesFilter> =
@@ -3076,48 +3102,48 @@ export const StringWithAggregatesFilterSchema: z.ZodType<Prisma.StringWithAggreg
     _max: z.lazy(() => NestedStringFilterSchema).optional(),
   });
 
-export const EnumTipoUsuarioWithAggregatesFilterSchema: z.ZodType<Prisma.EnumTipoUsuarioWithAggregatesFilter> =
+export const EnumUserRoleWithAggregatesFilterSchema: z.ZodType<Prisma.EnumUserRoleWithAggregatesFilter> =
   z.strictObject({
-    equals: z.lazy(() => TipoUsuarioSchema).optional(),
+    equals: z.lazy(() => UserRoleSchema).optional(),
     in: z
-      .lazy(() => TipoUsuarioSchema)
+      .lazy(() => UserRoleSchema)
       .array()
       .optional(),
     notIn: z
-      .lazy(() => TipoUsuarioSchema)
+      .lazy(() => UserRoleSchema)
       .array()
       .optional(),
     not: z
       .union([
-        z.lazy(() => TipoUsuarioSchema),
-        z.lazy(() => NestedEnumTipoUsuarioWithAggregatesFilterSchema),
+        z.lazy(() => UserRoleSchema),
+        z.lazy(() => NestedEnumUserRoleWithAggregatesFilterSchema),
       ])
       .optional(),
     _count: z.lazy(() => NestedIntFilterSchema).optional(),
-    _min: z.lazy(() => NestedEnumTipoUsuarioFilterSchema).optional(),
-    _max: z.lazy(() => NestedEnumTipoUsuarioFilterSchema).optional(),
+    _min: z.lazy(() => NestedEnumUserRoleFilterSchema).optional(),
+    _max: z.lazy(() => NestedEnumUserRoleFilterSchema).optional(),
   });
 
-export const EnumStatusUsuarioWithAggregatesFilterSchema: z.ZodType<Prisma.EnumStatusUsuarioWithAggregatesFilter> =
+export const EnumUserStatusWithAggregatesFilterSchema: z.ZodType<Prisma.EnumUserStatusWithAggregatesFilter> =
   z.strictObject({
-    equals: z.lazy(() => StatusUsuarioSchema).optional(),
+    equals: z.lazy(() => UserStatusSchema).optional(),
     in: z
-      .lazy(() => StatusUsuarioSchema)
+      .lazy(() => UserStatusSchema)
       .array()
       .optional(),
     notIn: z
-      .lazy(() => StatusUsuarioSchema)
+      .lazy(() => UserStatusSchema)
       .array()
       .optional(),
     not: z
       .union([
-        z.lazy(() => StatusUsuarioSchema),
-        z.lazy(() => NestedEnumStatusUsuarioWithAggregatesFilterSchema),
+        z.lazy(() => UserStatusSchema),
+        z.lazy(() => NestedEnumUserStatusWithAggregatesFilterSchema),
       ])
       .optional(),
     _count: z.lazy(() => NestedIntFilterSchema).optional(),
-    _min: z.lazy(() => NestedEnumStatusUsuarioFilterSchema).optional(),
-    _max: z.lazy(() => NestedEnumStatusUsuarioFilterSchema).optional(),
+    _min: z.lazy(() => NestedEnumUserStatusFilterSchema).optional(),
+    _max: z.lazy(() => NestedEnumUserStatusFilterSchema).optional(),
   });
 
 export const DateTimeWithAggregatesFilterSchema: z.ZodType<Prisma.DateTimeWithAggregatesFilter> =
@@ -3151,58 +3177,58 @@ export const FloatFilterSchema: z.ZodType<Prisma.FloatFilter> = z.strictObject({
   not: z.union([z.number(), z.lazy(() => NestedFloatFilterSchema)]).optional(),
 });
 
-export const UsuarioScalarRelationFilterSchema: z.ZodType<Prisma.UsuarioScalarRelationFilter> =
+export const UserScalarRelationFilterSchema: z.ZodType<Prisma.UserScalarRelationFilter> =
   z.strictObject({
-    is: z.lazy(() => UsuarioWhereInputSchema).optional(),
-    isNot: z.lazy(() => UsuarioWhereInputSchema).optional(),
+    is: z.lazy(() => UserWhereInputSchema).optional(),
+    isNot: z.lazy(() => UserWhereInputSchema).optional(),
   });
 
-export const VeiculoAtendimentoListRelationFilterSchema: z.ZodType<Prisma.VeiculoAtendimentoListRelationFilter> =
+export const VehicleEmergencyCallListRelationFilterSchema: z.ZodType<Prisma.VehicleEmergencyCallListRelationFilter> =
   z.strictObject({
-    every: z.lazy(() => VeiculoAtendimentoWhereInputSchema).optional(),
-    some: z.lazy(() => VeiculoAtendimentoWhereInputSchema).optional(),
-    none: z.lazy(() => VeiculoAtendimentoWhereInputSchema).optional(),
+    every: z.lazy(() => VehicleEmergencyCallWhereInputSchema).optional(),
+    some: z.lazy(() => VehicleEmergencyCallWhereInputSchema).optional(),
+    none: z.lazy(() => VehicleEmergencyCallWhereInputSchema).optional(),
   });
 
-export const VeiculoAtendimentoOrderByRelationAggregateInputSchema: z.ZodType<Prisma.VeiculoAtendimentoOrderByRelationAggregateInput> =
+export const VehicleEmergencyCallOrderByRelationAggregateInputSchema: z.ZodType<Prisma.VehicleEmergencyCallOrderByRelationAggregateInput> =
   z.strictObject({
     _count: z.lazy(() => SortOrderSchema).optional(),
   });
 
-export const VeiculoCountOrderByAggregateInputSchema: z.ZodType<Prisma.VeiculoCountOrderByAggregateInput> =
+export const VehicleCountOrderByAggregateInputSchema: z.ZodType<Prisma.VehicleCountOrderByAggregateInput> =
   z.strictObject({
     id: z.lazy(() => SortOrderSchema).optional(),
-    placa: z.lazy(() => SortOrderSchema).optional(),
+    plate: z.lazy(() => SortOrderSchema).optional(),
     latitude: z.lazy(() => SortOrderSchema).optional(),
     longitude: z.lazy(() => SortOrderSchema).optional(),
-    motoristaId: z.lazy(() => SortOrderSchema).optional(),
+    driverId: z.lazy(() => SortOrderSchema).optional(),
   });
 
-export const VeiculoAvgOrderByAggregateInputSchema: z.ZodType<Prisma.VeiculoAvgOrderByAggregateInput> =
+export const VehicleAvgOrderByAggregateInputSchema: z.ZodType<Prisma.VehicleAvgOrderByAggregateInput> =
   z.strictObject({
     latitude: z.lazy(() => SortOrderSchema).optional(),
     longitude: z.lazy(() => SortOrderSchema).optional(),
   });
 
-export const VeiculoMaxOrderByAggregateInputSchema: z.ZodType<Prisma.VeiculoMaxOrderByAggregateInput> =
-  z.strictObject({
-    id: z.lazy(() => SortOrderSchema).optional(),
-    placa: z.lazy(() => SortOrderSchema).optional(),
-    latitude: z.lazy(() => SortOrderSchema).optional(),
-    longitude: z.lazy(() => SortOrderSchema).optional(),
-    motoristaId: z.lazy(() => SortOrderSchema).optional(),
-  });
-
-export const VeiculoMinOrderByAggregateInputSchema: z.ZodType<Prisma.VeiculoMinOrderByAggregateInput> =
+export const VehicleMaxOrderByAggregateInputSchema: z.ZodType<Prisma.VehicleMaxOrderByAggregateInput> =
   z.strictObject({
     id: z.lazy(() => SortOrderSchema).optional(),
-    placa: z.lazy(() => SortOrderSchema).optional(),
+    plate: z.lazy(() => SortOrderSchema).optional(),
     latitude: z.lazy(() => SortOrderSchema).optional(),
     longitude: z.lazy(() => SortOrderSchema).optional(),
-    motoristaId: z.lazy(() => SortOrderSchema).optional(),
+    driverId: z.lazy(() => SortOrderSchema).optional(),
   });
 
-export const VeiculoSumOrderByAggregateInputSchema: z.ZodType<Prisma.VeiculoSumOrderByAggregateInput> =
+export const VehicleMinOrderByAggregateInputSchema: z.ZodType<Prisma.VehicleMinOrderByAggregateInput> =
+  z.strictObject({
+    id: z.lazy(() => SortOrderSchema).optional(),
+    plate: z.lazy(() => SortOrderSchema).optional(),
+    latitude: z.lazy(() => SortOrderSchema).optional(),
+    longitude: z.lazy(() => SortOrderSchema).optional(),
+    driverId: z.lazy(() => SortOrderSchema).optional(),
+  });
+
+export const VehicleSumOrderByAggregateInputSchema: z.ZodType<Prisma.VehicleSumOrderByAggregateInput> =
   z.strictObject({
     latitude: z.lazy(() => SortOrderSchema).optional(),
     longitude: z.lazy(() => SortOrderSchema).optional(),
@@ -3272,11 +3298,11 @@ export const StringNullableFilterSchema: z.ZodType<Prisma.StringNullableFilter> 
       .nullable(),
   });
 
-export const NotificacaoListRelationFilterSchema: z.ZodType<Prisma.NotificacaoListRelationFilter> =
+export const NotificationListRelationFilterSchema: z.ZodType<Prisma.NotificationListRelationFilter> =
   z.strictObject({
-    every: z.lazy(() => NotificacaoWhereInputSchema).optional(),
-    some: z.lazy(() => NotificacaoWhereInputSchema).optional(),
-    none: z.lazy(() => NotificacaoWhereInputSchema).optional(),
+    every: z.lazy(() => NotificationWhereInputSchema).optional(),
+    some: z.lazy(() => NotificationWhereInputSchema).optional(),
+    none: z.lazy(() => NotificationWhereInputSchema).optional(),
   });
 
 export const SortOrderInputSchema: z.ZodType<Prisma.SortOrderInput> =
@@ -3285,69 +3311,69 @@ export const SortOrderInputSchema: z.ZodType<Prisma.SortOrderInput> =
     nulls: z.lazy(() => NullsOrderSchema).optional(),
   });
 
-export const NotificacaoOrderByRelationAggregateInputSchema: z.ZodType<Prisma.NotificacaoOrderByRelationAggregateInput> =
+export const NotificationOrderByRelationAggregateInputSchema: z.ZodType<Prisma.NotificationOrderByRelationAggregateInput> =
   z.strictObject({
     _count: z.lazy(() => SortOrderSchema).optional(),
   });
 
-export const AtendimentoCountOrderByAggregateInputSchema: z.ZodType<Prisma.AtendimentoCountOrderByAggregateInput> =
+export const EmergencyCallCountOrderByAggregateInputSchema: z.ZodType<Prisma.EmergencyCallCountOrderByAggregateInput> =
   z.strictObject({
     id: z.lazy(() => SortOrderSchema).optional(),
-    protocolo: z.lazy(() => SortOrderSchema).optional(),
-    endereco: z.lazy(() => SortOrderSchema).optional(),
-    localDeRetorno: z.lazy(() => SortOrderSchema).optional(),
-    oQueAconteceu: z.lazy(() => SortOrderSchema).optional(),
-    estadoDoPaciente: z.lazy(() => SortOrderSchema).optional(),
-    idadeAparente: z.lazy(() => SortOrderSchema).optional(),
-    quantidadeDePacientes: z.lazy(() => SortOrderSchema).optional(),
-    estadoDaLesao: z.lazy(() => SortOrderSchema).optional(),
-    observacoes: z.lazy(() => SortOrderSchema).optional(),
-    atendenteId: z.lazy(() => SortOrderSchema).optional(),
-    criadoEm: z.lazy(() => SortOrderSchema).optional(),
+    protocol: z.lazy(() => SortOrderSchema).optional(),
+    address: z.lazy(() => SortOrderSchema).optional(),
+    returnLocation: z.lazy(() => SortOrderSchema).optional(),
+    whatHappened: z.lazy(() => SortOrderSchema).optional(),
+    patientCondition: z.lazy(() => SortOrderSchema).optional(),
+    apparentAge: z.lazy(() => SortOrderSchema).optional(),
+    patientCount: z.lazy(() => SortOrderSchema).optional(),
+    injuryCondition: z.lazy(() => SortOrderSchema).optional(),
+    observations: z.lazy(() => SortOrderSchema).optional(),
+    attendantId: z.lazy(() => SortOrderSchema).optional(),
+    createdAt: z.lazy(() => SortOrderSchema).optional(),
   });
 
-export const AtendimentoAvgOrderByAggregateInputSchema: z.ZodType<Prisma.AtendimentoAvgOrderByAggregateInput> =
+export const EmergencyCallAvgOrderByAggregateInputSchema: z.ZodType<Prisma.EmergencyCallAvgOrderByAggregateInput> =
   z.strictObject({
-    idadeAparente: z.lazy(() => SortOrderSchema).optional(),
-    quantidadeDePacientes: z.lazy(() => SortOrderSchema).optional(),
+    apparentAge: z.lazy(() => SortOrderSchema).optional(),
+    patientCount: z.lazy(() => SortOrderSchema).optional(),
   });
 
-export const AtendimentoMaxOrderByAggregateInputSchema: z.ZodType<Prisma.AtendimentoMaxOrderByAggregateInput> =
-  z.strictObject({
-    id: z.lazy(() => SortOrderSchema).optional(),
-    protocolo: z.lazy(() => SortOrderSchema).optional(),
-    endereco: z.lazy(() => SortOrderSchema).optional(),
-    localDeRetorno: z.lazy(() => SortOrderSchema).optional(),
-    oQueAconteceu: z.lazy(() => SortOrderSchema).optional(),
-    estadoDoPaciente: z.lazy(() => SortOrderSchema).optional(),
-    idadeAparente: z.lazy(() => SortOrderSchema).optional(),
-    quantidadeDePacientes: z.lazy(() => SortOrderSchema).optional(),
-    estadoDaLesao: z.lazy(() => SortOrderSchema).optional(),
-    observacoes: z.lazy(() => SortOrderSchema).optional(),
-    atendenteId: z.lazy(() => SortOrderSchema).optional(),
-    criadoEm: z.lazy(() => SortOrderSchema).optional(),
-  });
-
-export const AtendimentoMinOrderByAggregateInputSchema: z.ZodType<Prisma.AtendimentoMinOrderByAggregateInput> =
+export const EmergencyCallMaxOrderByAggregateInputSchema: z.ZodType<Prisma.EmergencyCallMaxOrderByAggregateInput> =
   z.strictObject({
     id: z.lazy(() => SortOrderSchema).optional(),
-    protocolo: z.lazy(() => SortOrderSchema).optional(),
-    endereco: z.lazy(() => SortOrderSchema).optional(),
-    localDeRetorno: z.lazy(() => SortOrderSchema).optional(),
-    oQueAconteceu: z.lazy(() => SortOrderSchema).optional(),
-    estadoDoPaciente: z.lazy(() => SortOrderSchema).optional(),
-    idadeAparente: z.lazy(() => SortOrderSchema).optional(),
-    quantidadeDePacientes: z.lazy(() => SortOrderSchema).optional(),
-    estadoDaLesao: z.lazy(() => SortOrderSchema).optional(),
-    observacoes: z.lazy(() => SortOrderSchema).optional(),
-    atendenteId: z.lazy(() => SortOrderSchema).optional(),
-    criadoEm: z.lazy(() => SortOrderSchema).optional(),
+    protocol: z.lazy(() => SortOrderSchema).optional(),
+    address: z.lazy(() => SortOrderSchema).optional(),
+    returnLocation: z.lazy(() => SortOrderSchema).optional(),
+    whatHappened: z.lazy(() => SortOrderSchema).optional(),
+    patientCondition: z.lazy(() => SortOrderSchema).optional(),
+    apparentAge: z.lazy(() => SortOrderSchema).optional(),
+    patientCount: z.lazy(() => SortOrderSchema).optional(),
+    injuryCondition: z.lazy(() => SortOrderSchema).optional(),
+    observations: z.lazy(() => SortOrderSchema).optional(),
+    attendantId: z.lazy(() => SortOrderSchema).optional(),
+    createdAt: z.lazy(() => SortOrderSchema).optional(),
   });
 
-export const AtendimentoSumOrderByAggregateInputSchema: z.ZodType<Prisma.AtendimentoSumOrderByAggregateInput> =
+export const EmergencyCallMinOrderByAggregateInputSchema: z.ZodType<Prisma.EmergencyCallMinOrderByAggregateInput> =
   z.strictObject({
-    idadeAparente: z.lazy(() => SortOrderSchema).optional(),
-    quantidadeDePacientes: z.lazy(() => SortOrderSchema).optional(),
+    id: z.lazy(() => SortOrderSchema).optional(),
+    protocol: z.lazy(() => SortOrderSchema).optional(),
+    address: z.lazy(() => SortOrderSchema).optional(),
+    returnLocation: z.lazy(() => SortOrderSchema).optional(),
+    whatHappened: z.lazy(() => SortOrderSchema).optional(),
+    patientCondition: z.lazy(() => SortOrderSchema).optional(),
+    apparentAge: z.lazy(() => SortOrderSchema).optional(),
+    patientCount: z.lazy(() => SortOrderSchema).optional(),
+    injuryCondition: z.lazy(() => SortOrderSchema).optional(),
+    observations: z.lazy(() => SortOrderSchema).optional(),
+    attendantId: z.lazy(() => SortOrderSchema).optional(),
+    createdAt: z.lazy(() => SortOrderSchema).optional(),
+  });
+
+export const EmergencyCallSumOrderByAggregateInputSchema: z.ZodType<Prisma.EmergencyCallSumOrderByAggregateInput> =
+  z.strictObject({
+    apparentAge: z.lazy(() => SortOrderSchema).optional(),
+    patientCount: z.lazy(() => SortOrderSchema).optional(),
   });
 
 export const IntNullableWithAggregatesFilterSchema: z.ZodType<Prisma.IntNullableWithAggregatesFilter> =
@@ -3417,433 +3443,425 @@ export const StringNullableWithAggregatesFilterSchema: z.ZodType<Prisma.StringNu
     _max: z.lazy(() => NestedStringNullableFilterSchema).optional(),
   });
 
-export const EnumStatusAtendimentoFilterSchema: z.ZodType<Prisma.EnumStatusAtendimentoFilter> =
+export const EnumEmergencyCallStatusFilterSchema: z.ZodType<Prisma.EnumEmergencyCallStatusFilter> =
   z.strictObject({
-    equals: z.lazy(() => StatusAtendimentoSchema).optional(),
+    equals: z.lazy(() => EmergencyCallStatusSchema).optional(),
     in: z
-      .lazy(() => StatusAtendimentoSchema)
+      .lazy(() => EmergencyCallStatusSchema)
       .array()
       .optional(),
     notIn: z
-      .lazy(() => StatusAtendimentoSchema)
+      .lazy(() => EmergencyCallStatusSchema)
       .array()
       .optional(),
     not: z
       .union([
-        z.lazy(() => StatusAtendimentoSchema),
-        z.lazy(() => NestedEnumStatusAtendimentoFilterSchema),
+        z.lazy(() => EmergencyCallStatusSchema),
+        z.lazy(() => NestedEnumEmergencyCallStatusFilterSchema),
       ])
       .optional(),
   });
 
-export const VeiculoScalarRelationFilterSchema: z.ZodType<Prisma.VeiculoScalarRelationFilter> =
+export const VehicleScalarRelationFilterSchema: z.ZodType<Prisma.VehicleScalarRelationFilter> =
   z.strictObject({
-    is: z.lazy(() => VeiculoWhereInputSchema).optional(),
-    isNot: z.lazy(() => VeiculoWhereInputSchema).optional(),
+    is: z.lazy(() => VehicleWhereInputSchema).optional(),
+    isNot: z.lazy(() => VehicleWhereInputSchema).optional(),
   });
 
-export const AtendimentoScalarRelationFilterSchema: z.ZodType<Prisma.AtendimentoScalarRelationFilter> =
+export const EmergencyCallScalarRelationFilterSchema: z.ZodType<Prisma.EmergencyCallScalarRelationFilter> =
   z.strictObject({
-    is: z.lazy(() => AtendimentoWhereInputSchema).optional(),
-    isNot: z.lazy(() => AtendimentoWhereInputSchema).optional(),
+    is: z.lazy(() => EmergencyCallWhereInputSchema).optional(),
+    isNot: z.lazy(() => EmergencyCallWhereInputSchema).optional(),
   });
 
-export const VeiculoAtendimentoCountOrderByAggregateInputSchema: z.ZodType<Prisma.VeiculoAtendimentoCountOrderByAggregateInput> =
+export const VehicleEmergencyCallCountOrderByAggregateInputSchema: z.ZodType<Prisma.VehicleEmergencyCallCountOrderByAggregateInput> =
   z.strictObject({
     id: z.lazy(() => SortOrderSchema).optional(),
     status: z.lazy(() => SortOrderSchema).optional(),
-    veiculoId: z.lazy(() => SortOrderSchema).optional(),
-    atendimentoId: z.lazy(() => SortOrderSchema).optional(),
+    vehicleId: z.lazy(() => SortOrderSchema).optional(),
+    emergencyCallId: z.lazy(() => SortOrderSchema).optional(),
   });
 
-export const VeiculoAtendimentoMaxOrderByAggregateInputSchema: z.ZodType<Prisma.VeiculoAtendimentoMaxOrderByAggregateInput> =
+export const VehicleEmergencyCallMaxOrderByAggregateInputSchema: z.ZodType<Prisma.VehicleEmergencyCallMaxOrderByAggregateInput> =
   z.strictObject({
     id: z.lazy(() => SortOrderSchema).optional(),
     status: z.lazy(() => SortOrderSchema).optional(),
-    veiculoId: z.lazy(() => SortOrderSchema).optional(),
-    atendimentoId: z.lazy(() => SortOrderSchema).optional(),
+    vehicleId: z.lazy(() => SortOrderSchema).optional(),
+    emergencyCallId: z.lazy(() => SortOrderSchema).optional(),
   });
 
-export const VeiculoAtendimentoMinOrderByAggregateInputSchema: z.ZodType<Prisma.VeiculoAtendimentoMinOrderByAggregateInput> =
+export const VehicleEmergencyCallMinOrderByAggregateInputSchema: z.ZodType<Prisma.VehicleEmergencyCallMinOrderByAggregateInput> =
   z.strictObject({
     id: z.lazy(() => SortOrderSchema).optional(),
     status: z.lazy(() => SortOrderSchema).optional(),
-    veiculoId: z.lazy(() => SortOrderSchema).optional(),
-    atendimentoId: z.lazy(() => SortOrderSchema).optional(),
+    vehicleId: z.lazy(() => SortOrderSchema).optional(),
+    emergencyCallId: z.lazy(() => SortOrderSchema).optional(),
   });
 
-export const EnumStatusAtendimentoWithAggregatesFilterSchema: z.ZodType<Prisma.EnumStatusAtendimentoWithAggregatesFilter> =
+export const EnumEmergencyCallStatusWithAggregatesFilterSchema: z.ZodType<Prisma.EnumEmergencyCallStatusWithAggregatesFilter> =
   z.strictObject({
-    equals: z.lazy(() => StatusAtendimentoSchema).optional(),
+    equals: z.lazy(() => EmergencyCallStatusSchema).optional(),
     in: z
-      .lazy(() => StatusAtendimentoSchema)
+      .lazy(() => EmergencyCallStatusSchema)
       .array()
       .optional(),
     notIn: z
-      .lazy(() => StatusAtendimentoSchema)
+      .lazy(() => EmergencyCallStatusSchema)
       .array()
       .optional(),
     not: z
       .union([
-        z.lazy(() => StatusAtendimentoSchema),
-        z.lazy(() => NestedEnumStatusAtendimentoWithAggregatesFilterSchema),
+        z.lazy(() => EmergencyCallStatusSchema),
+        z.lazy(() => NestedEnumEmergencyCallStatusWithAggregatesFilterSchema),
       ])
       .optional(),
     _count: z.lazy(() => NestedIntFilterSchema).optional(),
-    _min: z.lazy(() => NestedEnumStatusAtendimentoFilterSchema).optional(),
-    _max: z.lazy(() => NestedEnumStatusAtendimentoFilterSchema).optional(),
+    _min: z.lazy(() => NestedEnumEmergencyCallStatusFilterSchema).optional(),
+    _max: z.lazy(() => NestedEnumEmergencyCallStatusFilterSchema).optional(),
   });
 
-export const ConversaCountOrderByAggregateInputSchema: z.ZodType<Prisma.ConversaCountOrderByAggregateInput> =
+export const ConversationCountOrderByAggregateInputSchema: z.ZodType<Prisma.ConversationCountOrderByAggregateInput> =
   z.strictObject({
     id: z.lazy(() => SortOrderSchema).optional(),
-    atendenteId: z.lazy(() => SortOrderSchema).optional(),
-    motoristaId: z.lazy(() => SortOrderSchema).optional(),
+    attendantId: z.lazy(() => SortOrderSchema).optional(),
+    driverId: z.lazy(() => SortOrderSchema).optional(),
   });
 
-export const ConversaMaxOrderByAggregateInputSchema: z.ZodType<Prisma.ConversaMaxOrderByAggregateInput> =
+export const ConversationMaxOrderByAggregateInputSchema: z.ZodType<Prisma.ConversationMaxOrderByAggregateInput> =
   z.strictObject({
     id: z.lazy(() => SortOrderSchema).optional(),
-    atendenteId: z.lazy(() => SortOrderSchema).optional(),
-    motoristaId: z.lazy(() => SortOrderSchema).optional(),
+    attendantId: z.lazy(() => SortOrderSchema).optional(),
+    driverId: z.lazy(() => SortOrderSchema).optional(),
   });
 
-export const ConversaMinOrderByAggregateInputSchema: z.ZodType<Prisma.ConversaMinOrderByAggregateInput> =
+export const ConversationMinOrderByAggregateInputSchema: z.ZodType<Prisma.ConversationMinOrderByAggregateInput> =
   z.strictObject({
     id: z.lazy(() => SortOrderSchema).optional(),
-    atendenteId: z.lazy(() => SortOrderSchema).optional(),
-    motoristaId: z.lazy(() => SortOrderSchema).optional(),
+    attendantId: z.lazy(() => SortOrderSchema).optional(),
+    driverId: z.lazy(() => SortOrderSchema).optional(),
   });
 
-export const ConversaScalarRelationFilterSchema: z.ZodType<Prisma.ConversaScalarRelationFilter> =
+export const ConversationScalarRelationFilterSchema: z.ZodType<Prisma.ConversationScalarRelationFilter> =
   z.strictObject({
-    is: z.lazy(() => ConversaWhereInputSchema).optional(),
-    isNot: z.lazy(() => ConversaWhereInputSchema).optional(),
+    is: z.lazy(() => ConversationWhereInputSchema).optional(),
+    isNot: z.lazy(() => ConversationWhereInputSchema).optional(),
   });
 
-export const MensagemCountOrderByAggregateInputSchema: z.ZodType<Prisma.MensagemCountOrderByAggregateInput> =
-  z.strictObject({
-    id: z.lazy(() => SortOrderSchema).optional(),
-    texto: z.lazy(() => SortOrderSchema).optional(),
-    dataDeEnvio: z.lazy(() => SortOrderSchema).optional(),
-    quemMandouId: z.lazy(() => SortOrderSchema).optional(),
-    conversaId: z.lazy(() => SortOrderSchema).optional(),
-  });
-
-export const MensagemMaxOrderByAggregateInputSchema: z.ZodType<Prisma.MensagemMaxOrderByAggregateInput> =
+export const MessageCountOrderByAggregateInputSchema: z.ZodType<Prisma.MessageCountOrderByAggregateInput> =
   z.strictObject({
     id: z.lazy(() => SortOrderSchema).optional(),
-    texto: z.lazy(() => SortOrderSchema).optional(),
-    dataDeEnvio: z.lazy(() => SortOrderSchema).optional(),
-    quemMandouId: z.lazy(() => SortOrderSchema).optional(),
-    conversaId: z.lazy(() => SortOrderSchema).optional(),
+    text: z.lazy(() => SortOrderSchema).optional(),
+    sentAt: z.lazy(() => SortOrderSchema).optional(),
+    senderId: z.lazy(() => SortOrderSchema).optional(),
+    conversationId: z.lazy(() => SortOrderSchema).optional(),
   });
 
-export const MensagemMinOrderByAggregateInputSchema: z.ZodType<Prisma.MensagemMinOrderByAggregateInput> =
+export const MessageMaxOrderByAggregateInputSchema: z.ZodType<Prisma.MessageMaxOrderByAggregateInput> =
   z.strictObject({
     id: z.lazy(() => SortOrderSchema).optional(),
-    texto: z.lazy(() => SortOrderSchema).optional(),
-    dataDeEnvio: z.lazy(() => SortOrderSchema).optional(),
-    quemMandouId: z.lazy(() => SortOrderSchema).optional(),
-    conversaId: z.lazy(() => SortOrderSchema).optional(),
+    text: z.lazy(() => SortOrderSchema).optional(),
+    sentAt: z.lazy(() => SortOrderSchema).optional(),
+    senderId: z.lazy(() => SortOrderSchema).optional(),
+    conversationId: z.lazy(() => SortOrderSchema).optional(),
   });
 
-export const NotificacaoCountOrderByAggregateInputSchema: z.ZodType<Prisma.NotificacaoCountOrderByAggregateInput> =
+export const MessageMinOrderByAggregateInputSchema: z.ZodType<Prisma.MessageMinOrderByAggregateInput> =
   z.strictObject({
     id: z.lazy(() => SortOrderSchema).optional(),
-    mensagem: z.lazy(() => SortOrderSchema).optional(),
-    dataDaNotificacao: z.lazy(() => SortOrderSchema).optional(),
-    atendimentoId: z.lazy(() => SortOrderSchema).optional(),
+    text: z.lazy(() => SortOrderSchema).optional(),
+    sentAt: z.lazy(() => SortOrderSchema).optional(),
+    senderId: z.lazy(() => SortOrderSchema).optional(),
+    conversationId: z.lazy(() => SortOrderSchema).optional(),
   });
 
-export const NotificacaoMaxOrderByAggregateInputSchema: z.ZodType<Prisma.NotificacaoMaxOrderByAggregateInput> =
+export const NotificationCountOrderByAggregateInputSchema: z.ZodType<Prisma.NotificationCountOrderByAggregateInput> =
   z.strictObject({
     id: z.lazy(() => SortOrderSchema).optional(),
-    mensagem: z.lazy(() => SortOrderSchema).optional(),
-    dataDaNotificacao: z.lazy(() => SortOrderSchema).optional(),
-    atendimentoId: z.lazy(() => SortOrderSchema).optional(),
+    message: z.lazy(() => SortOrderSchema).optional(),
+    notifiedAt: z.lazy(() => SortOrderSchema).optional(),
+    emergencyCallId: z.lazy(() => SortOrderSchema).optional(),
   });
 
-export const NotificacaoMinOrderByAggregateInputSchema: z.ZodType<Prisma.NotificacaoMinOrderByAggregateInput> =
+export const NotificationMaxOrderByAggregateInputSchema: z.ZodType<Prisma.NotificationMaxOrderByAggregateInput> =
   z.strictObject({
     id: z.lazy(() => SortOrderSchema).optional(),
-    mensagem: z.lazy(() => SortOrderSchema).optional(),
-    dataDaNotificacao: z.lazy(() => SortOrderSchema).optional(),
-    atendimentoId: z.lazy(() => SortOrderSchema).optional(),
+    message: z.lazy(() => SortOrderSchema).optional(),
+    notifiedAt: z.lazy(() => SortOrderSchema).optional(),
+    emergencyCallId: z.lazy(() => SortOrderSchema).optional(),
   });
 
-export const VeiculoCreateNestedOneWithoutMotoristaInputSchema: z.ZodType<Prisma.VeiculoCreateNestedOneWithoutMotoristaInput> =
+export const NotificationMinOrderByAggregateInputSchema: z.ZodType<Prisma.NotificationMinOrderByAggregateInput> =
+  z.strictObject({
+    id: z.lazy(() => SortOrderSchema).optional(),
+    message: z.lazy(() => SortOrderSchema).optional(),
+    notifiedAt: z.lazy(() => SortOrderSchema).optional(),
+    emergencyCallId: z.lazy(() => SortOrderSchema).optional(),
+  });
+
+export const VehicleCreateNestedOneWithoutDriverInputSchema: z.ZodType<Prisma.VehicleCreateNestedOneWithoutDriverInput> =
   z.strictObject({
     create: z
       .union([
-        z.lazy(() => VeiculoCreateWithoutMotoristaInputSchema),
-        z.lazy(() => VeiculoUncheckedCreateWithoutMotoristaInputSchema),
+        z.lazy(() => VehicleCreateWithoutDriverInputSchema),
+        z.lazy(() => VehicleUncheckedCreateWithoutDriverInputSchema),
       ])
       .optional(),
     connectOrCreate: z
-      .lazy(() => VeiculoCreateOrConnectWithoutMotoristaInputSchema)
+      .lazy(() => VehicleCreateOrConnectWithoutDriverInputSchema)
       .optional(),
-    connect: z.lazy(() => VeiculoWhereUniqueInputSchema).optional(),
+    connect: z.lazy(() => VehicleWhereUniqueInputSchema).optional(),
   });
 
-export const AtendimentoCreateNestedManyWithoutAtendenteInputSchema: z.ZodType<Prisma.AtendimentoCreateNestedManyWithoutAtendenteInput> =
+export const EmergencyCallCreateNestedManyWithoutAttendantInputSchema: z.ZodType<Prisma.EmergencyCallCreateNestedManyWithoutAttendantInput> =
   z.strictObject({
     create: z
       .union([
-        z.lazy(() => AtendimentoCreateWithoutAtendenteInputSchema),
-        z.lazy(() => AtendimentoCreateWithoutAtendenteInputSchema).array(),
-        z.lazy(() => AtendimentoUncheckedCreateWithoutAtendenteInputSchema),
+        z.lazy(() => EmergencyCallCreateWithoutAttendantInputSchema),
+        z.lazy(() => EmergencyCallCreateWithoutAttendantInputSchema).array(),
+        z.lazy(() => EmergencyCallUncheckedCreateWithoutAttendantInputSchema),
         z
-          .lazy(() => AtendimentoUncheckedCreateWithoutAtendenteInputSchema)
+          .lazy(() => EmergencyCallUncheckedCreateWithoutAttendantInputSchema)
           .array(),
       ])
       .optional(),
     connectOrCreate: z
       .union([
-        z.lazy(() => AtendimentoCreateOrConnectWithoutAtendenteInputSchema),
+        z.lazy(() => EmergencyCallCreateOrConnectWithoutAttendantInputSchema),
         z
-          .lazy(() => AtendimentoCreateOrConnectWithoutAtendenteInputSchema)
+          .lazy(() => EmergencyCallCreateOrConnectWithoutAttendantInputSchema)
           .array(),
       ])
       .optional(),
     createMany: z
-      .lazy(() => AtendimentoCreateManyAtendenteInputEnvelopeSchema)
+      .lazy(() => EmergencyCallCreateManyAttendantInputEnvelopeSchema)
       .optional(),
     connect: z
       .union([
-        z.lazy(() => AtendimentoWhereUniqueInputSchema),
-        z.lazy(() => AtendimentoWhereUniqueInputSchema).array(),
+        z.lazy(() => EmergencyCallWhereUniqueInputSchema),
+        z.lazy(() => EmergencyCallWhereUniqueInputSchema).array(),
       ])
       .optional(),
   });
 
-export const ConversaCreateNestedManyWithoutAtendenteInputSchema: z.ZodType<Prisma.ConversaCreateNestedManyWithoutAtendenteInput> =
+export const ConversationCreateNestedManyWithoutAttendantInputSchema: z.ZodType<Prisma.ConversationCreateNestedManyWithoutAttendantInput> =
   z.strictObject({
     create: z
       .union([
-        z.lazy(() => ConversaCreateWithoutAtendenteInputSchema),
-        z.lazy(() => ConversaCreateWithoutAtendenteInputSchema).array(),
-        z.lazy(() => ConversaUncheckedCreateWithoutAtendenteInputSchema),
+        z.lazy(() => ConversationCreateWithoutAttendantInputSchema),
+        z.lazy(() => ConversationCreateWithoutAttendantInputSchema).array(),
+        z.lazy(() => ConversationUncheckedCreateWithoutAttendantInputSchema),
         z
-          .lazy(() => ConversaUncheckedCreateWithoutAtendenteInputSchema)
+          .lazy(() => ConversationUncheckedCreateWithoutAttendantInputSchema)
           .array(),
       ])
       .optional(),
     connectOrCreate: z
       .union([
-        z.lazy(() => ConversaCreateOrConnectWithoutAtendenteInputSchema),
+        z.lazy(() => ConversationCreateOrConnectWithoutAttendantInputSchema),
         z
-          .lazy(() => ConversaCreateOrConnectWithoutAtendenteInputSchema)
+          .lazy(() => ConversationCreateOrConnectWithoutAttendantInputSchema)
           .array(),
       ])
       .optional(),
     createMany: z
-      .lazy(() => ConversaCreateManyAtendenteInputEnvelopeSchema)
+      .lazy(() => ConversationCreateManyAttendantInputEnvelopeSchema)
       .optional(),
     connect: z
       .union([
-        z.lazy(() => ConversaWhereUniqueInputSchema),
-        z.lazy(() => ConversaWhereUniqueInputSchema).array(),
+        z.lazy(() => ConversationWhereUniqueInputSchema),
+        z.lazy(() => ConversationWhereUniqueInputSchema).array(),
       ])
       .optional(),
   });
 
-export const ConversaCreateNestedManyWithoutMotoristaInputSchema: z.ZodType<Prisma.ConversaCreateNestedManyWithoutMotoristaInput> =
+export const ConversationCreateNestedManyWithoutDriverInputSchema: z.ZodType<Prisma.ConversationCreateNestedManyWithoutDriverInput> =
   z.strictObject({
     create: z
       .union([
-        z.lazy(() => ConversaCreateWithoutMotoristaInputSchema),
-        z.lazy(() => ConversaCreateWithoutMotoristaInputSchema).array(),
-        z.lazy(() => ConversaUncheckedCreateWithoutMotoristaInputSchema),
+        z.lazy(() => ConversationCreateWithoutDriverInputSchema),
+        z.lazy(() => ConversationCreateWithoutDriverInputSchema).array(),
+        z.lazy(() => ConversationUncheckedCreateWithoutDriverInputSchema),
         z
-          .lazy(() => ConversaUncheckedCreateWithoutMotoristaInputSchema)
+          .lazy(() => ConversationUncheckedCreateWithoutDriverInputSchema)
           .array(),
       ])
       .optional(),
     connectOrCreate: z
       .union([
-        z.lazy(() => ConversaCreateOrConnectWithoutMotoristaInputSchema),
+        z.lazy(() => ConversationCreateOrConnectWithoutDriverInputSchema),
         z
-          .lazy(() => ConversaCreateOrConnectWithoutMotoristaInputSchema)
+          .lazy(() => ConversationCreateOrConnectWithoutDriverInputSchema)
           .array(),
       ])
       .optional(),
     createMany: z
-      .lazy(() => ConversaCreateManyMotoristaInputEnvelopeSchema)
+      .lazy(() => ConversationCreateManyDriverInputEnvelopeSchema)
       .optional(),
     connect: z
       .union([
-        z.lazy(() => ConversaWhereUniqueInputSchema),
-        z.lazy(() => ConversaWhereUniqueInputSchema).array(),
+        z.lazy(() => ConversationWhereUniqueInputSchema),
+        z.lazy(() => ConversationWhereUniqueInputSchema).array(),
       ])
       .optional(),
   });
 
-export const MensagemCreateNestedManyWithoutQuemMandouInputSchema: z.ZodType<Prisma.MensagemCreateNestedManyWithoutQuemMandouInput> =
+export const MessageCreateNestedManyWithoutSenderInputSchema: z.ZodType<Prisma.MessageCreateNestedManyWithoutSenderInput> =
   z.strictObject({
     create: z
       .union([
-        z.lazy(() => MensagemCreateWithoutQuemMandouInputSchema),
-        z.lazy(() => MensagemCreateWithoutQuemMandouInputSchema).array(),
-        z.lazy(() => MensagemUncheckedCreateWithoutQuemMandouInputSchema),
+        z.lazy(() => MessageCreateWithoutSenderInputSchema),
+        z.lazy(() => MessageCreateWithoutSenderInputSchema).array(),
+        z.lazy(() => MessageUncheckedCreateWithoutSenderInputSchema),
+        z.lazy(() => MessageUncheckedCreateWithoutSenderInputSchema).array(),
+      ])
+      .optional(),
+    connectOrCreate: z
+      .union([
+        z.lazy(() => MessageCreateOrConnectWithoutSenderInputSchema),
+        z.lazy(() => MessageCreateOrConnectWithoutSenderInputSchema).array(),
+      ])
+      .optional(),
+    createMany: z
+      .lazy(() => MessageCreateManySenderInputEnvelopeSchema)
+      .optional(),
+    connect: z
+      .union([
+        z.lazy(() => MessageWhereUniqueInputSchema),
+        z.lazy(() => MessageWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+  });
+
+export const VehicleUncheckedCreateNestedOneWithoutDriverInputSchema: z.ZodType<Prisma.VehicleUncheckedCreateNestedOneWithoutDriverInput> =
+  z.strictObject({
+    create: z
+      .union([
+        z.lazy(() => VehicleCreateWithoutDriverInputSchema),
+        z.lazy(() => VehicleUncheckedCreateWithoutDriverInputSchema),
+      ])
+      .optional(),
+    connectOrCreate: z
+      .lazy(() => VehicleCreateOrConnectWithoutDriverInputSchema)
+      .optional(),
+    connect: z.lazy(() => VehicleWhereUniqueInputSchema).optional(),
+  });
+
+export const EmergencyCallUncheckedCreateNestedManyWithoutAttendantInputSchema: z.ZodType<Prisma.EmergencyCallUncheckedCreateNestedManyWithoutAttendantInput> =
+  z.strictObject({
+    create: z
+      .union([
+        z.lazy(() => EmergencyCallCreateWithoutAttendantInputSchema),
+        z.lazy(() => EmergencyCallCreateWithoutAttendantInputSchema).array(),
+        z.lazy(() => EmergencyCallUncheckedCreateWithoutAttendantInputSchema),
         z
-          .lazy(() => MensagemUncheckedCreateWithoutQuemMandouInputSchema)
+          .lazy(() => EmergencyCallUncheckedCreateWithoutAttendantInputSchema)
           .array(),
       ])
       .optional(),
     connectOrCreate: z
       .union([
-        z.lazy(() => MensagemCreateOrConnectWithoutQuemMandouInputSchema),
+        z.lazy(() => EmergencyCallCreateOrConnectWithoutAttendantInputSchema),
         z
-          .lazy(() => MensagemCreateOrConnectWithoutQuemMandouInputSchema)
+          .lazy(() => EmergencyCallCreateOrConnectWithoutAttendantInputSchema)
           .array(),
       ])
       .optional(),
     createMany: z
-      .lazy(() => MensagemCreateManyQuemMandouInputEnvelopeSchema)
+      .lazy(() => EmergencyCallCreateManyAttendantInputEnvelopeSchema)
       .optional(),
     connect: z
       .union([
-        z.lazy(() => MensagemWhereUniqueInputSchema),
-        z.lazy(() => MensagemWhereUniqueInputSchema).array(),
+        z.lazy(() => EmergencyCallWhereUniqueInputSchema),
+        z.lazy(() => EmergencyCallWhereUniqueInputSchema).array(),
       ])
       .optional(),
   });
 
-export const VeiculoUncheckedCreateNestedOneWithoutMotoristaInputSchema: z.ZodType<Prisma.VeiculoUncheckedCreateNestedOneWithoutMotoristaInput> =
+export const ConversationUncheckedCreateNestedManyWithoutAttendantInputSchema: z.ZodType<Prisma.ConversationUncheckedCreateNestedManyWithoutAttendantInput> =
   z.strictObject({
     create: z
       .union([
-        z.lazy(() => VeiculoCreateWithoutMotoristaInputSchema),
-        z.lazy(() => VeiculoUncheckedCreateWithoutMotoristaInputSchema),
-      ])
-      .optional(),
-    connectOrCreate: z
-      .lazy(() => VeiculoCreateOrConnectWithoutMotoristaInputSchema)
-      .optional(),
-    connect: z.lazy(() => VeiculoWhereUniqueInputSchema).optional(),
-  });
-
-export const AtendimentoUncheckedCreateNestedManyWithoutAtendenteInputSchema: z.ZodType<Prisma.AtendimentoUncheckedCreateNestedManyWithoutAtendenteInput> =
-  z.strictObject({
-    create: z
-      .union([
-        z.lazy(() => AtendimentoCreateWithoutAtendenteInputSchema),
-        z.lazy(() => AtendimentoCreateWithoutAtendenteInputSchema).array(),
-        z.lazy(() => AtendimentoUncheckedCreateWithoutAtendenteInputSchema),
+        z.lazy(() => ConversationCreateWithoutAttendantInputSchema),
+        z.lazy(() => ConversationCreateWithoutAttendantInputSchema).array(),
+        z.lazy(() => ConversationUncheckedCreateWithoutAttendantInputSchema),
         z
-          .lazy(() => AtendimentoUncheckedCreateWithoutAtendenteInputSchema)
+          .lazy(() => ConversationUncheckedCreateWithoutAttendantInputSchema)
           .array(),
       ])
       .optional(),
     connectOrCreate: z
       .union([
-        z.lazy(() => AtendimentoCreateOrConnectWithoutAtendenteInputSchema),
+        z.lazy(() => ConversationCreateOrConnectWithoutAttendantInputSchema),
         z
-          .lazy(() => AtendimentoCreateOrConnectWithoutAtendenteInputSchema)
+          .lazy(() => ConversationCreateOrConnectWithoutAttendantInputSchema)
           .array(),
       ])
       .optional(),
     createMany: z
-      .lazy(() => AtendimentoCreateManyAtendenteInputEnvelopeSchema)
+      .lazy(() => ConversationCreateManyAttendantInputEnvelopeSchema)
       .optional(),
     connect: z
       .union([
-        z.lazy(() => AtendimentoWhereUniqueInputSchema),
-        z.lazy(() => AtendimentoWhereUniqueInputSchema).array(),
+        z.lazy(() => ConversationWhereUniqueInputSchema),
+        z.lazy(() => ConversationWhereUniqueInputSchema).array(),
       ])
       .optional(),
   });
 
-export const ConversaUncheckedCreateNestedManyWithoutAtendenteInputSchema: z.ZodType<Prisma.ConversaUncheckedCreateNestedManyWithoutAtendenteInput> =
+export const ConversationUncheckedCreateNestedManyWithoutDriverInputSchema: z.ZodType<Prisma.ConversationUncheckedCreateNestedManyWithoutDriverInput> =
   z.strictObject({
     create: z
       .union([
-        z.lazy(() => ConversaCreateWithoutAtendenteInputSchema),
-        z.lazy(() => ConversaCreateWithoutAtendenteInputSchema).array(),
-        z.lazy(() => ConversaUncheckedCreateWithoutAtendenteInputSchema),
+        z.lazy(() => ConversationCreateWithoutDriverInputSchema),
+        z.lazy(() => ConversationCreateWithoutDriverInputSchema).array(),
+        z.lazy(() => ConversationUncheckedCreateWithoutDriverInputSchema),
         z
-          .lazy(() => ConversaUncheckedCreateWithoutAtendenteInputSchema)
+          .lazy(() => ConversationUncheckedCreateWithoutDriverInputSchema)
           .array(),
       ])
       .optional(),
     connectOrCreate: z
       .union([
-        z.lazy(() => ConversaCreateOrConnectWithoutAtendenteInputSchema),
+        z.lazy(() => ConversationCreateOrConnectWithoutDriverInputSchema),
         z
-          .lazy(() => ConversaCreateOrConnectWithoutAtendenteInputSchema)
+          .lazy(() => ConversationCreateOrConnectWithoutDriverInputSchema)
           .array(),
       ])
       .optional(),
     createMany: z
-      .lazy(() => ConversaCreateManyAtendenteInputEnvelopeSchema)
+      .lazy(() => ConversationCreateManyDriverInputEnvelopeSchema)
       .optional(),
     connect: z
       .union([
-        z.lazy(() => ConversaWhereUniqueInputSchema),
-        z.lazy(() => ConversaWhereUniqueInputSchema).array(),
+        z.lazy(() => ConversationWhereUniqueInputSchema),
+        z.lazy(() => ConversationWhereUniqueInputSchema).array(),
       ])
       .optional(),
   });
 
-export const ConversaUncheckedCreateNestedManyWithoutMotoristaInputSchema: z.ZodType<Prisma.ConversaUncheckedCreateNestedManyWithoutMotoristaInput> =
+export const MessageUncheckedCreateNestedManyWithoutSenderInputSchema: z.ZodType<Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput> =
   z.strictObject({
     create: z
       .union([
-        z.lazy(() => ConversaCreateWithoutMotoristaInputSchema),
-        z.lazy(() => ConversaCreateWithoutMotoristaInputSchema).array(),
-        z.lazy(() => ConversaUncheckedCreateWithoutMotoristaInputSchema),
-        z
-          .lazy(() => ConversaUncheckedCreateWithoutMotoristaInputSchema)
-          .array(),
+        z.lazy(() => MessageCreateWithoutSenderInputSchema),
+        z.lazy(() => MessageCreateWithoutSenderInputSchema).array(),
+        z.lazy(() => MessageUncheckedCreateWithoutSenderInputSchema),
+        z.lazy(() => MessageUncheckedCreateWithoutSenderInputSchema).array(),
       ])
       .optional(),
     connectOrCreate: z
       .union([
-        z.lazy(() => ConversaCreateOrConnectWithoutMotoristaInputSchema),
-        z
-          .lazy(() => ConversaCreateOrConnectWithoutMotoristaInputSchema)
-          .array(),
+        z.lazy(() => MessageCreateOrConnectWithoutSenderInputSchema),
+        z.lazy(() => MessageCreateOrConnectWithoutSenderInputSchema).array(),
       ])
       .optional(),
     createMany: z
-      .lazy(() => ConversaCreateManyMotoristaInputEnvelopeSchema)
+      .lazy(() => MessageCreateManySenderInputEnvelopeSchema)
       .optional(),
     connect: z
       .union([
-        z.lazy(() => ConversaWhereUniqueInputSchema),
-        z.lazy(() => ConversaWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-  });
-
-export const MensagemUncheckedCreateNestedManyWithoutQuemMandouInputSchema: z.ZodType<Prisma.MensagemUncheckedCreateNestedManyWithoutQuemMandouInput> =
-  z.strictObject({
-    create: z
-      .union([
-        z.lazy(() => MensagemCreateWithoutQuemMandouInputSchema),
-        z.lazy(() => MensagemCreateWithoutQuemMandouInputSchema).array(),
-        z.lazy(() => MensagemUncheckedCreateWithoutQuemMandouInputSchema),
-        z
-          .lazy(() => MensagemUncheckedCreateWithoutQuemMandouInputSchema)
-          .array(),
-      ])
-      .optional(),
-    connectOrCreate: z
-      .union([
-        z.lazy(() => MensagemCreateOrConnectWithoutQuemMandouInputSchema),
-        z
-          .lazy(() => MensagemCreateOrConnectWithoutQuemMandouInputSchema)
-          .array(),
-      ])
-      .optional(),
-    createMany: z
-      .lazy(() => MensagemCreateManyQuemMandouInputEnvelopeSchema)
-      .optional(),
-    connect: z
-      .union([
-        z.lazy(() => MensagemWhereUniqueInputSchema),
-        z.lazy(() => MensagemWhereUniqueInputSchema).array(),
+        z.lazy(() => MessageWhereUniqueInputSchema),
+        z.lazy(() => MessageWhereUniqueInputSchema).array(),
       ])
       .optional(),
   });
@@ -3853,14 +3871,14 @@ export const StringFieldUpdateOperationsInputSchema: z.ZodType<Prisma.StringFiel
     set: z.string().optional(),
   });
 
-export const EnumTipoUsuarioFieldUpdateOperationsInputSchema: z.ZodType<Prisma.EnumTipoUsuarioFieldUpdateOperationsInput> =
+export const EnumUserRoleFieldUpdateOperationsInputSchema: z.ZodType<Prisma.EnumUserRoleFieldUpdateOperationsInput> =
   z.strictObject({
-    set: z.lazy(() => TipoUsuarioSchema).optional(),
+    set: z.lazy(() => UserRoleSchema).optional(),
   });
 
-export const EnumStatusUsuarioFieldUpdateOperationsInputSchema: z.ZodType<Prisma.EnumStatusUsuarioFieldUpdateOperationsInput> =
+export const EnumUserStatusFieldUpdateOperationsInputSchema: z.ZodType<Prisma.EnumUserStatusFieldUpdateOperationsInput> =
   z.strictObject({
-    set: z.lazy(() => StatusUsuarioSchema).optional(),
+    set: z.lazy(() => UserStatusSchema).optional(),
   });
 
 export const DateTimeFieldUpdateOperationsInputSchema: z.ZodType<Prisma.DateTimeFieldUpdateOperationsInput> =
@@ -3868,775 +3886,762 @@ export const DateTimeFieldUpdateOperationsInputSchema: z.ZodType<Prisma.DateTime
     set: z.coerce.date().optional(),
   });
 
-export const VeiculoUpdateOneWithoutMotoristaNestedInputSchema: z.ZodType<Prisma.VeiculoUpdateOneWithoutMotoristaNestedInput> =
+export const VehicleUpdateOneWithoutDriverNestedInputSchema: z.ZodType<Prisma.VehicleUpdateOneWithoutDriverNestedInput> =
   z.strictObject({
     create: z
       .union([
-        z.lazy(() => VeiculoCreateWithoutMotoristaInputSchema),
-        z.lazy(() => VeiculoUncheckedCreateWithoutMotoristaInputSchema),
+        z.lazy(() => VehicleCreateWithoutDriverInputSchema),
+        z.lazy(() => VehicleUncheckedCreateWithoutDriverInputSchema),
       ])
       .optional(),
     connectOrCreate: z
-      .lazy(() => VeiculoCreateOrConnectWithoutMotoristaInputSchema)
+      .lazy(() => VehicleCreateOrConnectWithoutDriverInputSchema)
       .optional(),
-    upsert: z.lazy(() => VeiculoUpsertWithoutMotoristaInputSchema).optional(),
+    upsert: z.lazy(() => VehicleUpsertWithoutDriverInputSchema).optional(),
     disconnect: z
-      .union([z.boolean(), z.lazy(() => VeiculoWhereInputSchema)])
+      .union([z.boolean(), z.lazy(() => VehicleWhereInputSchema)])
       .optional(),
     delete: z
-      .union([z.boolean(), z.lazy(() => VeiculoWhereInputSchema)])
+      .union([z.boolean(), z.lazy(() => VehicleWhereInputSchema)])
       .optional(),
-    connect: z.lazy(() => VeiculoWhereUniqueInputSchema).optional(),
+    connect: z.lazy(() => VehicleWhereUniqueInputSchema).optional(),
     update: z
       .union([
-        z.lazy(() => VeiculoUpdateToOneWithWhereWithoutMotoristaInputSchema),
-        z.lazy(() => VeiculoUpdateWithoutMotoristaInputSchema),
-        z.lazy(() => VeiculoUncheckedUpdateWithoutMotoristaInputSchema),
+        z.lazy(() => VehicleUpdateToOneWithWhereWithoutDriverInputSchema),
+        z.lazy(() => VehicleUpdateWithoutDriverInputSchema),
+        z.lazy(() => VehicleUncheckedUpdateWithoutDriverInputSchema),
       ])
       .optional(),
   });
 
-export const AtendimentoUpdateManyWithoutAtendenteNestedInputSchema: z.ZodType<Prisma.AtendimentoUpdateManyWithoutAtendenteNestedInput> =
+export const EmergencyCallUpdateManyWithoutAttendantNestedInputSchema: z.ZodType<Prisma.EmergencyCallUpdateManyWithoutAttendantNestedInput> =
   z.strictObject({
     create: z
       .union([
-        z.lazy(() => AtendimentoCreateWithoutAtendenteInputSchema),
-        z.lazy(() => AtendimentoCreateWithoutAtendenteInputSchema).array(),
-        z.lazy(() => AtendimentoUncheckedCreateWithoutAtendenteInputSchema),
+        z.lazy(() => EmergencyCallCreateWithoutAttendantInputSchema),
+        z.lazy(() => EmergencyCallCreateWithoutAttendantInputSchema).array(),
+        z.lazy(() => EmergencyCallUncheckedCreateWithoutAttendantInputSchema),
         z
-          .lazy(() => AtendimentoUncheckedCreateWithoutAtendenteInputSchema)
+          .lazy(() => EmergencyCallUncheckedCreateWithoutAttendantInputSchema)
           .array(),
       ])
       .optional(),
     connectOrCreate: z
       .union([
-        z.lazy(() => AtendimentoCreateOrConnectWithoutAtendenteInputSchema),
+        z.lazy(() => EmergencyCallCreateOrConnectWithoutAttendantInputSchema),
         z
-          .lazy(() => AtendimentoCreateOrConnectWithoutAtendenteInputSchema)
+          .lazy(() => EmergencyCallCreateOrConnectWithoutAttendantInputSchema)
           .array(),
       ])
       .optional(),
     upsert: z
       .union([
         z.lazy(
-          () => AtendimentoUpsertWithWhereUniqueWithoutAtendenteInputSchema,
+          () => EmergencyCallUpsertWithWhereUniqueWithoutAttendantInputSchema,
         ),
         z
           .lazy(
-            () => AtendimentoUpsertWithWhereUniqueWithoutAtendenteInputSchema,
+            () => EmergencyCallUpsertWithWhereUniqueWithoutAttendantInputSchema,
           )
           .array(),
       ])
       .optional(),
     createMany: z
-      .lazy(() => AtendimentoCreateManyAtendenteInputEnvelopeSchema)
+      .lazy(() => EmergencyCallCreateManyAttendantInputEnvelopeSchema)
       .optional(),
     set: z
       .union([
-        z.lazy(() => AtendimentoWhereUniqueInputSchema),
-        z.lazy(() => AtendimentoWhereUniqueInputSchema).array(),
+        z.lazy(() => EmergencyCallWhereUniqueInputSchema),
+        z.lazy(() => EmergencyCallWhereUniqueInputSchema).array(),
       ])
       .optional(),
     disconnect: z
       .union([
-        z.lazy(() => AtendimentoWhereUniqueInputSchema),
-        z.lazy(() => AtendimentoWhereUniqueInputSchema).array(),
+        z.lazy(() => EmergencyCallWhereUniqueInputSchema),
+        z.lazy(() => EmergencyCallWhereUniqueInputSchema).array(),
       ])
       .optional(),
     delete: z
       .union([
-        z.lazy(() => AtendimentoWhereUniqueInputSchema),
-        z.lazy(() => AtendimentoWhereUniqueInputSchema).array(),
+        z.lazy(() => EmergencyCallWhereUniqueInputSchema),
+        z.lazy(() => EmergencyCallWhereUniqueInputSchema).array(),
       ])
       .optional(),
     connect: z
       .union([
-        z.lazy(() => AtendimentoWhereUniqueInputSchema),
-        z.lazy(() => AtendimentoWhereUniqueInputSchema).array(),
+        z.lazy(() => EmergencyCallWhereUniqueInputSchema),
+        z.lazy(() => EmergencyCallWhereUniqueInputSchema).array(),
       ])
       .optional(),
     update: z
       .union([
         z.lazy(
-          () => AtendimentoUpdateWithWhereUniqueWithoutAtendenteInputSchema,
+          () => EmergencyCallUpdateWithWhereUniqueWithoutAttendantInputSchema,
         ),
         z
           .lazy(
-            () => AtendimentoUpdateWithWhereUniqueWithoutAtendenteInputSchema,
-          )
-          .array(),
-      ])
-      .optional(),
-    updateMany: z
-      .union([
-        z.lazy(() => AtendimentoUpdateManyWithWhereWithoutAtendenteInputSchema),
-        z
-          .lazy(() => AtendimentoUpdateManyWithWhereWithoutAtendenteInputSchema)
-          .array(),
-      ])
-      .optional(),
-    deleteMany: z
-      .union([
-        z.lazy(() => AtendimentoScalarWhereInputSchema),
-        z.lazy(() => AtendimentoScalarWhereInputSchema).array(),
-      ])
-      .optional(),
-  });
-
-export const ConversaUpdateManyWithoutAtendenteNestedInputSchema: z.ZodType<Prisma.ConversaUpdateManyWithoutAtendenteNestedInput> =
-  z.strictObject({
-    create: z
-      .union([
-        z.lazy(() => ConversaCreateWithoutAtendenteInputSchema),
-        z.lazy(() => ConversaCreateWithoutAtendenteInputSchema).array(),
-        z.lazy(() => ConversaUncheckedCreateWithoutAtendenteInputSchema),
-        z
-          .lazy(() => ConversaUncheckedCreateWithoutAtendenteInputSchema)
-          .array(),
-      ])
-      .optional(),
-    connectOrCreate: z
-      .union([
-        z.lazy(() => ConversaCreateOrConnectWithoutAtendenteInputSchema),
-        z
-          .lazy(() => ConversaCreateOrConnectWithoutAtendenteInputSchema)
-          .array(),
-      ])
-      .optional(),
-    upsert: z
-      .union([
-        z.lazy(() => ConversaUpsertWithWhereUniqueWithoutAtendenteInputSchema),
-        z
-          .lazy(() => ConversaUpsertWithWhereUniqueWithoutAtendenteInputSchema)
-          .array(),
-      ])
-      .optional(),
-    createMany: z
-      .lazy(() => ConversaCreateManyAtendenteInputEnvelopeSchema)
-      .optional(),
-    set: z
-      .union([
-        z.lazy(() => ConversaWhereUniqueInputSchema),
-        z.lazy(() => ConversaWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    disconnect: z
-      .union([
-        z.lazy(() => ConversaWhereUniqueInputSchema),
-        z.lazy(() => ConversaWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    delete: z
-      .union([
-        z.lazy(() => ConversaWhereUniqueInputSchema),
-        z.lazy(() => ConversaWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    connect: z
-      .union([
-        z.lazy(() => ConversaWhereUniqueInputSchema),
-        z.lazy(() => ConversaWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    update: z
-      .union([
-        z.lazy(() => ConversaUpdateWithWhereUniqueWithoutAtendenteInputSchema),
-        z
-          .lazy(() => ConversaUpdateWithWhereUniqueWithoutAtendenteInputSchema)
-          .array(),
-      ])
-      .optional(),
-    updateMany: z
-      .union([
-        z.lazy(() => ConversaUpdateManyWithWhereWithoutAtendenteInputSchema),
-        z
-          .lazy(() => ConversaUpdateManyWithWhereWithoutAtendenteInputSchema)
-          .array(),
-      ])
-      .optional(),
-    deleteMany: z
-      .union([
-        z.lazy(() => ConversaScalarWhereInputSchema),
-        z.lazy(() => ConversaScalarWhereInputSchema).array(),
-      ])
-      .optional(),
-  });
-
-export const ConversaUpdateManyWithoutMotoristaNestedInputSchema: z.ZodType<Prisma.ConversaUpdateManyWithoutMotoristaNestedInput> =
-  z.strictObject({
-    create: z
-      .union([
-        z.lazy(() => ConversaCreateWithoutMotoristaInputSchema),
-        z.lazy(() => ConversaCreateWithoutMotoristaInputSchema).array(),
-        z.lazy(() => ConversaUncheckedCreateWithoutMotoristaInputSchema),
-        z
-          .lazy(() => ConversaUncheckedCreateWithoutMotoristaInputSchema)
-          .array(),
-      ])
-      .optional(),
-    connectOrCreate: z
-      .union([
-        z.lazy(() => ConversaCreateOrConnectWithoutMotoristaInputSchema),
-        z
-          .lazy(() => ConversaCreateOrConnectWithoutMotoristaInputSchema)
-          .array(),
-      ])
-      .optional(),
-    upsert: z
-      .union([
-        z.lazy(() => ConversaUpsertWithWhereUniqueWithoutMotoristaInputSchema),
-        z
-          .lazy(() => ConversaUpsertWithWhereUniqueWithoutMotoristaInputSchema)
-          .array(),
-      ])
-      .optional(),
-    createMany: z
-      .lazy(() => ConversaCreateManyMotoristaInputEnvelopeSchema)
-      .optional(),
-    set: z
-      .union([
-        z.lazy(() => ConversaWhereUniqueInputSchema),
-        z.lazy(() => ConversaWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    disconnect: z
-      .union([
-        z.lazy(() => ConversaWhereUniqueInputSchema),
-        z.lazy(() => ConversaWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    delete: z
-      .union([
-        z.lazy(() => ConversaWhereUniqueInputSchema),
-        z.lazy(() => ConversaWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    connect: z
-      .union([
-        z.lazy(() => ConversaWhereUniqueInputSchema),
-        z.lazy(() => ConversaWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    update: z
-      .union([
-        z.lazy(() => ConversaUpdateWithWhereUniqueWithoutMotoristaInputSchema),
-        z
-          .lazy(() => ConversaUpdateWithWhereUniqueWithoutMotoristaInputSchema)
-          .array(),
-      ])
-      .optional(),
-    updateMany: z
-      .union([
-        z.lazy(() => ConversaUpdateManyWithWhereWithoutMotoristaInputSchema),
-        z
-          .lazy(() => ConversaUpdateManyWithWhereWithoutMotoristaInputSchema)
-          .array(),
-      ])
-      .optional(),
-    deleteMany: z
-      .union([
-        z.lazy(() => ConversaScalarWhereInputSchema),
-        z.lazy(() => ConversaScalarWhereInputSchema).array(),
-      ])
-      .optional(),
-  });
-
-export const MensagemUpdateManyWithoutQuemMandouNestedInputSchema: z.ZodType<Prisma.MensagemUpdateManyWithoutQuemMandouNestedInput> =
-  z.strictObject({
-    create: z
-      .union([
-        z.lazy(() => MensagemCreateWithoutQuemMandouInputSchema),
-        z.lazy(() => MensagemCreateWithoutQuemMandouInputSchema).array(),
-        z.lazy(() => MensagemUncheckedCreateWithoutQuemMandouInputSchema),
-        z
-          .lazy(() => MensagemUncheckedCreateWithoutQuemMandouInputSchema)
-          .array(),
-      ])
-      .optional(),
-    connectOrCreate: z
-      .union([
-        z.lazy(() => MensagemCreateOrConnectWithoutQuemMandouInputSchema),
-        z
-          .lazy(() => MensagemCreateOrConnectWithoutQuemMandouInputSchema)
-          .array(),
-      ])
-      .optional(),
-    upsert: z
-      .union([
-        z.lazy(() => MensagemUpsertWithWhereUniqueWithoutQuemMandouInputSchema),
-        z
-          .lazy(() => MensagemUpsertWithWhereUniqueWithoutQuemMandouInputSchema)
-          .array(),
-      ])
-      .optional(),
-    createMany: z
-      .lazy(() => MensagemCreateManyQuemMandouInputEnvelopeSchema)
-      .optional(),
-    set: z
-      .union([
-        z.lazy(() => MensagemWhereUniqueInputSchema),
-        z.lazy(() => MensagemWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    disconnect: z
-      .union([
-        z.lazy(() => MensagemWhereUniqueInputSchema),
-        z.lazy(() => MensagemWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    delete: z
-      .union([
-        z.lazy(() => MensagemWhereUniqueInputSchema),
-        z.lazy(() => MensagemWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    connect: z
-      .union([
-        z.lazy(() => MensagemWhereUniqueInputSchema),
-        z.lazy(() => MensagemWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    update: z
-      .union([
-        z.lazy(() => MensagemUpdateWithWhereUniqueWithoutQuemMandouInputSchema),
-        z
-          .lazy(() => MensagemUpdateWithWhereUniqueWithoutQuemMandouInputSchema)
-          .array(),
-      ])
-      .optional(),
-    updateMany: z
-      .union([
-        z.lazy(() => MensagemUpdateManyWithWhereWithoutQuemMandouInputSchema),
-        z
-          .lazy(() => MensagemUpdateManyWithWhereWithoutQuemMandouInputSchema)
-          .array(),
-      ])
-      .optional(),
-    deleteMany: z
-      .union([
-        z.lazy(() => MensagemScalarWhereInputSchema),
-        z.lazy(() => MensagemScalarWhereInputSchema).array(),
-      ])
-      .optional(),
-  });
-
-export const VeiculoUncheckedUpdateOneWithoutMotoristaNestedInputSchema: z.ZodType<Prisma.VeiculoUncheckedUpdateOneWithoutMotoristaNestedInput> =
-  z.strictObject({
-    create: z
-      .union([
-        z.lazy(() => VeiculoCreateWithoutMotoristaInputSchema),
-        z.lazy(() => VeiculoUncheckedCreateWithoutMotoristaInputSchema),
-      ])
-      .optional(),
-    connectOrCreate: z
-      .lazy(() => VeiculoCreateOrConnectWithoutMotoristaInputSchema)
-      .optional(),
-    upsert: z.lazy(() => VeiculoUpsertWithoutMotoristaInputSchema).optional(),
-    disconnect: z
-      .union([z.boolean(), z.lazy(() => VeiculoWhereInputSchema)])
-      .optional(),
-    delete: z
-      .union([z.boolean(), z.lazy(() => VeiculoWhereInputSchema)])
-      .optional(),
-    connect: z.lazy(() => VeiculoWhereUniqueInputSchema).optional(),
-    update: z
-      .union([
-        z.lazy(() => VeiculoUpdateToOneWithWhereWithoutMotoristaInputSchema),
-        z.lazy(() => VeiculoUpdateWithoutMotoristaInputSchema),
-        z.lazy(() => VeiculoUncheckedUpdateWithoutMotoristaInputSchema),
-      ])
-      .optional(),
-  });
-
-export const AtendimentoUncheckedUpdateManyWithoutAtendenteNestedInputSchema: z.ZodType<Prisma.AtendimentoUncheckedUpdateManyWithoutAtendenteNestedInput> =
-  z.strictObject({
-    create: z
-      .union([
-        z.lazy(() => AtendimentoCreateWithoutAtendenteInputSchema),
-        z.lazy(() => AtendimentoCreateWithoutAtendenteInputSchema).array(),
-        z.lazy(() => AtendimentoUncheckedCreateWithoutAtendenteInputSchema),
-        z
-          .lazy(() => AtendimentoUncheckedCreateWithoutAtendenteInputSchema)
-          .array(),
-      ])
-      .optional(),
-    connectOrCreate: z
-      .union([
-        z.lazy(() => AtendimentoCreateOrConnectWithoutAtendenteInputSchema),
-        z
-          .lazy(() => AtendimentoCreateOrConnectWithoutAtendenteInputSchema)
-          .array(),
-      ])
-      .optional(),
-    upsert: z
-      .union([
-        z.lazy(
-          () => AtendimentoUpsertWithWhereUniqueWithoutAtendenteInputSchema,
-        ),
-        z
-          .lazy(
-            () => AtendimentoUpsertWithWhereUniqueWithoutAtendenteInputSchema,
-          )
-          .array(),
-      ])
-      .optional(),
-    createMany: z
-      .lazy(() => AtendimentoCreateManyAtendenteInputEnvelopeSchema)
-      .optional(),
-    set: z
-      .union([
-        z.lazy(() => AtendimentoWhereUniqueInputSchema),
-        z.lazy(() => AtendimentoWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    disconnect: z
-      .union([
-        z.lazy(() => AtendimentoWhereUniqueInputSchema),
-        z.lazy(() => AtendimentoWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    delete: z
-      .union([
-        z.lazy(() => AtendimentoWhereUniqueInputSchema),
-        z.lazy(() => AtendimentoWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    connect: z
-      .union([
-        z.lazy(() => AtendimentoWhereUniqueInputSchema),
-        z.lazy(() => AtendimentoWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    update: z
-      .union([
-        z.lazy(
-          () => AtendimentoUpdateWithWhereUniqueWithoutAtendenteInputSchema,
-        ),
-        z
-          .lazy(
-            () => AtendimentoUpdateWithWhereUniqueWithoutAtendenteInputSchema,
+            () => EmergencyCallUpdateWithWhereUniqueWithoutAttendantInputSchema,
           )
           .array(),
       ])
       .optional(),
     updateMany: z
       .union([
-        z.lazy(() => AtendimentoUpdateManyWithWhereWithoutAtendenteInputSchema),
-        z
-          .lazy(() => AtendimentoUpdateManyWithWhereWithoutAtendenteInputSchema)
-          .array(),
-      ])
-      .optional(),
-    deleteMany: z
-      .union([
-        z.lazy(() => AtendimentoScalarWhereInputSchema),
-        z.lazy(() => AtendimentoScalarWhereInputSchema).array(),
-      ])
-      .optional(),
-  });
-
-export const ConversaUncheckedUpdateManyWithoutAtendenteNestedInputSchema: z.ZodType<Prisma.ConversaUncheckedUpdateManyWithoutAtendenteNestedInput> =
-  z.strictObject({
-    create: z
-      .union([
-        z.lazy(() => ConversaCreateWithoutAtendenteInputSchema),
-        z.lazy(() => ConversaCreateWithoutAtendenteInputSchema).array(),
-        z.lazy(() => ConversaUncheckedCreateWithoutAtendenteInputSchema),
-        z
-          .lazy(() => ConversaUncheckedCreateWithoutAtendenteInputSchema)
-          .array(),
-      ])
-      .optional(),
-    connectOrCreate: z
-      .union([
-        z.lazy(() => ConversaCreateOrConnectWithoutAtendenteInputSchema),
-        z
-          .lazy(() => ConversaCreateOrConnectWithoutAtendenteInputSchema)
-          .array(),
-      ])
-      .optional(),
-    upsert: z
-      .union([
-        z.lazy(() => ConversaUpsertWithWhereUniqueWithoutAtendenteInputSchema),
-        z
-          .lazy(() => ConversaUpsertWithWhereUniqueWithoutAtendenteInputSchema)
-          .array(),
-      ])
-      .optional(),
-    createMany: z
-      .lazy(() => ConversaCreateManyAtendenteInputEnvelopeSchema)
-      .optional(),
-    set: z
-      .union([
-        z.lazy(() => ConversaWhereUniqueInputSchema),
-        z.lazy(() => ConversaWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    disconnect: z
-      .union([
-        z.lazy(() => ConversaWhereUniqueInputSchema),
-        z.lazy(() => ConversaWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    delete: z
-      .union([
-        z.lazy(() => ConversaWhereUniqueInputSchema),
-        z.lazy(() => ConversaWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    connect: z
-      .union([
-        z.lazy(() => ConversaWhereUniqueInputSchema),
-        z.lazy(() => ConversaWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    update: z
-      .union([
-        z.lazy(() => ConversaUpdateWithWhereUniqueWithoutAtendenteInputSchema),
-        z
-          .lazy(() => ConversaUpdateWithWhereUniqueWithoutAtendenteInputSchema)
-          .array(),
-      ])
-      .optional(),
-    updateMany: z
-      .union([
-        z.lazy(() => ConversaUpdateManyWithWhereWithoutAtendenteInputSchema),
-        z
-          .lazy(() => ConversaUpdateManyWithWhereWithoutAtendenteInputSchema)
-          .array(),
-      ])
-      .optional(),
-    deleteMany: z
-      .union([
-        z.lazy(() => ConversaScalarWhereInputSchema),
-        z.lazy(() => ConversaScalarWhereInputSchema).array(),
-      ])
-      .optional(),
-  });
-
-export const ConversaUncheckedUpdateManyWithoutMotoristaNestedInputSchema: z.ZodType<Prisma.ConversaUncheckedUpdateManyWithoutMotoristaNestedInput> =
-  z.strictObject({
-    create: z
-      .union([
-        z.lazy(() => ConversaCreateWithoutMotoristaInputSchema),
-        z.lazy(() => ConversaCreateWithoutMotoristaInputSchema).array(),
-        z.lazy(() => ConversaUncheckedCreateWithoutMotoristaInputSchema),
-        z
-          .lazy(() => ConversaUncheckedCreateWithoutMotoristaInputSchema)
-          .array(),
-      ])
-      .optional(),
-    connectOrCreate: z
-      .union([
-        z.lazy(() => ConversaCreateOrConnectWithoutMotoristaInputSchema),
-        z
-          .lazy(() => ConversaCreateOrConnectWithoutMotoristaInputSchema)
-          .array(),
-      ])
-      .optional(),
-    upsert: z
-      .union([
-        z.lazy(() => ConversaUpsertWithWhereUniqueWithoutMotoristaInputSchema),
-        z
-          .lazy(() => ConversaUpsertWithWhereUniqueWithoutMotoristaInputSchema)
-          .array(),
-      ])
-      .optional(),
-    createMany: z
-      .lazy(() => ConversaCreateManyMotoristaInputEnvelopeSchema)
-      .optional(),
-    set: z
-      .union([
-        z.lazy(() => ConversaWhereUniqueInputSchema),
-        z.lazy(() => ConversaWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    disconnect: z
-      .union([
-        z.lazy(() => ConversaWhereUniqueInputSchema),
-        z.lazy(() => ConversaWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    delete: z
-      .union([
-        z.lazy(() => ConversaWhereUniqueInputSchema),
-        z.lazy(() => ConversaWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    connect: z
-      .union([
-        z.lazy(() => ConversaWhereUniqueInputSchema),
-        z.lazy(() => ConversaWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    update: z
-      .union([
-        z.lazy(() => ConversaUpdateWithWhereUniqueWithoutMotoristaInputSchema),
-        z
-          .lazy(() => ConversaUpdateWithWhereUniqueWithoutMotoristaInputSchema)
-          .array(),
-      ])
-      .optional(),
-    updateMany: z
-      .union([
-        z.lazy(() => ConversaUpdateManyWithWhereWithoutMotoristaInputSchema),
-        z
-          .lazy(() => ConversaUpdateManyWithWhereWithoutMotoristaInputSchema)
-          .array(),
-      ])
-      .optional(),
-    deleteMany: z
-      .union([
-        z.lazy(() => ConversaScalarWhereInputSchema),
-        z.lazy(() => ConversaScalarWhereInputSchema).array(),
-      ])
-      .optional(),
-  });
-
-export const MensagemUncheckedUpdateManyWithoutQuemMandouNestedInputSchema: z.ZodType<Prisma.MensagemUncheckedUpdateManyWithoutQuemMandouNestedInput> =
-  z.strictObject({
-    create: z
-      .union([
-        z.lazy(() => MensagemCreateWithoutQuemMandouInputSchema),
-        z.lazy(() => MensagemCreateWithoutQuemMandouInputSchema).array(),
-        z.lazy(() => MensagemUncheckedCreateWithoutQuemMandouInputSchema),
-        z
-          .lazy(() => MensagemUncheckedCreateWithoutQuemMandouInputSchema)
-          .array(),
-      ])
-      .optional(),
-    connectOrCreate: z
-      .union([
-        z.lazy(() => MensagemCreateOrConnectWithoutQuemMandouInputSchema),
-        z
-          .lazy(() => MensagemCreateOrConnectWithoutQuemMandouInputSchema)
-          .array(),
-      ])
-      .optional(),
-    upsert: z
-      .union([
-        z.lazy(() => MensagemUpsertWithWhereUniqueWithoutQuemMandouInputSchema),
-        z
-          .lazy(() => MensagemUpsertWithWhereUniqueWithoutQuemMandouInputSchema)
-          .array(),
-      ])
-      .optional(),
-    createMany: z
-      .lazy(() => MensagemCreateManyQuemMandouInputEnvelopeSchema)
-      .optional(),
-    set: z
-      .union([
-        z.lazy(() => MensagemWhereUniqueInputSchema),
-        z.lazy(() => MensagemWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    disconnect: z
-      .union([
-        z.lazy(() => MensagemWhereUniqueInputSchema),
-        z.lazy(() => MensagemWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    delete: z
-      .union([
-        z.lazy(() => MensagemWhereUniqueInputSchema),
-        z.lazy(() => MensagemWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    connect: z
-      .union([
-        z.lazy(() => MensagemWhereUniqueInputSchema),
-        z.lazy(() => MensagemWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    update: z
-      .union([
-        z.lazy(() => MensagemUpdateWithWhereUniqueWithoutQuemMandouInputSchema),
-        z
-          .lazy(() => MensagemUpdateWithWhereUniqueWithoutQuemMandouInputSchema)
-          .array(),
-      ])
-      .optional(),
-    updateMany: z
-      .union([
-        z.lazy(() => MensagemUpdateManyWithWhereWithoutQuemMandouInputSchema),
-        z
-          .lazy(() => MensagemUpdateManyWithWhereWithoutQuemMandouInputSchema)
-          .array(),
-      ])
-      .optional(),
-    deleteMany: z
-      .union([
-        z.lazy(() => MensagemScalarWhereInputSchema),
-        z.lazy(() => MensagemScalarWhereInputSchema).array(),
-      ])
-      .optional(),
-  });
-
-export const UsuarioCreateNestedOneWithoutVeiculoInputSchema: z.ZodType<Prisma.UsuarioCreateNestedOneWithoutVeiculoInput> =
-  z.strictObject({
-    create: z
-      .union([
-        z.lazy(() => UsuarioCreateWithoutVeiculoInputSchema),
-        z.lazy(() => UsuarioUncheckedCreateWithoutVeiculoInputSchema),
-      ])
-      .optional(),
-    connectOrCreate: z
-      .lazy(() => UsuarioCreateOrConnectWithoutVeiculoInputSchema)
-      .optional(),
-    connect: z.lazy(() => UsuarioWhereUniqueInputSchema).optional(),
-  });
-
-export const VeiculoAtendimentoCreateNestedManyWithoutVeiculoInputSchema: z.ZodType<Prisma.VeiculoAtendimentoCreateNestedManyWithoutVeiculoInput> =
-  z.strictObject({
-    create: z
-      .union([
-        z.lazy(() => VeiculoAtendimentoCreateWithoutVeiculoInputSchema),
-        z.lazy(() => VeiculoAtendimentoCreateWithoutVeiculoInputSchema).array(),
         z.lazy(
-          () => VeiculoAtendimentoUncheckedCreateWithoutVeiculoInputSchema,
+          () => EmergencyCallUpdateManyWithWhereWithoutAttendantInputSchema,
         ),
         z
           .lazy(
-            () => VeiculoAtendimentoUncheckedCreateWithoutVeiculoInputSchema,
+            () => EmergencyCallUpdateManyWithWhereWithoutAttendantInputSchema,
           )
           .array(),
       ])
       .optional(),
+    deleteMany: z
+      .union([
+        z.lazy(() => EmergencyCallScalarWhereInputSchema),
+        z.lazy(() => EmergencyCallScalarWhereInputSchema).array(),
+      ])
+      .optional(),
+  });
+
+export const ConversationUpdateManyWithoutAttendantNestedInputSchema: z.ZodType<Prisma.ConversationUpdateManyWithoutAttendantNestedInput> =
+  z.strictObject({
+    create: z
+      .union([
+        z.lazy(() => ConversationCreateWithoutAttendantInputSchema),
+        z.lazy(() => ConversationCreateWithoutAttendantInputSchema).array(),
+        z.lazy(() => ConversationUncheckedCreateWithoutAttendantInputSchema),
+        z
+          .lazy(() => ConversationUncheckedCreateWithoutAttendantInputSchema)
+          .array(),
+      ])
+      .optional(),
     connectOrCreate: z
       .union([
+        z.lazy(() => ConversationCreateOrConnectWithoutAttendantInputSchema),
+        z
+          .lazy(() => ConversationCreateOrConnectWithoutAttendantInputSchema)
+          .array(),
+      ])
+      .optional(),
+    upsert: z
+      .union([
         z.lazy(
-          () => VeiculoAtendimentoCreateOrConnectWithoutVeiculoInputSchema,
+          () => ConversationUpsertWithWhereUniqueWithoutAttendantInputSchema,
         ),
         z
           .lazy(
-            () => VeiculoAtendimentoCreateOrConnectWithoutVeiculoInputSchema,
+            () => ConversationUpsertWithWhereUniqueWithoutAttendantInputSchema,
           )
           .array(),
       ])
       .optional(),
     createMany: z
-      .lazy(() => VeiculoAtendimentoCreateManyVeiculoInputEnvelopeSchema)
+      .lazy(() => ConversationCreateManyAttendantInputEnvelopeSchema)
+      .optional(),
+    set: z
+      .union([
+        z.lazy(() => ConversationWhereUniqueInputSchema),
+        z.lazy(() => ConversationWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    disconnect: z
+      .union([
+        z.lazy(() => ConversationWhereUniqueInputSchema),
+        z.lazy(() => ConversationWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    delete: z
+      .union([
+        z.lazy(() => ConversationWhereUniqueInputSchema),
+        z.lazy(() => ConversationWhereUniqueInputSchema).array(),
+      ])
       .optional(),
     connect: z
       .union([
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema),
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema).array(),
+        z.lazy(() => ConversationWhereUniqueInputSchema),
+        z.lazy(() => ConversationWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    update: z
+      .union([
+        z.lazy(
+          () => ConversationUpdateWithWhereUniqueWithoutAttendantInputSchema,
+        ),
+        z
+          .lazy(
+            () => ConversationUpdateWithWhereUniqueWithoutAttendantInputSchema,
+          )
+          .array(),
+      ])
+      .optional(),
+    updateMany: z
+      .union([
+        z.lazy(
+          () => ConversationUpdateManyWithWhereWithoutAttendantInputSchema,
+        ),
+        z
+          .lazy(
+            () => ConversationUpdateManyWithWhereWithoutAttendantInputSchema,
+          )
+          .array(),
+      ])
+      .optional(),
+    deleteMany: z
+      .union([
+        z.lazy(() => ConversationScalarWhereInputSchema),
+        z.lazy(() => ConversationScalarWhereInputSchema).array(),
       ])
       .optional(),
   });
 
-export const VeiculoAtendimentoUncheckedCreateNestedManyWithoutVeiculoInputSchema: z.ZodType<Prisma.VeiculoAtendimentoUncheckedCreateNestedManyWithoutVeiculoInput> =
+export const ConversationUpdateManyWithoutDriverNestedInputSchema: z.ZodType<Prisma.ConversationUpdateManyWithoutDriverNestedInput> =
   z.strictObject({
     create: z
       .union([
-        z.lazy(() => VeiculoAtendimentoCreateWithoutVeiculoInputSchema),
-        z.lazy(() => VeiculoAtendimentoCreateWithoutVeiculoInputSchema).array(),
+        z.lazy(() => ConversationCreateWithoutDriverInputSchema),
+        z.lazy(() => ConversationCreateWithoutDriverInputSchema).array(),
+        z.lazy(() => ConversationUncheckedCreateWithoutDriverInputSchema),
+        z
+          .lazy(() => ConversationUncheckedCreateWithoutDriverInputSchema)
+          .array(),
+      ])
+      .optional(),
+    connectOrCreate: z
+      .union([
+        z.lazy(() => ConversationCreateOrConnectWithoutDriverInputSchema),
+        z
+          .lazy(() => ConversationCreateOrConnectWithoutDriverInputSchema)
+          .array(),
+      ])
+      .optional(),
+    upsert: z
+      .union([
+        z.lazy(() => ConversationUpsertWithWhereUniqueWithoutDriverInputSchema),
+        z
+          .lazy(() => ConversationUpsertWithWhereUniqueWithoutDriverInputSchema)
+          .array(),
+      ])
+      .optional(),
+    createMany: z
+      .lazy(() => ConversationCreateManyDriverInputEnvelopeSchema)
+      .optional(),
+    set: z
+      .union([
+        z.lazy(() => ConversationWhereUniqueInputSchema),
+        z.lazy(() => ConversationWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    disconnect: z
+      .union([
+        z.lazy(() => ConversationWhereUniqueInputSchema),
+        z.lazy(() => ConversationWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    delete: z
+      .union([
+        z.lazy(() => ConversationWhereUniqueInputSchema),
+        z.lazy(() => ConversationWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    connect: z
+      .union([
+        z.lazy(() => ConversationWhereUniqueInputSchema),
+        z.lazy(() => ConversationWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    update: z
+      .union([
+        z.lazy(() => ConversationUpdateWithWhereUniqueWithoutDriverInputSchema),
+        z
+          .lazy(() => ConversationUpdateWithWhereUniqueWithoutDriverInputSchema)
+          .array(),
+      ])
+      .optional(),
+    updateMany: z
+      .union([
+        z.lazy(() => ConversationUpdateManyWithWhereWithoutDriverInputSchema),
+        z
+          .lazy(() => ConversationUpdateManyWithWhereWithoutDriverInputSchema)
+          .array(),
+      ])
+      .optional(),
+    deleteMany: z
+      .union([
+        z.lazy(() => ConversationScalarWhereInputSchema),
+        z.lazy(() => ConversationScalarWhereInputSchema).array(),
+      ])
+      .optional(),
+  });
+
+export const MessageUpdateManyWithoutSenderNestedInputSchema: z.ZodType<Prisma.MessageUpdateManyWithoutSenderNestedInput> =
+  z.strictObject({
+    create: z
+      .union([
+        z.lazy(() => MessageCreateWithoutSenderInputSchema),
+        z.lazy(() => MessageCreateWithoutSenderInputSchema).array(),
+        z.lazy(() => MessageUncheckedCreateWithoutSenderInputSchema),
+        z.lazy(() => MessageUncheckedCreateWithoutSenderInputSchema).array(),
+      ])
+      .optional(),
+    connectOrCreate: z
+      .union([
+        z.lazy(() => MessageCreateOrConnectWithoutSenderInputSchema),
+        z.lazy(() => MessageCreateOrConnectWithoutSenderInputSchema).array(),
+      ])
+      .optional(),
+    upsert: z
+      .union([
+        z.lazy(() => MessageUpsertWithWhereUniqueWithoutSenderInputSchema),
+        z
+          .lazy(() => MessageUpsertWithWhereUniqueWithoutSenderInputSchema)
+          .array(),
+      ])
+      .optional(),
+    createMany: z
+      .lazy(() => MessageCreateManySenderInputEnvelopeSchema)
+      .optional(),
+    set: z
+      .union([
+        z.lazy(() => MessageWhereUniqueInputSchema),
+        z.lazy(() => MessageWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    disconnect: z
+      .union([
+        z.lazy(() => MessageWhereUniqueInputSchema),
+        z.lazy(() => MessageWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    delete: z
+      .union([
+        z.lazy(() => MessageWhereUniqueInputSchema),
+        z.lazy(() => MessageWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    connect: z
+      .union([
+        z.lazy(() => MessageWhereUniqueInputSchema),
+        z.lazy(() => MessageWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    update: z
+      .union([
+        z.lazy(() => MessageUpdateWithWhereUniqueWithoutSenderInputSchema),
+        z
+          .lazy(() => MessageUpdateWithWhereUniqueWithoutSenderInputSchema)
+          .array(),
+      ])
+      .optional(),
+    updateMany: z
+      .union([
+        z.lazy(() => MessageUpdateManyWithWhereWithoutSenderInputSchema),
+        z
+          .lazy(() => MessageUpdateManyWithWhereWithoutSenderInputSchema)
+          .array(),
+      ])
+      .optional(),
+    deleteMany: z
+      .union([
+        z.lazy(() => MessageScalarWhereInputSchema),
+        z.lazy(() => MessageScalarWhereInputSchema).array(),
+      ])
+      .optional(),
+  });
+
+export const VehicleUncheckedUpdateOneWithoutDriverNestedInputSchema: z.ZodType<Prisma.VehicleUncheckedUpdateOneWithoutDriverNestedInput> =
+  z.strictObject({
+    create: z
+      .union([
+        z.lazy(() => VehicleCreateWithoutDriverInputSchema),
+        z.lazy(() => VehicleUncheckedCreateWithoutDriverInputSchema),
+      ])
+      .optional(),
+    connectOrCreate: z
+      .lazy(() => VehicleCreateOrConnectWithoutDriverInputSchema)
+      .optional(),
+    upsert: z.lazy(() => VehicleUpsertWithoutDriverInputSchema).optional(),
+    disconnect: z
+      .union([z.boolean(), z.lazy(() => VehicleWhereInputSchema)])
+      .optional(),
+    delete: z
+      .union([z.boolean(), z.lazy(() => VehicleWhereInputSchema)])
+      .optional(),
+    connect: z.lazy(() => VehicleWhereUniqueInputSchema).optional(),
+    update: z
+      .union([
+        z.lazy(() => VehicleUpdateToOneWithWhereWithoutDriverInputSchema),
+        z.lazy(() => VehicleUpdateWithoutDriverInputSchema),
+        z.lazy(() => VehicleUncheckedUpdateWithoutDriverInputSchema),
+      ])
+      .optional(),
+  });
+
+export const EmergencyCallUncheckedUpdateManyWithoutAttendantNestedInputSchema: z.ZodType<Prisma.EmergencyCallUncheckedUpdateManyWithoutAttendantNestedInput> =
+  z.strictObject({
+    create: z
+      .union([
+        z.lazy(() => EmergencyCallCreateWithoutAttendantInputSchema),
+        z.lazy(() => EmergencyCallCreateWithoutAttendantInputSchema).array(),
+        z.lazy(() => EmergencyCallUncheckedCreateWithoutAttendantInputSchema),
+        z
+          .lazy(() => EmergencyCallUncheckedCreateWithoutAttendantInputSchema)
+          .array(),
+      ])
+      .optional(),
+    connectOrCreate: z
+      .union([
+        z.lazy(() => EmergencyCallCreateOrConnectWithoutAttendantInputSchema),
+        z
+          .lazy(() => EmergencyCallCreateOrConnectWithoutAttendantInputSchema)
+          .array(),
+      ])
+      .optional(),
+    upsert: z
+      .union([
         z.lazy(
-          () => VeiculoAtendimentoUncheckedCreateWithoutVeiculoInputSchema,
+          () => EmergencyCallUpsertWithWhereUniqueWithoutAttendantInputSchema,
         ),
         z
           .lazy(
-            () => VeiculoAtendimentoUncheckedCreateWithoutVeiculoInputSchema,
+            () => EmergencyCallUpsertWithWhereUniqueWithoutAttendantInputSchema,
+          )
+          .array(),
+      ])
+      .optional(),
+    createMany: z
+      .lazy(() => EmergencyCallCreateManyAttendantInputEnvelopeSchema)
+      .optional(),
+    set: z
+      .union([
+        z.lazy(() => EmergencyCallWhereUniqueInputSchema),
+        z.lazy(() => EmergencyCallWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    disconnect: z
+      .union([
+        z.lazy(() => EmergencyCallWhereUniqueInputSchema),
+        z.lazy(() => EmergencyCallWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    delete: z
+      .union([
+        z.lazy(() => EmergencyCallWhereUniqueInputSchema),
+        z.lazy(() => EmergencyCallWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    connect: z
+      .union([
+        z.lazy(() => EmergencyCallWhereUniqueInputSchema),
+        z.lazy(() => EmergencyCallWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    update: z
+      .union([
+        z.lazy(
+          () => EmergencyCallUpdateWithWhereUniqueWithoutAttendantInputSchema,
+        ),
+        z
+          .lazy(
+            () => EmergencyCallUpdateWithWhereUniqueWithoutAttendantInputSchema,
+          )
+          .array(),
+      ])
+      .optional(),
+    updateMany: z
+      .union([
+        z.lazy(
+          () => EmergencyCallUpdateManyWithWhereWithoutAttendantInputSchema,
+        ),
+        z
+          .lazy(
+            () => EmergencyCallUpdateManyWithWhereWithoutAttendantInputSchema,
+          )
+          .array(),
+      ])
+      .optional(),
+    deleteMany: z
+      .union([
+        z.lazy(() => EmergencyCallScalarWhereInputSchema),
+        z.lazy(() => EmergencyCallScalarWhereInputSchema).array(),
+      ])
+      .optional(),
+  });
+
+export const ConversationUncheckedUpdateManyWithoutAttendantNestedInputSchema: z.ZodType<Prisma.ConversationUncheckedUpdateManyWithoutAttendantNestedInput> =
+  z.strictObject({
+    create: z
+      .union([
+        z.lazy(() => ConversationCreateWithoutAttendantInputSchema),
+        z.lazy(() => ConversationCreateWithoutAttendantInputSchema).array(),
+        z.lazy(() => ConversationUncheckedCreateWithoutAttendantInputSchema),
+        z
+          .lazy(() => ConversationUncheckedCreateWithoutAttendantInputSchema)
+          .array(),
+      ])
+      .optional(),
+    connectOrCreate: z
+      .union([
+        z.lazy(() => ConversationCreateOrConnectWithoutAttendantInputSchema),
+        z
+          .lazy(() => ConversationCreateOrConnectWithoutAttendantInputSchema)
+          .array(),
+      ])
+      .optional(),
+    upsert: z
+      .union([
+        z.lazy(
+          () => ConversationUpsertWithWhereUniqueWithoutAttendantInputSchema,
+        ),
+        z
+          .lazy(
+            () => ConversationUpsertWithWhereUniqueWithoutAttendantInputSchema,
+          )
+          .array(),
+      ])
+      .optional(),
+    createMany: z
+      .lazy(() => ConversationCreateManyAttendantInputEnvelopeSchema)
+      .optional(),
+    set: z
+      .union([
+        z.lazy(() => ConversationWhereUniqueInputSchema),
+        z.lazy(() => ConversationWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    disconnect: z
+      .union([
+        z.lazy(() => ConversationWhereUniqueInputSchema),
+        z.lazy(() => ConversationWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    delete: z
+      .union([
+        z.lazy(() => ConversationWhereUniqueInputSchema),
+        z.lazy(() => ConversationWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    connect: z
+      .union([
+        z.lazy(() => ConversationWhereUniqueInputSchema),
+        z.lazy(() => ConversationWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    update: z
+      .union([
+        z.lazy(
+          () => ConversationUpdateWithWhereUniqueWithoutAttendantInputSchema,
+        ),
+        z
+          .lazy(
+            () => ConversationUpdateWithWhereUniqueWithoutAttendantInputSchema,
+          )
+          .array(),
+      ])
+      .optional(),
+    updateMany: z
+      .union([
+        z.lazy(
+          () => ConversationUpdateManyWithWhereWithoutAttendantInputSchema,
+        ),
+        z
+          .lazy(
+            () => ConversationUpdateManyWithWhereWithoutAttendantInputSchema,
+          )
+          .array(),
+      ])
+      .optional(),
+    deleteMany: z
+      .union([
+        z.lazy(() => ConversationScalarWhereInputSchema),
+        z.lazy(() => ConversationScalarWhereInputSchema).array(),
+      ])
+      .optional(),
+  });
+
+export const ConversationUncheckedUpdateManyWithoutDriverNestedInputSchema: z.ZodType<Prisma.ConversationUncheckedUpdateManyWithoutDriverNestedInput> =
+  z.strictObject({
+    create: z
+      .union([
+        z.lazy(() => ConversationCreateWithoutDriverInputSchema),
+        z.lazy(() => ConversationCreateWithoutDriverInputSchema).array(),
+        z.lazy(() => ConversationUncheckedCreateWithoutDriverInputSchema),
+        z
+          .lazy(() => ConversationUncheckedCreateWithoutDriverInputSchema)
+          .array(),
+      ])
+      .optional(),
+    connectOrCreate: z
+      .union([
+        z.lazy(() => ConversationCreateOrConnectWithoutDriverInputSchema),
+        z
+          .lazy(() => ConversationCreateOrConnectWithoutDriverInputSchema)
+          .array(),
+      ])
+      .optional(),
+    upsert: z
+      .union([
+        z.lazy(() => ConversationUpsertWithWhereUniqueWithoutDriverInputSchema),
+        z
+          .lazy(() => ConversationUpsertWithWhereUniqueWithoutDriverInputSchema)
+          .array(),
+      ])
+      .optional(),
+    createMany: z
+      .lazy(() => ConversationCreateManyDriverInputEnvelopeSchema)
+      .optional(),
+    set: z
+      .union([
+        z.lazy(() => ConversationWhereUniqueInputSchema),
+        z.lazy(() => ConversationWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    disconnect: z
+      .union([
+        z.lazy(() => ConversationWhereUniqueInputSchema),
+        z.lazy(() => ConversationWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    delete: z
+      .union([
+        z.lazy(() => ConversationWhereUniqueInputSchema),
+        z.lazy(() => ConversationWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    connect: z
+      .union([
+        z.lazy(() => ConversationWhereUniqueInputSchema),
+        z.lazy(() => ConversationWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    update: z
+      .union([
+        z.lazy(() => ConversationUpdateWithWhereUniqueWithoutDriverInputSchema),
+        z
+          .lazy(() => ConversationUpdateWithWhereUniqueWithoutDriverInputSchema)
+          .array(),
+      ])
+      .optional(),
+    updateMany: z
+      .union([
+        z.lazy(() => ConversationUpdateManyWithWhereWithoutDriverInputSchema),
+        z
+          .lazy(() => ConversationUpdateManyWithWhereWithoutDriverInputSchema)
+          .array(),
+      ])
+      .optional(),
+    deleteMany: z
+      .union([
+        z.lazy(() => ConversationScalarWhereInputSchema),
+        z.lazy(() => ConversationScalarWhereInputSchema).array(),
+      ])
+      .optional(),
+  });
+
+export const MessageUncheckedUpdateManyWithoutSenderNestedInputSchema: z.ZodType<Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput> =
+  z.strictObject({
+    create: z
+      .union([
+        z.lazy(() => MessageCreateWithoutSenderInputSchema),
+        z.lazy(() => MessageCreateWithoutSenderInputSchema).array(),
+        z.lazy(() => MessageUncheckedCreateWithoutSenderInputSchema),
+        z.lazy(() => MessageUncheckedCreateWithoutSenderInputSchema).array(),
+      ])
+      .optional(),
+    connectOrCreate: z
+      .union([
+        z.lazy(() => MessageCreateOrConnectWithoutSenderInputSchema),
+        z.lazy(() => MessageCreateOrConnectWithoutSenderInputSchema).array(),
+      ])
+      .optional(),
+    upsert: z
+      .union([
+        z.lazy(() => MessageUpsertWithWhereUniqueWithoutSenderInputSchema),
+        z
+          .lazy(() => MessageUpsertWithWhereUniqueWithoutSenderInputSchema)
+          .array(),
+      ])
+      .optional(),
+    createMany: z
+      .lazy(() => MessageCreateManySenderInputEnvelopeSchema)
+      .optional(),
+    set: z
+      .union([
+        z.lazy(() => MessageWhereUniqueInputSchema),
+        z.lazy(() => MessageWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    disconnect: z
+      .union([
+        z.lazy(() => MessageWhereUniqueInputSchema),
+        z.lazy(() => MessageWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    delete: z
+      .union([
+        z.lazy(() => MessageWhereUniqueInputSchema),
+        z.lazy(() => MessageWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    connect: z
+      .union([
+        z.lazy(() => MessageWhereUniqueInputSchema),
+        z.lazy(() => MessageWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    update: z
+      .union([
+        z.lazy(() => MessageUpdateWithWhereUniqueWithoutSenderInputSchema),
+        z
+          .lazy(() => MessageUpdateWithWhereUniqueWithoutSenderInputSchema)
+          .array(),
+      ])
+      .optional(),
+    updateMany: z
+      .union([
+        z.lazy(() => MessageUpdateManyWithWhereWithoutSenderInputSchema),
+        z
+          .lazy(() => MessageUpdateManyWithWhereWithoutSenderInputSchema)
+          .array(),
+      ])
+      .optional(),
+    deleteMany: z
+      .union([
+        z.lazy(() => MessageScalarWhereInputSchema),
+        z.lazy(() => MessageScalarWhereInputSchema).array(),
+      ])
+      .optional(),
+  });
+
+export const UserCreateNestedOneWithoutVehicleInputSchema: z.ZodType<Prisma.UserCreateNestedOneWithoutVehicleInput> =
+  z.strictObject({
+    create: z
+      .union([
+        z.lazy(() => UserCreateWithoutVehicleInputSchema),
+        z.lazy(() => UserUncheckedCreateWithoutVehicleInputSchema),
+      ])
+      .optional(),
+    connectOrCreate: z
+      .lazy(() => UserCreateOrConnectWithoutVehicleInputSchema)
+      .optional(),
+    connect: z.lazy(() => UserWhereUniqueInputSchema).optional(),
+  });
+
+export const VehicleEmergencyCallCreateNestedManyWithoutVehicleInputSchema: z.ZodType<Prisma.VehicleEmergencyCallCreateNestedManyWithoutVehicleInput> =
+  z.strictObject({
+    create: z
+      .union([
+        z.lazy(() => VehicleEmergencyCallCreateWithoutVehicleInputSchema),
+        z
+          .lazy(() => VehicleEmergencyCallCreateWithoutVehicleInputSchema)
+          .array(),
+        z.lazy(
+          () => VehicleEmergencyCallUncheckedCreateWithoutVehicleInputSchema,
+        ),
+        z
+          .lazy(
+            () => VehicleEmergencyCallUncheckedCreateWithoutVehicleInputSchema,
           )
           .array(),
       ])
@@ -4644,22 +4649,63 @@ export const VeiculoAtendimentoUncheckedCreateNestedManyWithoutVeiculoInputSchem
     connectOrCreate: z
       .union([
         z.lazy(
-          () => VeiculoAtendimentoCreateOrConnectWithoutVeiculoInputSchema,
+          () => VehicleEmergencyCallCreateOrConnectWithoutVehicleInputSchema,
         ),
         z
           .lazy(
-            () => VeiculoAtendimentoCreateOrConnectWithoutVeiculoInputSchema,
+            () => VehicleEmergencyCallCreateOrConnectWithoutVehicleInputSchema,
           )
           .array(),
       ])
       .optional(),
     createMany: z
-      .lazy(() => VeiculoAtendimentoCreateManyVeiculoInputEnvelopeSchema)
+      .lazy(() => VehicleEmergencyCallCreateManyVehicleInputEnvelopeSchema)
       .optional(),
     connect: z
       .union([
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema),
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema).array(),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+  });
+
+export const VehicleEmergencyCallUncheckedCreateNestedManyWithoutVehicleInputSchema: z.ZodType<Prisma.VehicleEmergencyCallUncheckedCreateNestedManyWithoutVehicleInput> =
+  z.strictObject({
+    create: z
+      .union([
+        z.lazy(() => VehicleEmergencyCallCreateWithoutVehicleInputSchema),
+        z
+          .lazy(() => VehicleEmergencyCallCreateWithoutVehicleInputSchema)
+          .array(),
+        z.lazy(
+          () => VehicleEmergencyCallUncheckedCreateWithoutVehicleInputSchema,
+        ),
+        z
+          .lazy(
+            () => VehicleEmergencyCallUncheckedCreateWithoutVehicleInputSchema,
+          )
+          .array(),
+      ])
+      .optional(),
+    connectOrCreate: z
+      .union([
+        z.lazy(
+          () => VehicleEmergencyCallCreateOrConnectWithoutVehicleInputSchema,
+        ),
+        z
+          .lazy(
+            () => VehicleEmergencyCallCreateOrConnectWithoutVehicleInputSchema,
+          )
+          .array(),
+      ])
+      .optional(),
+    createMany: z
+      .lazy(() => VehicleEmergencyCallCreateManyVehicleInputEnvelopeSchema)
+      .optional(),
+    connect: z
+      .union([
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema).array(),
       ])
       .optional(),
   });
@@ -4673,40 +4719,42 @@ export const FloatFieldUpdateOperationsInputSchema: z.ZodType<Prisma.FloatFieldU
     divide: z.number().optional(),
   });
 
-export const UsuarioUpdateOneRequiredWithoutVeiculoNestedInputSchema: z.ZodType<Prisma.UsuarioUpdateOneRequiredWithoutVeiculoNestedInput> =
+export const UserUpdateOneRequiredWithoutVehicleNestedInputSchema: z.ZodType<Prisma.UserUpdateOneRequiredWithoutVehicleNestedInput> =
   z.strictObject({
     create: z
       .union([
-        z.lazy(() => UsuarioCreateWithoutVeiculoInputSchema),
-        z.lazy(() => UsuarioUncheckedCreateWithoutVeiculoInputSchema),
+        z.lazy(() => UserCreateWithoutVehicleInputSchema),
+        z.lazy(() => UserUncheckedCreateWithoutVehicleInputSchema),
       ])
       .optional(),
     connectOrCreate: z
-      .lazy(() => UsuarioCreateOrConnectWithoutVeiculoInputSchema)
+      .lazy(() => UserCreateOrConnectWithoutVehicleInputSchema)
       .optional(),
-    upsert: z.lazy(() => UsuarioUpsertWithoutVeiculoInputSchema).optional(),
-    connect: z.lazy(() => UsuarioWhereUniqueInputSchema).optional(),
+    upsert: z.lazy(() => UserUpsertWithoutVehicleInputSchema).optional(),
+    connect: z.lazy(() => UserWhereUniqueInputSchema).optional(),
     update: z
       .union([
-        z.lazy(() => UsuarioUpdateToOneWithWhereWithoutVeiculoInputSchema),
-        z.lazy(() => UsuarioUpdateWithoutVeiculoInputSchema),
-        z.lazy(() => UsuarioUncheckedUpdateWithoutVeiculoInputSchema),
+        z.lazy(() => UserUpdateToOneWithWhereWithoutVehicleInputSchema),
+        z.lazy(() => UserUpdateWithoutVehicleInputSchema),
+        z.lazy(() => UserUncheckedUpdateWithoutVehicleInputSchema),
       ])
       .optional(),
   });
 
-export const VeiculoAtendimentoUpdateManyWithoutVeiculoNestedInputSchema: z.ZodType<Prisma.VeiculoAtendimentoUpdateManyWithoutVeiculoNestedInput> =
+export const VehicleEmergencyCallUpdateManyWithoutVehicleNestedInputSchema: z.ZodType<Prisma.VehicleEmergencyCallUpdateManyWithoutVehicleNestedInput> =
   z.strictObject({
     create: z
       .union([
-        z.lazy(() => VeiculoAtendimentoCreateWithoutVeiculoInputSchema),
-        z.lazy(() => VeiculoAtendimentoCreateWithoutVeiculoInputSchema).array(),
+        z.lazy(() => VehicleEmergencyCallCreateWithoutVehicleInputSchema),
+        z
+          .lazy(() => VehicleEmergencyCallCreateWithoutVehicleInputSchema)
+          .array(),
         z.lazy(
-          () => VeiculoAtendimentoUncheckedCreateWithoutVeiculoInputSchema,
+          () => VehicleEmergencyCallUncheckedCreateWithoutVehicleInputSchema,
         ),
         z
           .lazy(
-            () => VeiculoAtendimentoUncheckedCreateWithoutVeiculoInputSchema,
+            () => VehicleEmergencyCallUncheckedCreateWithoutVehicleInputSchema,
           )
           .array(),
       ])
@@ -4714,11 +4762,11 @@ export const VeiculoAtendimentoUpdateManyWithoutVeiculoNestedInputSchema: z.ZodT
     connectOrCreate: z
       .union([
         z.lazy(
-          () => VeiculoAtendimentoCreateOrConnectWithoutVeiculoInputSchema,
+          () => VehicleEmergencyCallCreateOrConnectWithoutVehicleInputSchema,
         ),
         z
           .lazy(
-            () => VeiculoAtendimentoCreateOrConnectWithoutVeiculoInputSchema,
+            () => VehicleEmergencyCallCreateOrConnectWithoutVehicleInputSchema,
           )
           .array(),
       ])
@@ -4727,53 +4775,53 @@ export const VeiculoAtendimentoUpdateManyWithoutVeiculoNestedInputSchema: z.ZodT
       .union([
         z.lazy(
           () =>
-            VeiculoAtendimentoUpsertWithWhereUniqueWithoutVeiculoInputSchema,
+            VehicleEmergencyCallUpsertWithWhereUniqueWithoutVehicleInputSchema,
         ),
         z
           .lazy(
             () =>
-              VeiculoAtendimentoUpsertWithWhereUniqueWithoutVeiculoInputSchema,
+              VehicleEmergencyCallUpsertWithWhereUniqueWithoutVehicleInputSchema,
           )
           .array(),
       ])
       .optional(),
     createMany: z
-      .lazy(() => VeiculoAtendimentoCreateManyVeiculoInputEnvelopeSchema)
+      .lazy(() => VehicleEmergencyCallCreateManyVehicleInputEnvelopeSchema)
       .optional(),
     set: z
       .union([
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema),
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema).array(),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema).array(),
       ])
       .optional(),
     disconnect: z
       .union([
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema),
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema).array(),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema).array(),
       ])
       .optional(),
     delete: z
       .union([
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema),
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema).array(),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema).array(),
       ])
       .optional(),
     connect: z
       .union([
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema),
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema).array(),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema).array(),
       ])
       .optional(),
     update: z
       .union([
         z.lazy(
           () =>
-            VeiculoAtendimentoUpdateWithWhereUniqueWithoutVeiculoInputSchema,
+            VehicleEmergencyCallUpdateWithWhereUniqueWithoutVehicleInputSchema,
         ),
         z
           .lazy(
             () =>
-              VeiculoAtendimentoUpdateWithWhereUniqueWithoutVeiculoInputSchema,
+              VehicleEmergencyCallUpdateWithWhereUniqueWithoutVehicleInputSchema,
           )
           .array(),
       ])
@@ -4781,36 +4829,39 @@ export const VeiculoAtendimentoUpdateManyWithoutVeiculoNestedInputSchema: z.ZodT
     updateMany: z
       .union([
         z.lazy(
-          () => VeiculoAtendimentoUpdateManyWithWhereWithoutVeiculoInputSchema,
+          () =>
+            VehicleEmergencyCallUpdateManyWithWhereWithoutVehicleInputSchema,
         ),
         z
           .lazy(
             () =>
-              VeiculoAtendimentoUpdateManyWithWhereWithoutVeiculoInputSchema,
+              VehicleEmergencyCallUpdateManyWithWhereWithoutVehicleInputSchema,
           )
           .array(),
       ])
       .optional(),
     deleteMany: z
       .union([
-        z.lazy(() => VeiculoAtendimentoScalarWhereInputSchema),
-        z.lazy(() => VeiculoAtendimentoScalarWhereInputSchema).array(),
+        z.lazy(() => VehicleEmergencyCallScalarWhereInputSchema),
+        z.lazy(() => VehicleEmergencyCallScalarWhereInputSchema).array(),
       ])
       .optional(),
   });
 
-export const VeiculoAtendimentoUncheckedUpdateManyWithoutVeiculoNestedInputSchema: z.ZodType<Prisma.VeiculoAtendimentoUncheckedUpdateManyWithoutVeiculoNestedInput> =
+export const VehicleEmergencyCallUncheckedUpdateManyWithoutVehicleNestedInputSchema: z.ZodType<Prisma.VehicleEmergencyCallUncheckedUpdateManyWithoutVehicleNestedInput> =
   z.strictObject({
     create: z
       .union([
-        z.lazy(() => VeiculoAtendimentoCreateWithoutVeiculoInputSchema),
-        z.lazy(() => VeiculoAtendimentoCreateWithoutVeiculoInputSchema).array(),
+        z.lazy(() => VehicleEmergencyCallCreateWithoutVehicleInputSchema),
+        z
+          .lazy(() => VehicleEmergencyCallCreateWithoutVehicleInputSchema)
+          .array(),
         z.lazy(
-          () => VeiculoAtendimentoUncheckedCreateWithoutVeiculoInputSchema,
+          () => VehicleEmergencyCallUncheckedCreateWithoutVehicleInputSchema,
         ),
         z
           .lazy(
-            () => VeiculoAtendimentoUncheckedCreateWithoutVeiculoInputSchema,
+            () => VehicleEmergencyCallUncheckedCreateWithoutVehicleInputSchema,
           )
           .array(),
       ])
@@ -4818,11 +4869,11 @@ export const VeiculoAtendimentoUncheckedUpdateManyWithoutVeiculoNestedInputSchem
     connectOrCreate: z
       .union([
         z.lazy(
-          () => VeiculoAtendimentoCreateOrConnectWithoutVeiculoInputSchema,
+          () => VehicleEmergencyCallCreateOrConnectWithoutVehicleInputSchema,
         ),
         z
           .lazy(
-            () => VeiculoAtendimentoCreateOrConnectWithoutVeiculoInputSchema,
+            () => VehicleEmergencyCallCreateOrConnectWithoutVehicleInputSchema,
           )
           .array(),
       ])
@@ -4831,53 +4882,53 @@ export const VeiculoAtendimentoUncheckedUpdateManyWithoutVeiculoNestedInputSchem
       .union([
         z.lazy(
           () =>
-            VeiculoAtendimentoUpsertWithWhereUniqueWithoutVeiculoInputSchema,
+            VehicleEmergencyCallUpsertWithWhereUniqueWithoutVehicleInputSchema,
         ),
         z
           .lazy(
             () =>
-              VeiculoAtendimentoUpsertWithWhereUniqueWithoutVeiculoInputSchema,
+              VehicleEmergencyCallUpsertWithWhereUniqueWithoutVehicleInputSchema,
           )
           .array(),
       ])
       .optional(),
     createMany: z
-      .lazy(() => VeiculoAtendimentoCreateManyVeiculoInputEnvelopeSchema)
+      .lazy(() => VehicleEmergencyCallCreateManyVehicleInputEnvelopeSchema)
       .optional(),
     set: z
       .union([
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema),
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema).array(),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema).array(),
       ])
       .optional(),
     disconnect: z
       .union([
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema),
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema).array(),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema).array(),
       ])
       .optional(),
     delete: z
       .union([
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema),
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema).array(),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema).array(),
       ])
       .optional(),
     connect: z
       .union([
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema),
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema).array(),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema).array(),
       ])
       .optional(),
     update: z
       .union([
         z.lazy(
           () =>
-            VeiculoAtendimentoUpdateWithWhereUniqueWithoutVeiculoInputSchema,
+            VehicleEmergencyCallUpdateWithWhereUniqueWithoutVehicleInputSchema,
         ),
         z
           .lazy(
             () =>
-              VeiculoAtendimentoUpdateWithWhereUniqueWithoutVeiculoInputSchema,
+              VehicleEmergencyCallUpdateWithWhereUniqueWithoutVehicleInputSchema,
           )
           .array(),
       ])
@@ -4885,57 +4936,98 @@ export const VeiculoAtendimentoUncheckedUpdateManyWithoutVeiculoNestedInputSchem
     updateMany: z
       .union([
         z.lazy(
-          () => VeiculoAtendimentoUpdateManyWithWhereWithoutVeiculoInputSchema,
+          () =>
+            VehicleEmergencyCallUpdateManyWithWhereWithoutVehicleInputSchema,
         ),
         z
           .lazy(
             () =>
-              VeiculoAtendimentoUpdateManyWithWhereWithoutVeiculoInputSchema,
+              VehicleEmergencyCallUpdateManyWithWhereWithoutVehicleInputSchema,
           )
           .array(),
       ])
       .optional(),
     deleteMany: z
       .union([
-        z.lazy(() => VeiculoAtendimentoScalarWhereInputSchema),
-        z.lazy(() => VeiculoAtendimentoScalarWhereInputSchema).array(),
+        z.lazy(() => VehicleEmergencyCallScalarWhereInputSchema),
+        z.lazy(() => VehicleEmergencyCallScalarWhereInputSchema).array(),
       ])
       .optional(),
   });
 
-export const UsuarioCreateNestedOneWithoutAtendimentosRegistradosInputSchema: z.ZodType<Prisma.UsuarioCreateNestedOneWithoutAtendimentosRegistradosInput> =
+export const UserCreateNestedOneWithoutRegisteredCallsInputSchema: z.ZodType<Prisma.UserCreateNestedOneWithoutRegisteredCallsInput> =
   z.strictObject({
     create: z
       .union([
-        z.lazy(() => UsuarioCreateWithoutAtendimentosRegistradosInputSchema),
-        z.lazy(
-          () => UsuarioUncheckedCreateWithoutAtendimentosRegistradosInputSchema,
-        ),
+        z.lazy(() => UserCreateWithoutRegisteredCallsInputSchema),
+        z.lazy(() => UserUncheckedCreateWithoutRegisteredCallsInputSchema),
       ])
       .optional(),
     connectOrCreate: z
+      .lazy(() => UserCreateOrConnectWithoutRegisteredCallsInputSchema)
+      .optional(),
+    connect: z.lazy(() => UserWhereUniqueInputSchema).optional(),
+  });
+
+export const VehicleEmergencyCallCreateNestedManyWithoutEmergencyCallInputSchema: z.ZodType<Prisma.VehicleEmergencyCallCreateNestedManyWithoutEmergencyCallInput> =
+  z.strictObject({
+    create: z
+      .union([
+        z.lazy(() => VehicleEmergencyCallCreateWithoutEmergencyCallInputSchema),
+        z
+          .lazy(() => VehicleEmergencyCallCreateWithoutEmergencyCallInputSchema)
+          .array(),
+        z.lazy(
+          () =>
+            VehicleEmergencyCallUncheckedCreateWithoutEmergencyCallInputSchema,
+        ),
+        z
+          .lazy(
+            () =>
+              VehicleEmergencyCallUncheckedCreateWithoutEmergencyCallInputSchema,
+          )
+          .array(),
+      ])
+      .optional(),
+    connectOrCreate: z
+      .union([
+        z.lazy(
+          () =>
+            VehicleEmergencyCallCreateOrConnectWithoutEmergencyCallInputSchema,
+        ),
+        z
+          .lazy(
+            () =>
+              VehicleEmergencyCallCreateOrConnectWithoutEmergencyCallInputSchema,
+          )
+          .array(),
+      ])
+      .optional(),
+    createMany: z
       .lazy(
-        () => UsuarioCreateOrConnectWithoutAtendimentosRegistradosInputSchema,
+        () => VehicleEmergencyCallCreateManyEmergencyCallInputEnvelopeSchema,
       )
       .optional(),
-    connect: z.lazy(() => UsuarioWhereUniqueInputSchema).optional(),
+    connect: z
+      .union([
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
   });
 
-export const VeiculoAtendimentoCreateNestedManyWithoutAtendimentoInputSchema: z.ZodType<Prisma.VeiculoAtendimentoCreateNestedManyWithoutAtendimentoInput> =
+export const NotificationCreateNestedManyWithoutEmergencyCallInputSchema: z.ZodType<Prisma.NotificationCreateNestedManyWithoutEmergencyCallInput> =
   z.strictObject({
     create: z
       .union([
-        z.lazy(() => VeiculoAtendimentoCreateWithoutAtendimentoInputSchema),
-        z
-          .lazy(() => VeiculoAtendimentoCreateWithoutAtendimentoInputSchema)
-          .array(),
+        z.lazy(() => NotificationCreateWithoutEmergencyCallInputSchema),
+        z.lazy(() => NotificationCreateWithoutEmergencyCallInputSchema).array(),
         z.lazy(
-          () => VeiculoAtendimentoUncheckedCreateWithoutAtendimentoInputSchema,
+          () => NotificationUncheckedCreateWithoutEmergencyCallInputSchema,
         ),
         z
           .lazy(
-            () =>
-              VeiculoAtendimentoUncheckedCreateWithoutAtendimentoInputSchema,
+            () => NotificationUncheckedCreateWithoutEmergencyCallInputSchema,
           )
           .array(),
       ])
@@ -4943,73 +5035,42 @@ export const VeiculoAtendimentoCreateNestedManyWithoutAtendimentoInputSchema: z.
     connectOrCreate: z
       .union([
         z.lazy(
-          () => VeiculoAtendimentoCreateOrConnectWithoutAtendimentoInputSchema,
+          () => NotificationCreateOrConnectWithoutEmergencyCallInputSchema,
         ),
         z
           .lazy(
-            () =>
-              VeiculoAtendimentoCreateOrConnectWithoutAtendimentoInputSchema,
+            () => NotificationCreateOrConnectWithoutEmergencyCallInputSchema,
           )
           .array(),
       ])
       .optional(),
     createMany: z
-      .lazy(() => VeiculoAtendimentoCreateManyAtendimentoInputEnvelopeSchema)
+      .lazy(() => NotificationCreateManyEmergencyCallInputEnvelopeSchema)
       .optional(),
     connect: z
       .union([
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema),
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema).array(),
+        z.lazy(() => NotificationWhereUniqueInputSchema),
+        z.lazy(() => NotificationWhereUniqueInputSchema).array(),
       ])
       .optional(),
   });
 
-export const NotificacaoCreateNestedManyWithoutAtendimentoInputSchema: z.ZodType<Prisma.NotificacaoCreateNestedManyWithoutAtendimentoInput> =
+export const VehicleEmergencyCallUncheckedCreateNestedManyWithoutEmergencyCallInputSchema: z.ZodType<Prisma.VehicleEmergencyCallUncheckedCreateNestedManyWithoutEmergencyCallInput> =
   z.strictObject({
     create: z
       .union([
-        z.lazy(() => NotificacaoCreateWithoutAtendimentoInputSchema),
-        z.lazy(() => NotificacaoCreateWithoutAtendimentoInputSchema).array(),
-        z.lazy(() => NotificacaoUncheckedCreateWithoutAtendimentoInputSchema),
+        z.lazy(() => VehicleEmergencyCallCreateWithoutEmergencyCallInputSchema),
         z
-          .lazy(() => NotificacaoUncheckedCreateWithoutAtendimentoInputSchema)
-          .array(),
-      ])
-      .optional(),
-    connectOrCreate: z
-      .union([
-        z.lazy(() => NotificacaoCreateOrConnectWithoutAtendimentoInputSchema),
-        z
-          .lazy(() => NotificacaoCreateOrConnectWithoutAtendimentoInputSchema)
-          .array(),
-      ])
-      .optional(),
-    createMany: z
-      .lazy(() => NotificacaoCreateManyAtendimentoInputEnvelopeSchema)
-      .optional(),
-    connect: z
-      .union([
-        z.lazy(() => NotificacaoWhereUniqueInputSchema),
-        z.lazy(() => NotificacaoWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-  });
-
-export const VeiculoAtendimentoUncheckedCreateNestedManyWithoutAtendimentoInputSchema: z.ZodType<Prisma.VeiculoAtendimentoUncheckedCreateNestedManyWithoutAtendimentoInput> =
-  z.strictObject({
-    create: z
-      .union([
-        z.lazy(() => VeiculoAtendimentoCreateWithoutAtendimentoInputSchema),
-        z
-          .lazy(() => VeiculoAtendimentoCreateWithoutAtendimentoInputSchema)
+          .lazy(() => VehicleEmergencyCallCreateWithoutEmergencyCallInputSchema)
           .array(),
         z.lazy(
-          () => VeiculoAtendimentoUncheckedCreateWithoutAtendimentoInputSchema,
+          () =>
+            VehicleEmergencyCallUncheckedCreateWithoutEmergencyCallInputSchema,
         ),
         z
           .lazy(
             () =>
-              VeiculoAtendimentoUncheckedCreateWithoutAtendimentoInputSchema,
+              VehicleEmergencyCallUncheckedCreateWithoutEmergencyCallInputSchema,
           )
           .array(),
       ])
@@ -5017,54 +5078,65 @@ export const VeiculoAtendimentoUncheckedCreateNestedManyWithoutAtendimentoInputS
     connectOrCreate: z
       .union([
         z.lazy(
-          () => VeiculoAtendimentoCreateOrConnectWithoutAtendimentoInputSchema,
+          () =>
+            VehicleEmergencyCallCreateOrConnectWithoutEmergencyCallInputSchema,
         ),
         z
           .lazy(
             () =>
-              VeiculoAtendimentoCreateOrConnectWithoutAtendimentoInputSchema,
+              VehicleEmergencyCallCreateOrConnectWithoutEmergencyCallInputSchema,
           )
           .array(),
       ])
       .optional(),
     createMany: z
-      .lazy(() => VeiculoAtendimentoCreateManyAtendimentoInputEnvelopeSchema)
+      .lazy(
+        () => VehicleEmergencyCallCreateManyEmergencyCallInputEnvelopeSchema,
+      )
       .optional(),
     connect: z
       .union([
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema),
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema).array(),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema).array(),
       ])
       .optional(),
   });
 
-export const NotificacaoUncheckedCreateNestedManyWithoutAtendimentoInputSchema: z.ZodType<Prisma.NotificacaoUncheckedCreateNestedManyWithoutAtendimentoInput> =
+export const NotificationUncheckedCreateNestedManyWithoutEmergencyCallInputSchema: z.ZodType<Prisma.NotificationUncheckedCreateNestedManyWithoutEmergencyCallInput> =
   z.strictObject({
     create: z
       .union([
-        z.lazy(() => NotificacaoCreateWithoutAtendimentoInputSchema),
-        z.lazy(() => NotificacaoCreateWithoutAtendimentoInputSchema).array(),
-        z.lazy(() => NotificacaoUncheckedCreateWithoutAtendimentoInputSchema),
+        z.lazy(() => NotificationCreateWithoutEmergencyCallInputSchema),
+        z.lazy(() => NotificationCreateWithoutEmergencyCallInputSchema).array(),
+        z.lazy(
+          () => NotificationUncheckedCreateWithoutEmergencyCallInputSchema,
+        ),
         z
-          .lazy(() => NotificacaoUncheckedCreateWithoutAtendimentoInputSchema)
+          .lazy(
+            () => NotificationUncheckedCreateWithoutEmergencyCallInputSchema,
+          )
           .array(),
       ])
       .optional(),
     connectOrCreate: z
       .union([
-        z.lazy(() => NotificacaoCreateOrConnectWithoutAtendimentoInputSchema),
+        z.lazy(
+          () => NotificationCreateOrConnectWithoutEmergencyCallInputSchema,
+        ),
         z
-          .lazy(() => NotificacaoCreateOrConnectWithoutAtendimentoInputSchema)
+          .lazy(
+            () => NotificationCreateOrConnectWithoutEmergencyCallInputSchema,
+          )
           .array(),
       ])
       .optional(),
     createMany: z
-      .lazy(() => NotificacaoCreateManyAtendimentoInputEnvelopeSchema)
+      .lazy(() => NotificationCreateManyEmergencyCallInputEnvelopeSchema)
       .optional(),
     connect: z
       .union([
-        z.lazy(() => NotificacaoWhereUniqueInputSchema),
-        z.lazy(() => NotificacaoWhereUniqueInputSchema).array(),
+        z.lazy(() => NotificationWhereUniqueInputSchema),
+        z.lazy(() => NotificationWhereUniqueInputSchema).array(),
       ])
       .optional(),
   });
@@ -5092,122 +5164,117 @@ export const NullableStringFieldUpdateOperationsInputSchema: z.ZodType<Prisma.Nu
     set: z.string().optional().nullable(),
   });
 
-export const UsuarioUpdateOneRequiredWithoutAtendimentosRegistradosNestedInputSchema: z.ZodType<Prisma.UsuarioUpdateOneRequiredWithoutAtendimentosRegistradosNestedInput> =
+export const UserUpdateOneRequiredWithoutRegisteredCallsNestedInputSchema: z.ZodType<Prisma.UserUpdateOneRequiredWithoutRegisteredCallsNestedInput> =
   z.strictObject({
     create: z
       .union([
-        z.lazy(() => UsuarioCreateWithoutAtendimentosRegistradosInputSchema),
-        z.lazy(
-          () => UsuarioUncheckedCreateWithoutAtendimentosRegistradosInputSchema,
-        ),
+        z.lazy(() => UserCreateWithoutRegisteredCallsInputSchema),
+        z.lazy(() => UserUncheckedCreateWithoutRegisteredCallsInputSchema),
       ])
       .optional(),
     connectOrCreate: z
+      .lazy(() => UserCreateOrConnectWithoutRegisteredCallsInputSchema)
+      .optional(),
+    upsert: z
+      .lazy(() => UserUpsertWithoutRegisteredCallsInputSchema)
+      .optional(),
+    connect: z.lazy(() => UserWhereUniqueInputSchema).optional(),
+    update: z
+      .union([
+        z.lazy(() => UserUpdateToOneWithWhereWithoutRegisteredCallsInputSchema),
+        z.lazy(() => UserUpdateWithoutRegisteredCallsInputSchema),
+        z.lazy(() => UserUncheckedUpdateWithoutRegisteredCallsInputSchema),
+      ])
+      .optional(),
+  });
+
+export const VehicleEmergencyCallUpdateManyWithoutEmergencyCallNestedInputSchema: z.ZodType<Prisma.VehicleEmergencyCallUpdateManyWithoutEmergencyCallNestedInput> =
+  z.strictObject({
+    create: z
+      .union([
+        z.lazy(() => VehicleEmergencyCallCreateWithoutEmergencyCallInputSchema),
+        z
+          .lazy(() => VehicleEmergencyCallCreateWithoutEmergencyCallInputSchema)
+          .array(),
+        z.lazy(
+          () =>
+            VehicleEmergencyCallUncheckedCreateWithoutEmergencyCallInputSchema,
+        ),
+        z
+          .lazy(
+            () =>
+              VehicleEmergencyCallUncheckedCreateWithoutEmergencyCallInputSchema,
+          )
+          .array(),
+      ])
+      .optional(),
+    connectOrCreate: z
+      .union([
+        z.lazy(
+          () =>
+            VehicleEmergencyCallCreateOrConnectWithoutEmergencyCallInputSchema,
+        ),
+        z
+          .lazy(
+            () =>
+              VehicleEmergencyCallCreateOrConnectWithoutEmergencyCallInputSchema,
+          )
+          .array(),
+      ])
+      .optional(),
+    upsert: z
+      .union([
+        z.lazy(
+          () =>
+            VehicleEmergencyCallUpsertWithWhereUniqueWithoutEmergencyCallInputSchema,
+        ),
+        z
+          .lazy(
+            () =>
+              VehicleEmergencyCallUpsertWithWhereUniqueWithoutEmergencyCallInputSchema,
+          )
+          .array(),
+      ])
+      .optional(),
+    createMany: z
       .lazy(
-        () => UsuarioCreateOrConnectWithoutAtendimentosRegistradosInputSchema,
+        () => VehicleEmergencyCallCreateManyEmergencyCallInputEnvelopeSchema,
       )
       .optional(),
-    upsert: z
-      .lazy(() => UsuarioUpsertWithoutAtendimentosRegistradosInputSchema)
-      .optional(),
-    connect: z.lazy(() => UsuarioWhereUniqueInputSchema).optional(),
-    update: z
-      .union([
-        z.lazy(
-          () =>
-            UsuarioUpdateToOneWithWhereWithoutAtendimentosRegistradosInputSchema,
-        ),
-        z.lazy(() => UsuarioUpdateWithoutAtendimentosRegistradosInputSchema),
-        z.lazy(
-          () => UsuarioUncheckedUpdateWithoutAtendimentosRegistradosInputSchema,
-        ),
-      ])
-      .optional(),
-  });
-
-export const VeiculoAtendimentoUpdateManyWithoutAtendimentoNestedInputSchema: z.ZodType<Prisma.VeiculoAtendimentoUpdateManyWithoutAtendimentoNestedInput> =
-  z.strictObject({
-    create: z
-      .union([
-        z.lazy(() => VeiculoAtendimentoCreateWithoutAtendimentoInputSchema),
-        z
-          .lazy(() => VeiculoAtendimentoCreateWithoutAtendimentoInputSchema)
-          .array(),
-        z.lazy(
-          () => VeiculoAtendimentoUncheckedCreateWithoutAtendimentoInputSchema,
-        ),
-        z
-          .lazy(
-            () =>
-              VeiculoAtendimentoUncheckedCreateWithoutAtendimentoInputSchema,
-          )
-          .array(),
-      ])
-      .optional(),
-    connectOrCreate: z
-      .union([
-        z.lazy(
-          () => VeiculoAtendimentoCreateOrConnectWithoutAtendimentoInputSchema,
-        ),
-        z
-          .lazy(
-            () =>
-              VeiculoAtendimentoCreateOrConnectWithoutAtendimentoInputSchema,
-          )
-          .array(),
-      ])
-      .optional(),
-    upsert: z
-      .union([
-        z.lazy(
-          () =>
-            VeiculoAtendimentoUpsertWithWhereUniqueWithoutAtendimentoInputSchema,
-        ),
-        z
-          .lazy(
-            () =>
-              VeiculoAtendimentoUpsertWithWhereUniqueWithoutAtendimentoInputSchema,
-          )
-          .array(),
-      ])
-      .optional(),
-    createMany: z
-      .lazy(() => VeiculoAtendimentoCreateManyAtendimentoInputEnvelopeSchema)
-      .optional(),
     set: z
       .union([
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema),
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema).array(),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema).array(),
       ])
       .optional(),
     disconnect: z
       .union([
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema),
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema).array(),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema).array(),
       ])
       .optional(),
     delete: z
       .union([
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema),
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema).array(),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema).array(),
       ])
       .optional(),
     connect: z
       .union([
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema),
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema).array(),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema).array(),
       ])
       .optional(),
     update: z
       .union([
         z.lazy(
           () =>
-            VeiculoAtendimentoUpdateWithWhereUniqueWithoutAtendimentoInputSchema,
+            VehicleEmergencyCallUpdateWithWhereUniqueWithoutEmergencyCallInputSchema,
         ),
         z
           .lazy(
             () =>
-              VeiculoAtendimentoUpdateWithWhereUniqueWithoutAtendimentoInputSchema,
+              VehicleEmergencyCallUpdateWithWhereUniqueWithoutEmergencyCallInputSchema,
           )
           .array(),
       ])
@@ -5216,130 +5283,36 @@ export const VeiculoAtendimentoUpdateManyWithoutAtendimentoNestedInputSchema: z.
       .union([
         z.lazy(
           () =>
-            VeiculoAtendimentoUpdateManyWithWhereWithoutAtendimentoInputSchema,
+            VehicleEmergencyCallUpdateManyWithWhereWithoutEmergencyCallInputSchema,
         ),
         z
           .lazy(
             () =>
-              VeiculoAtendimentoUpdateManyWithWhereWithoutAtendimentoInputSchema,
+              VehicleEmergencyCallUpdateManyWithWhereWithoutEmergencyCallInputSchema,
           )
           .array(),
       ])
       .optional(),
     deleteMany: z
       .union([
-        z.lazy(() => VeiculoAtendimentoScalarWhereInputSchema),
-        z.lazy(() => VeiculoAtendimentoScalarWhereInputSchema).array(),
+        z.lazy(() => VehicleEmergencyCallScalarWhereInputSchema),
+        z.lazy(() => VehicleEmergencyCallScalarWhereInputSchema).array(),
       ])
       .optional(),
   });
 
-export const NotificacaoUpdateManyWithoutAtendimentoNestedInputSchema: z.ZodType<Prisma.NotificacaoUpdateManyWithoutAtendimentoNestedInput> =
+export const NotificationUpdateManyWithoutEmergencyCallNestedInputSchema: z.ZodType<Prisma.NotificationUpdateManyWithoutEmergencyCallNestedInput> =
   z.strictObject({
     create: z
       .union([
-        z.lazy(() => NotificacaoCreateWithoutAtendimentoInputSchema),
-        z.lazy(() => NotificacaoCreateWithoutAtendimentoInputSchema).array(),
-        z.lazy(() => NotificacaoUncheckedCreateWithoutAtendimentoInputSchema),
-        z
-          .lazy(() => NotificacaoUncheckedCreateWithoutAtendimentoInputSchema)
-          .array(),
-      ])
-      .optional(),
-    connectOrCreate: z
-      .union([
-        z.lazy(() => NotificacaoCreateOrConnectWithoutAtendimentoInputSchema),
-        z
-          .lazy(() => NotificacaoCreateOrConnectWithoutAtendimentoInputSchema)
-          .array(),
-      ])
-      .optional(),
-    upsert: z
-      .union([
+        z.lazy(() => NotificationCreateWithoutEmergencyCallInputSchema),
+        z.lazy(() => NotificationCreateWithoutEmergencyCallInputSchema).array(),
         z.lazy(
-          () => NotificacaoUpsertWithWhereUniqueWithoutAtendimentoInputSchema,
+          () => NotificationUncheckedCreateWithoutEmergencyCallInputSchema,
         ),
         z
           .lazy(
-            () => NotificacaoUpsertWithWhereUniqueWithoutAtendimentoInputSchema,
-          )
-          .array(),
-      ])
-      .optional(),
-    createMany: z
-      .lazy(() => NotificacaoCreateManyAtendimentoInputEnvelopeSchema)
-      .optional(),
-    set: z
-      .union([
-        z.lazy(() => NotificacaoWhereUniqueInputSchema),
-        z.lazy(() => NotificacaoWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    disconnect: z
-      .union([
-        z.lazy(() => NotificacaoWhereUniqueInputSchema),
-        z.lazy(() => NotificacaoWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    delete: z
-      .union([
-        z.lazy(() => NotificacaoWhereUniqueInputSchema),
-        z.lazy(() => NotificacaoWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    connect: z
-      .union([
-        z.lazy(() => NotificacaoWhereUniqueInputSchema),
-        z.lazy(() => NotificacaoWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    update: z
-      .union([
-        z.lazy(
-          () => NotificacaoUpdateWithWhereUniqueWithoutAtendimentoInputSchema,
-        ),
-        z
-          .lazy(
-            () => NotificacaoUpdateWithWhereUniqueWithoutAtendimentoInputSchema,
-          )
-          .array(),
-      ])
-      .optional(),
-    updateMany: z
-      .union([
-        z.lazy(
-          () => NotificacaoUpdateManyWithWhereWithoutAtendimentoInputSchema,
-        ),
-        z
-          .lazy(
-            () => NotificacaoUpdateManyWithWhereWithoutAtendimentoInputSchema,
-          )
-          .array(),
-      ])
-      .optional(),
-    deleteMany: z
-      .union([
-        z.lazy(() => NotificacaoScalarWhereInputSchema),
-        z.lazy(() => NotificacaoScalarWhereInputSchema).array(),
-      ])
-      .optional(),
-  });
-
-export const VeiculoAtendimentoUncheckedUpdateManyWithoutAtendimentoNestedInputSchema: z.ZodType<Prisma.VeiculoAtendimentoUncheckedUpdateManyWithoutAtendimentoNestedInput> =
-  z.strictObject({
-    create: z
-      .union([
-        z.lazy(() => VeiculoAtendimentoCreateWithoutAtendimentoInputSchema),
-        z
-          .lazy(() => VeiculoAtendimentoCreateWithoutAtendimentoInputSchema)
-          .array(),
-        z.lazy(
-          () => VeiculoAtendimentoUncheckedCreateWithoutAtendimentoInputSchema,
-        ),
-        z
-          .lazy(
-            () =>
-              VeiculoAtendimentoUncheckedCreateWithoutAtendimentoInputSchema,
+            () => NotificationUncheckedCreateWithoutEmergencyCallInputSchema,
           )
           .array(),
       ])
@@ -5347,12 +5320,11 @@ export const VeiculoAtendimentoUncheckedUpdateManyWithoutAtendimentoNestedInputS
     connectOrCreate: z
       .union([
         z.lazy(
-          () => VeiculoAtendimentoCreateOrConnectWithoutAtendimentoInputSchema,
+          () => NotificationCreateOrConnectWithoutEmergencyCallInputSchema,
         ),
         z
           .lazy(
-            () =>
-              VeiculoAtendimentoCreateOrConnectWithoutAtendimentoInputSchema,
+            () => NotificationCreateOrConnectWithoutEmergencyCallInputSchema,
           )
           .array(),
       ])
@@ -5361,53 +5333,53 @@ export const VeiculoAtendimentoUncheckedUpdateManyWithoutAtendimentoNestedInputS
       .union([
         z.lazy(
           () =>
-            VeiculoAtendimentoUpsertWithWhereUniqueWithoutAtendimentoInputSchema,
+            NotificationUpsertWithWhereUniqueWithoutEmergencyCallInputSchema,
         ),
         z
           .lazy(
             () =>
-              VeiculoAtendimentoUpsertWithWhereUniqueWithoutAtendimentoInputSchema,
+              NotificationUpsertWithWhereUniqueWithoutEmergencyCallInputSchema,
           )
           .array(),
       ])
       .optional(),
     createMany: z
-      .lazy(() => VeiculoAtendimentoCreateManyAtendimentoInputEnvelopeSchema)
+      .lazy(() => NotificationCreateManyEmergencyCallInputEnvelopeSchema)
       .optional(),
     set: z
       .union([
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema),
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema).array(),
+        z.lazy(() => NotificationWhereUniqueInputSchema),
+        z.lazy(() => NotificationWhereUniqueInputSchema).array(),
       ])
       .optional(),
     disconnect: z
       .union([
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema),
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema).array(),
+        z.lazy(() => NotificationWhereUniqueInputSchema),
+        z.lazy(() => NotificationWhereUniqueInputSchema).array(),
       ])
       .optional(),
     delete: z
       .union([
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema),
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema).array(),
+        z.lazy(() => NotificationWhereUniqueInputSchema),
+        z.lazy(() => NotificationWhereUniqueInputSchema).array(),
       ])
       .optional(),
     connect: z
       .union([
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema),
-        z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema).array(),
+        z.lazy(() => NotificationWhereUniqueInputSchema),
+        z.lazy(() => NotificationWhereUniqueInputSchema).array(),
       ])
       .optional(),
     update: z
       .union([
         z.lazy(
           () =>
-            VeiculoAtendimentoUpdateWithWhereUniqueWithoutAtendimentoInputSchema,
+            NotificationUpdateWithWhereUniqueWithoutEmergencyCallInputSchema,
         ),
         z
           .lazy(
             () =>
-              VeiculoAtendimentoUpdateWithWhereUniqueWithoutAtendimentoInputSchema,
+              NotificationUpdateWithWhereUniqueWithoutEmergencyCallInputSchema,
           )
           .array(),
       ])
@@ -5415,615 +5387,774 @@ export const VeiculoAtendimentoUncheckedUpdateManyWithoutAtendimentoNestedInputS
     updateMany: z
       .union([
         z.lazy(
-          () =>
-            VeiculoAtendimentoUpdateManyWithWhereWithoutAtendimentoInputSchema,
+          () => NotificationUpdateManyWithWhereWithoutEmergencyCallInputSchema,
         ),
         z
           .lazy(
             () =>
-              VeiculoAtendimentoUpdateManyWithWhereWithoutAtendimentoInputSchema,
+              NotificationUpdateManyWithWhereWithoutEmergencyCallInputSchema,
           )
           .array(),
       ])
       .optional(),
     deleteMany: z
       .union([
-        z.lazy(() => VeiculoAtendimentoScalarWhereInputSchema),
-        z.lazy(() => VeiculoAtendimentoScalarWhereInputSchema).array(),
+        z.lazy(() => NotificationScalarWhereInputSchema),
+        z.lazy(() => NotificationScalarWhereInputSchema).array(),
       ])
       .optional(),
   });
 
-export const NotificacaoUncheckedUpdateManyWithoutAtendimentoNestedInputSchema: z.ZodType<Prisma.NotificacaoUncheckedUpdateManyWithoutAtendimentoNestedInput> =
+export const VehicleEmergencyCallUncheckedUpdateManyWithoutEmergencyCallNestedInputSchema: z.ZodType<Prisma.VehicleEmergencyCallUncheckedUpdateManyWithoutEmergencyCallNestedInput> =
   z.strictObject({
     create: z
       .union([
-        z.lazy(() => NotificacaoCreateWithoutAtendimentoInputSchema),
-        z.lazy(() => NotificacaoCreateWithoutAtendimentoInputSchema).array(),
-        z.lazy(() => NotificacaoUncheckedCreateWithoutAtendimentoInputSchema),
+        z.lazy(() => VehicleEmergencyCallCreateWithoutEmergencyCallInputSchema),
         z
-          .lazy(() => NotificacaoUncheckedCreateWithoutAtendimentoInputSchema)
+          .lazy(() => VehicleEmergencyCallCreateWithoutEmergencyCallInputSchema)
+          .array(),
+        z.lazy(
+          () =>
+            VehicleEmergencyCallUncheckedCreateWithoutEmergencyCallInputSchema,
+        ),
+        z
+          .lazy(
+            () =>
+              VehicleEmergencyCallUncheckedCreateWithoutEmergencyCallInputSchema,
+          )
           .array(),
       ])
       .optional(),
     connectOrCreate: z
       .union([
-        z.lazy(() => NotificacaoCreateOrConnectWithoutAtendimentoInputSchema),
+        z.lazy(
+          () =>
+            VehicleEmergencyCallCreateOrConnectWithoutEmergencyCallInputSchema,
+        ),
         z
-          .lazy(() => NotificacaoCreateOrConnectWithoutAtendimentoInputSchema)
+          .lazy(
+            () =>
+              VehicleEmergencyCallCreateOrConnectWithoutEmergencyCallInputSchema,
+          )
           .array(),
       ])
       .optional(),
     upsert: z
       .union([
         z.lazy(
-          () => NotificacaoUpsertWithWhereUniqueWithoutAtendimentoInputSchema,
+          () =>
+            VehicleEmergencyCallUpsertWithWhereUniqueWithoutEmergencyCallInputSchema,
         ),
         z
           .lazy(
-            () => NotificacaoUpsertWithWhereUniqueWithoutAtendimentoInputSchema,
+            () =>
+              VehicleEmergencyCallUpsertWithWhereUniqueWithoutEmergencyCallInputSchema,
           )
           .array(),
       ])
       .optional(),
     createMany: z
-      .lazy(() => NotificacaoCreateManyAtendimentoInputEnvelopeSchema)
-      .optional(),
-    set: z
-      .union([
-        z.lazy(() => NotificacaoWhereUniqueInputSchema),
-        z.lazy(() => NotificacaoWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    disconnect: z
-      .union([
-        z.lazy(() => NotificacaoWhereUniqueInputSchema),
-        z.lazy(() => NotificacaoWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    delete: z
-      .union([
-        z.lazy(() => NotificacaoWhereUniqueInputSchema),
-        z.lazy(() => NotificacaoWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    connect: z
-      .union([
-        z.lazy(() => NotificacaoWhereUniqueInputSchema),
-        z.lazy(() => NotificacaoWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-    update: z
-      .union([
-        z.lazy(
-          () => NotificacaoUpdateWithWhereUniqueWithoutAtendimentoInputSchema,
-        ),
-        z
-          .lazy(
-            () => NotificacaoUpdateWithWhereUniqueWithoutAtendimentoInputSchema,
-          )
-          .array(),
-      ])
-      .optional(),
-    updateMany: z
-      .union([
-        z.lazy(
-          () => NotificacaoUpdateManyWithWhereWithoutAtendimentoInputSchema,
-        ),
-        z
-          .lazy(
-            () => NotificacaoUpdateManyWithWhereWithoutAtendimentoInputSchema,
-          )
-          .array(),
-      ])
-      .optional(),
-    deleteMany: z
-      .union([
-        z.lazy(() => NotificacaoScalarWhereInputSchema),
-        z.lazy(() => NotificacaoScalarWhereInputSchema).array(),
-      ])
-      .optional(),
-  });
-
-export const VeiculoCreateNestedOneWithoutAtendimentosInputSchema: z.ZodType<Prisma.VeiculoCreateNestedOneWithoutAtendimentosInput> =
-  z.strictObject({
-    create: z
-      .union([
-        z.lazy(() => VeiculoCreateWithoutAtendimentosInputSchema),
-        z.lazy(() => VeiculoUncheckedCreateWithoutAtendimentosInputSchema),
-      ])
-      .optional(),
-    connectOrCreate: z
-      .lazy(() => VeiculoCreateOrConnectWithoutAtendimentosInputSchema)
-      .optional(),
-    connect: z.lazy(() => VeiculoWhereUniqueInputSchema).optional(),
-  });
-
-export const AtendimentoCreateNestedOneWithoutVeiculosInputSchema: z.ZodType<Prisma.AtendimentoCreateNestedOneWithoutVeiculosInput> =
-  z.strictObject({
-    create: z
-      .union([
-        z.lazy(() => AtendimentoCreateWithoutVeiculosInputSchema),
-        z.lazy(() => AtendimentoUncheckedCreateWithoutVeiculosInputSchema),
-      ])
-      .optional(),
-    connectOrCreate: z
-      .lazy(() => AtendimentoCreateOrConnectWithoutVeiculosInputSchema)
-      .optional(),
-    connect: z.lazy(() => AtendimentoWhereUniqueInputSchema).optional(),
-  });
-
-export const EnumStatusAtendimentoFieldUpdateOperationsInputSchema: z.ZodType<Prisma.EnumStatusAtendimentoFieldUpdateOperationsInput> =
-  z.strictObject({
-    set: z.lazy(() => StatusAtendimentoSchema).optional(),
-  });
-
-export const VeiculoUpdateOneRequiredWithoutAtendimentosNestedInputSchema: z.ZodType<Prisma.VeiculoUpdateOneRequiredWithoutAtendimentosNestedInput> =
-  z.strictObject({
-    create: z
-      .union([
-        z.lazy(() => VeiculoCreateWithoutAtendimentosInputSchema),
-        z.lazy(() => VeiculoUncheckedCreateWithoutAtendimentosInputSchema),
-      ])
-      .optional(),
-    connectOrCreate: z
-      .lazy(() => VeiculoCreateOrConnectWithoutAtendimentosInputSchema)
-      .optional(),
-    upsert: z
-      .lazy(() => VeiculoUpsertWithoutAtendimentosInputSchema)
-      .optional(),
-    connect: z.lazy(() => VeiculoWhereUniqueInputSchema).optional(),
-    update: z
-      .union([
-        z.lazy(() => VeiculoUpdateToOneWithWhereWithoutAtendimentosInputSchema),
-        z.lazy(() => VeiculoUpdateWithoutAtendimentosInputSchema),
-        z.lazy(() => VeiculoUncheckedUpdateWithoutAtendimentosInputSchema),
-      ])
-      .optional(),
-  });
-
-export const AtendimentoUpdateOneRequiredWithoutVeiculosNestedInputSchema: z.ZodType<Prisma.AtendimentoUpdateOneRequiredWithoutVeiculosNestedInput> =
-  z.strictObject({
-    create: z
-      .union([
-        z.lazy(() => AtendimentoCreateWithoutVeiculosInputSchema),
-        z.lazy(() => AtendimentoUncheckedCreateWithoutVeiculosInputSchema),
-      ])
-      .optional(),
-    connectOrCreate: z
-      .lazy(() => AtendimentoCreateOrConnectWithoutVeiculosInputSchema)
-      .optional(),
-    upsert: z
-      .lazy(() => AtendimentoUpsertWithoutVeiculosInputSchema)
-      .optional(),
-    connect: z.lazy(() => AtendimentoWhereUniqueInputSchema).optional(),
-    update: z
-      .union([
-        z.lazy(() => AtendimentoUpdateToOneWithWhereWithoutVeiculosInputSchema),
-        z.lazy(() => AtendimentoUpdateWithoutVeiculosInputSchema),
-        z.lazy(() => AtendimentoUncheckedUpdateWithoutVeiculosInputSchema),
-      ])
-      .optional(),
-  });
-
-export const UsuarioCreateNestedOneWithoutConversasComoAtendenteInputSchema: z.ZodType<Prisma.UsuarioCreateNestedOneWithoutConversasComoAtendenteInput> =
-  z.strictObject({
-    create: z
-      .union([
-        z.lazy(() => UsuarioCreateWithoutConversasComoAtendenteInputSchema),
-        z.lazy(
-          () => UsuarioUncheckedCreateWithoutConversasComoAtendenteInputSchema,
-        ),
-      ])
-      .optional(),
-    connectOrCreate: z
       .lazy(
-        () => UsuarioCreateOrConnectWithoutConversasComoAtendenteInputSchema,
+        () => VehicleEmergencyCallCreateManyEmergencyCallInputEnvelopeSchema,
       )
       .optional(),
-    connect: z.lazy(() => UsuarioWhereUniqueInputSchema).optional(),
-  });
-
-export const UsuarioCreateNestedOneWithoutConversasComoMotoristaInputSchema: z.ZodType<Prisma.UsuarioCreateNestedOneWithoutConversasComoMotoristaInput> =
-  z.strictObject({
-    create: z
-      .union([
-        z.lazy(() => UsuarioCreateWithoutConversasComoMotoristaInputSchema),
-        z.lazy(
-          () => UsuarioUncheckedCreateWithoutConversasComoMotoristaInputSchema,
-        ),
-      ])
-      .optional(),
-    connectOrCreate: z
-      .lazy(
-        () => UsuarioCreateOrConnectWithoutConversasComoMotoristaInputSchema,
-      )
-      .optional(),
-    connect: z.lazy(() => UsuarioWhereUniqueInputSchema).optional(),
-  });
-
-export const MensagemCreateNestedManyWithoutConversaInputSchema: z.ZodType<Prisma.MensagemCreateNestedManyWithoutConversaInput> =
-  z.strictObject({
-    create: z
-      .union([
-        z.lazy(() => MensagemCreateWithoutConversaInputSchema),
-        z.lazy(() => MensagemCreateWithoutConversaInputSchema).array(),
-        z.lazy(() => MensagemUncheckedCreateWithoutConversaInputSchema),
-        z.lazy(() => MensagemUncheckedCreateWithoutConversaInputSchema).array(),
-      ])
-      .optional(),
-    connectOrCreate: z
-      .union([
-        z.lazy(() => MensagemCreateOrConnectWithoutConversaInputSchema),
-        z.lazy(() => MensagemCreateOrConnectWithoutConversaInputSchema).array(),
-      ])
-      .optional(),
-    createMany: z
-      .lazy(() => MensagemCreateManyConversaInputEnvelopeSchema)
-      .optional(),
-    connect: z
-      .union([
-        z.lazy(() => MensagemWhereUniqueInputSchema),
-        z.lazy(() => MensagemWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-  });
-
-export const MensagemUncheckedCreateNestedManyWithoutConversaInputSchema: z.ZodType<Prisma.MensagemUncheckedCreateNestedManyWithoutConversaInput> =
-  z.strictObject({
-    create: z
-      .union([
-        z.lazy(() => MensagemCreateWithoutConversaInputSchema),
-        z.lazy(() => MensagemCreateWithoutConversaInputSchema).array(),
-        z.lazy(() => MensagemUncheckedCreateWithoutConversaInputSchema),
-        z.lazy(() => MensagemUncheckedCreateWithoutConversaInputSchema).array(),
-      ])
-      .optional(),
-    connectOrCreate: z
-      .union([
-        z.lazy(() => MensagemCreateOrConnectWithoutConversaInputSchema),
-        z.lazy(() => MensagemCreateOrConnectWithoutConversaInputSchema).array(),
-      ])
-      .optional(),
-    createMany: z
-      .lazy(() => MensagemCreateManyConversaInputEnvelopeSchema)
-      .optional(),
-    connect: z
-      .union([
-        z.lazy(() => MensagemWhereUniqueInputSchema),
-        z.lazy(() => MensagemWhereUniqueInputSchema).array(),
-      ])
-      .optional(),
-  });
-
-export const UsuarioUpdateOneRequiredWithoutConversasComoAtendenteNestedInputSchema: z.ZodType<Prisma.UsuarioUpdateOneRequiredWithoutConversasComoAtendenteNestedInput> =
-  z.strictObject({
-    create: z
-      .union([
-        z.lazy(() => UsuarioCreateWithoutConversasComoAtendenteInputSchema),
-        z.lazy(
-          () => UsuarioUncheckedCreateWithoutConversasComoAtendenteInputSchema,
-        ),
-      ])
-      .optional(),
-    connectOrCreate: z
-      .lazy(
-        () => UsuarioCreateOrConnectWithoutConversasComoAtendenteInputSchema,
-      )
-      .optional(),
-    upsert: z
-      .lazy(() => UsuarioUpsertWithoutConversasComoAtendenteInputSchema)
-      .optional(),
-    connect: z.lazy(() => UsuarioWhereUniqueInputSchema).optional(),
-    update: z
-      .union([
-        z.lazy(
-          () =>
-            UsuarioUpdateToOneWithWhereWithoutConversasComoAtendenteInputSchema,
-        ),
-        z.lazy(() => UsuarioUpdateWithoutConversasComoAtendenteInputSchema),
-        z.lazy(
-          () => UsuarioUncheckedUpdateWithoutConversasComoAtendenteInputSchema,
-        ),
-      ])
-      .optional(),
-  });
-
-export const UsuarioUpdateOneRequiredWithoutConversasComoMotoristaNestedInputSchema: z.ZodType<Prisma.UsuarioUpdateOneRequiredWithoutConversasComoMotoristaNestedInput> =
-  z.strictObject({
-    create: z
-      .union([
-        z.lazy(() => UsuarioCreateWithoutConversasComoMotoristaInputSchema),
-        z.lazy(
-          () => UsuarioUncheckedCreateWithoutConversasComoMotoristaInputSchema,
-        ),
-      ])
-      .optional(),
-    connectOrCreate: z
-      .lazy(
-        () => UsuarioCreateOrConnectWithoutConversasComoMotoristaInputSchema,
-      )
-      .optional(),
-    upsert: z
-      .lazy(() => UsuarioUpsertWithoutConversasComoMotoristaInputSchema)
-      .optional(),
-    connect: z.lazy(() => UsuarioWhereUniqueInputSchema).optional(),
-    update: z
-      .union([
-        z.lazy(
-          () =>
-            UsuarioUpdateToOneWithWhereWithoutConversasComoMotoristaInputSchema,
-        ),
-        z.lazy(() => UsuarioUpdateWithoutConversasComoMotoristaInputSchema),
-        z.lazy(
-          () => UsuarioUncheckedUpdateWithoutConversasComoMotoristaInputSchema,
-        ),
-      ])
-      .optional(),
-  });
-
-export const MensagemUpdateManyWithoutConversaNestedInputSchema: z.ZodType<Prisma.MensagemUpdateManyWithoutConversaNestedInput> =
-  z.strictObject({
-    create: z
-      .union([
-        z.lazy(() => MensagemCreateWithoutConversaInputSchema),
-        z.lazy(() => MensagemCreateWithoutConversaInputSchema).array(),
-        z.lazy(() => MensagemUncheckedCreateWithoutConversaInputSchema),
-        z.lazy(() => MensagemUncheckedCreateWithoutConversaInputSchema).array(),
-      ])
-      .optional(),
-    connectOrCreate: z
-      .union([
-        z.lazy(() => MensagemCreateOrConnectWithoutConversaInputSchema),
-        z.lazy(() => MensagemCreateOrConnectWithoutConversaInputSchema).array(),
-      ])
-      .optional(),
-    upsert: z
-      .union([
-        z.lazy(() => MensagemUpsertWithWhereUniqueWithoutConversaInputSchema),
-        z
-          .lazy(() => MensagemUpsertWithWhereUniqueWithoutConversaInputSchema)
-          .array(),
-      ])
-      .optional(),
-    createMany: z
-      .lazy(() => MensagemCreateManyConversaInputEnvelopeSchema)
-      .optional(),
     set: z
       .union([
-        z.lazy(() => MensagemWhereUniqueInputSchema),
-        z.lazy(() => MensagemWhereUniqueInputSchema).array(),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema).array(),
       ])
       .optional(),
     disconnect: z
       .union([
-        z.lazy(() => MensagemWhereUniqueInputSchema),
-        z.lazy(() => MensagemWhereUniqueInputSchema).array(),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema).array(),
       ])
       .optional(),
     delete: z
       .union([
-        z.lazy(() => MensagemWhereUniqueInputSchema),
-        z.lazy(() => MensagemWhereUniqueInputSchema).array(),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema).array(),
       ])
       .optional(),
     connect: z
       .union([
-        z.lazy(() => MensagemWhereUniqueInputSchema),
-        z.lazy(() => MensagemWhereUniqueInputSchema).array(),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema),
+        z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema).array(),
       ])
       .optional(),
     update: z
       .union([
-        z.lazy(() => MensagemUpdateWithWhereUniqueWithoutConversaInputSchema),
+        z.lazy(
+          () =>
+            VehicleEmergencyCallUpdateWithWhereUniqueWithoutEmergencyCallInputSchema,
+        ),
         z
-          .lazy(() => MensagemUpdateWithWhereUniqueWithoutConversaInputSchema)
+          .lazy(
+            () =>
+              VehicleEmergencyCallUpdateWithWhereUniqueWithoutEmergencyCallInputSchema,
+          )
           .array(),
       ])
       .optional(),
     updateMany: z
       .union([
-        z.lazy(() => MensagemUpdateManyWithWhereWithoutConversaInputSchema),
+        z.lazy(
+          () =>
+            VehicleEmergencyCallUpdateManyWithWhereWithoutEmergencyCallInputSchema,
+        ),
         z
-          .lazy(() => MensagemUpdateManyWithWhereWithoutConversaInputSchema)
+          .lazy(
+            () =>
+              VehicleEmergencyCallUpdateManyWithWhereWithoutEmergencyCallInputSchema,
+          )
           .array(),
       ])
       .optional(),
     deleteMany: z
       .union([
-        z.lazy(() => MensagemScalarWhereInputSchema),
-        z.lazy(() => MensagemScalarWhereInputSchema).array(),
+        z.lazy(() => VehicleEmergencyCallScalarWhereInputSchema),
+        z.lazy(() => VehicleEmergencyCallScalarWhereInputSchema).array(),
       ])
       .optional(),
   });
 
-export const MensagemUncheckedUpdateManyWithoutConversaNestedInputSchema: z.ZodType<Prisma.MensagemUncheckedUpdateManyWithoutConversaNestedInput> =
+export const NotificationUncheckedUpdateManyWithoutEmergencyCallNestedInputSchema: z.ZodType<Prisma.NotificationUncheckedUpdateManyWithoutEmergencyCallNestedInput> =
   z.strictObject({
     create: z
       .union([
-        z.lazy(() => MensagemCreateWithoutConversaInputSchema),
-        z.lazy(() => MensagemCreateWithoutConversaInputSchema).array(),
-        z.lazy(() => MensagemUncheckedCreateWithoutConversaInputSchema),
-        z.lazy(() => MensagemUncheckedCreateWithoutConversaInputSchema).array(),
+        z.lazy(() => NotificationCreateWithoutEmergencyCallInputSchema),
+        z.lazy(() => NotificationCreateWithoutEmergencyCallInputSchema).array(),
+        z.lazy(
+          () => NotificationUncheckedCreateWithoutEmergencyCallInputSchema,
+        ),
+        z
+          .lazy(
+            () => NotificationUncheckedCreateWithoutEmergencyCallInputSchema,
+          )
+          .array(),
       ])
       .optional(),
     connectOrCreate: z
       .union([
-        z.lazy(() => MensagemCreateOrConnectWithoutConversaInputSchema),
-        z.lazy(() => MensagemCreateOrConnectWithoutConversaInputSchema).array(),
+        z.lazy(
+          () => NotificationCreateOrConnectWithoutEmergencyCallInputSchema,
+        ),
+        z
+          .lazy(
+            () => NotificationCreateOrConnectWithoutEmergencyCallInputSchema,
+          )
+          .array(),
       ])
       .optional(),
     upsert: z
       .union([
-        z.lazy(() => MensagemUpsertWithWhereUniqueWithoutConversaInputSchema),
+        z.lazy(
+          () =>
+            NotificationUpsertWithWhereUniqueWithoutEmergencyCallInputSchema,
+        ),
         z
-          .lazy(() => MensagemUpsertWithWhereUniqueWithoutConversaInputSchema)
+          .lazy(
+            () =>
+              NotificationUpsertWithWhereUniqueWithoutEmergencyCallInputSchema,
+          )
           .array(),
       ])
       .optional(),
     createMany: z
-      .lazy(() => MensagemCreateManyConversaInputEnvelopeSchema)
+      .lazy(() => NotificationCreateManyEmergencyCallInputEnvelopeSchema)
       .optional(),
     set: z
       .union([
-        z.lazy(() => MensagemWhereUniqueInputSchema),
-        z.lazy(() => MensagemWhereUniqueInputSchema).array(),
+        z.lazy(() => NotificationWhereUniqueInputSchema),
+        z.lazy(() => NotificationWhereUniqueInputSchema).array(),
       ])
       .optional(),
     disconnect: z
       .union([
-        z.lazy(() => MensagemWhereUniqueInputSchema),
-        z.lazy(() => MensagemWhereUniqueInputSchema).array(),
+        z.lazy(() => NotificationWhereUniqueInputSchema),
+        z.lazy(() => NotificationWhereUniqueInputSchema).array(),
       ])
       .optional(),
     delete: z
       .union([
-        z.lazy(() => MensagemWhereUniqueInputSchema),
-        z.lazy(() => MensagemWhereUniqueInputSchema).array(),
+        z.lazy(() => NotificationWhereUniqueInputSchema),
+        z.lazy(() => NotificationWhereUniqueInputSchema).array(),
       ])
       .optional(),
     connect: z
       .union([
-        z.lazy(() => MensagemWhereUniqueInputSchema),
-        z.lazy(() => MensagemWhereUniqueInputSchema).array(),
+        z.lazy(() => NotificationWhereUniqueInputSchema),
+        z.lazy(() => NotificationWhereUniqueInputSchema).array(),
       ])
       .optional(),
     update: z
       .union([
-        z.lazy(() => MensagemUpdateWithWhereUniqueWithoutConversaInputSchema),
+        z.lazy(
+          () =>
+            NotificationUpdateWithWhereUniqueWithoutEmergencyCallInputSchema,
+        ),
         z
-          .lazy(() => MensagemUpdateWithWhereUniqueWithoutConversaInputSchema)
+          .lazy(
+            () =>
+              NotificationUpdateWithWhereUniqueWithoutEmergencyCallInputSchema,
+          )
           .array(),
       ])
       .optional(),
     updateMany: z
       .union([
-        z.lazy(() => MensagemUpdateManyWithWhereWithoutConversaInputSchema),
+        z.lazy(
+          () => NotificationUpdateManyWithWhereWithoutEmergencyCallInputSchema,
+        ),
         z
-          .lazy(() => MensagemUpdateManyWithWhereWithoutConversaInputSchema)
+          .lazy(
+            () =>
+              NotificationUpdateManyWithWhereWithoutEmergencyCallInputSchema,
+          )
           .array(),
       ])
       .optional(),
     deleteMany: z
       .union([
-        z.lazy(() => MensagemScalarWhereInputSchema),
-        z.lazy(() => MensagemScalarWhereInputSchema).array(),
+        z.lazy(() => NotificationScalarWhereInputSchema),
+        z.lazy(() => NotificationScalarWhereInputSchema).array(),
       ])
       .optional(),
   });
 
-export const UsuarioCreateNestedOneWithoutMensagensEnviadasInputSchema: z.ZodType<Prisma.UsuarioCreateNestedOneWithoutMensagensEnviadasInput> =
+export const VehicleCreateNestedOneWithoutEmergencyCallsInputSchema: z.ZodType<Prisma.VehicleCreateNestedOneWithoutEmergencyCallsInput> =
   z.strictObject({
     create: z
       .union([
-        z.lazy(() => UsuarioCreateWithoutMensagensEnviadasInputSchema),
-        z.lazy(() => UsuarioUncheckedCreateWithoutMensagensEnviadasInputSchema),
+        z.lazy(() => VehicleCreateWithoutEmergencyCallsInputSchema),
+        z.lazy(() => VehicleUncheckedCreateWithoutEmergencyCallsInputSchema),
       ])
       .optional(),
     connectOrCreate: z
-      .lazy(() => UsuarioCreateOrConnectWithoutMensagensEnviadasInputSchema)
+      .lazy(() => VehicleCreateOrConnectWithoutEmergencyCallsInputSchema)
       .optional(),
-    connect: z.lazy(() => UsuarioWhereUniqueInputSchema).optional(),
+    connect: z.lazy(() => VehicleWhereUniqueInputSchema).optional(),
   });
 
-export const ConversaCreateNestedOneWithoutMensagensInputSchema: z.ZodType<Prisma.ConversaCreateNestedOneWithoutMensagensInput> =
+export const EmergencyCallCreateNestedOneWithoutVehiclesInputSchema: z.ZodType<Prisma.EmergencyCallCreateNestedOneWithoutVehiclesInput> =
   z.strictObject({
     create: z
       .union([
-        z.lazy(() => ConversaCreateWithoutMensagensInputSchema),
-        z.lazy(() => ConversaUncheckedCreateWithoutMensagensInputSchema),
+        z.lazy(() => EmergencyCallCreateWithoutVehiclesInputSchema),
+        z.lazy(() => EmergencyCallUncheckedCreateWithoutVehiclesInputSchema),
       ])
       .optional(),
     connectOrCreate: z
-      .lazy(() => ConversaCreateOrConnectWithoutMensagensInputSchema)
+      .lazy(() => EmergencyCallCreateOrConnectWithoutVehiclesInputSchema)
       .optional(),
-    connect: z.lazy(() => ConversaWhereUniqueInputSchema).optional(),
+    connect: z.lazy(() => EmergencyCallWhereUniqueInputSchema).optional(),
   });
 
-export const UsuarioUpdateOneRequiredWithoutMensagensEnviadasNestedInputSchema: z.ZodType<Prisma.UsuarioUpdateOneRequiredWithoutMensagensEnviadasNestedInput> =
+export const EnumEmergencyCallStatusFieldUpdateOperationsInputSchema: z.ZodType<Prisma.EnumEmergencyCallStatusFieldUpdateOperationsInput> =
+  z.strictObject({
+    set: z.lazy(() => EmergencyCallStatusSchema).optional(),
+  });
+
+export const VehicleUpdateOneRequiredWithoutEmergencyCallsNestedInputSchema: z.ZodType<Prisma.VehicleUpdateOneRequiredWithoutEmergencyCallsNestedInput> =
   z.strictObject({
     create: z
       .union([
-        z.lazy(() => UsuarioCreateWithoutMensagensEnviadasInputSchema),
-        z.lazy(() => UsuarioUncheckedCreateWithoutMensagensEnviadasInputSchema),
+        z.lazy(() => VehicleCreateWithoutEmergencyCallsInputSchema),
+        z.lazy(() => VehicleUncheckedCreateWithoutEmergencyCallsInputSchema),
       ])
       .optional(),
     connectOrCreate: z
-      .lazy(() => UsuarioCreateOrConnectWithoutMensagensEnviadasInputSchema)
+      .lazy(() => VehicleCreateOrConnectWithoutEmergencyCallsInputSchema)
       .optional(),
     upsert: z
-      .lazy(() => UsuarioUpsertWithoutMensagensEnviadasInputSchema)
+      .lazy(() => VehicleUpsertWithoutEmergencyCallsInputSchema)
       .optional(),
-    connect: z.lazy(() => UsuarioWhereUniqueInputSchema).optional(),
+    connect: z.lazy(() => VehicleWhereUniqueInputSchema).optional(),
     update: z
       .union([
         z.lazy(
-          () => UsuarioUpdateToOneWithWhereWithoutMensagensEnviadasInputSchema,
+          () => VehicleUpdateToOneWithWhereWithoutEmergencyCallsInputSchema,
         ),
-        z.lazy(() => UsuarioUpdateWithoutMensagensEnviadasInputSchema),
-        z.lazy(() => UsuarioUncheckedUpdateWithoutMensagensEnviadasInputSchema),
+        z.lazy(() => VehicleUpdateWithoutEmergencyCallsInputSchema),
+        z.lazy(() => VehicleUncheckedUpdateWithoutEmergencyCallsInputSchema),
       ])
       .optional(),
   });
 
-export const ConversaUpdateOneRequiredWithoutMensagensNestedInputSchema: z.ZodType<Prisma.ConversaUpdateOneRequiredWithoutMensagensNestedInput> =
+export const EmergencyCallUpdateOneRequiredWithoutVehiclesNestedInputSchema: z.ZodType<Prisma.EmergencyCallUpdateOneRequiredWithoutVehiclesNestedInput> =
   z.strictObject({
     create: z
       .union([
-        z.lazy(() => ConversaCreateWithoutMensagensInputSchema),
-        z.lazy(() => ConversaUncheckedCreateWithoutMensagensInputSchema),
+        z.lazy(() => EmergencyCallCreateWithoutVehiclesInputSchema),
+        z.lazy(() => EmergencyCallUncheckedCreateWithoutVehiclesInputSchema),
       ])
       .optional(),
     connectOrCreate: z
-      .lazy(() => ConversaCreateOrConnectWithoutMensagensInputSchema)
-      .optional(),
-    upsert: z.lazy(() => ConversaUpsertWithoutMensagensInputSchema).optional(),
-    connect: z.lazy(() => ConversaWhereUniqueInputSchema).optional(),
-    update: z
-      .union([
-        z.lazy(() => ConversaUpdateToOneWithWhereWithoutMensagensInputSchema),
-        z.lazy(() => ConversaUpdateWithoutMensagensInputSchema),
-        z.lazy(() => ConversaUncheckedUpdateWithoutMensagensInputSchema),
-      ])
-      .optional(),
-  });
-
-export const AtendimentoCreateNestedOneWithoutNotificacoesInputSchema: z.ZodType<Prisma.AtendimentoCreateNestedOneWithoutNotificacoesInput> =
-  z.strictObject({
-    create: z
-      .union([
-        z.lazy(() => AtendimentoCreateWithoutNotificacoesInputSchema),
-        z.lazy(() => AtendimentoUncheckedCreateWithoutNotificacoesInputSchema),
-      ])
-      .optional(),
-    connectOrCreate: z
-      .lazy(() => AtendimentoCreateOrConnectWithoutNotificacoesInputSchema)
-      .optional(),
-    connect: z.lazy(() => AtendimentoWhereUniqueInputSchema).optional(),
-  });
-
-export const AtendimentoUpdateOneRequiredWithoutNotificacoesNestedInputSchema: z.ZodType<Prisma.AtendimentoUpdateOneRequiredWithoutNotificacoesNestedInput> =
-  z.strictObject({
-    create: z
-      .union([
-        z.lazy(() => AtendimentoCreateWithoutNotificacoesInputSchema),
-        z.lazy(() => AtendimentoUncheckedCreateWithoutNotificacoesInputSchema),
-      ])
-      .optional(),
-    connectOrCreate: z
-      .lazy(() => AtendimentoCreateOrConnectWithoutNotificacoesInputSchema)
+      .lazy(() => EmergencyCallCreateOrConnectWithoutVehiclesInputSchema)
       .optional(),
     upsert: z
-      .lazy(() => AtendimentoUpsertWithoutNotificacoesInputSchema)
+      .lazy(() => EmergencyCallUpsertWithoutVehiclesInputSchema)
       .optional(),
-    connect: z.lazy(() => AtendimentoWhereUniqueInputSchema).optional(),
+    connect: z.lazy(() => EmergencyCallWhereUniqueInputSchema).optional(),
     update: z
       .union([
         z.lazy(
-          () => AtendimentoUpdateToOneWithWhereWithoutNotificacoesInputSchema,
+          () => EmergencyCallUpdateToOneWithWhereWithoutVehiclesInputSchema,
         ),
-        z.lazy(() => AtendimentoUpdateWithoutNotificacoesInputSchema),
-        z.lazy(() => AtendimentoUncheckedUpdateWithoutNotificacoesInputSchema),
+        z.lazy(() => EmergencyCallUpdateWithoutVehiclesInputSchema),
+        z.lazy(() => EmergencyCallUncheckedUpdateWithoutVehiclesInputSchema),
+      ])
+      .optional(),
+  });
+
+export const UserCreateNestedOneWithoutConversationsAsAttendantInputSchema: z.ZodType<Prisma.UserCreateNestedOneWithoutConversationsAsAttendantInput> =
+  z.strictObject({
+    create: z
+      .union([
+        z.lazy(() => UserCreateWithoutConversationsAsAttendantInputSchema),
+        z.lazy(
+          () => UserUncheckedCreateWithoutConversationsAsAttendantInputSchema,
+        ),
+      ])
+      .optional(),
+    connectOrCreate: z
+      .lazy(() => UserCreateOrConnectWithoutConversationsAsAttendantInputSchema)
+      .optional(),
+    connect: z.lazy(() => UserWhereUniqueInputSchema).optional(),
+  });
+
+export const UserCreateNestedOneWithoutConversationsAsDriverInputSchema: z.ZodType<Prisma.UserCreateNestedOneWithoutConversationsAsDriverInput> =
+  z.strictObject({
+    create: z
+      .union([
+        z.lazy(() => UserCreateWithoutConversationsAsDriverInputSchema),
+        z.lazy(
+          () => UserUncheckedCreateWithoutConversationsAsDriverInputSchema,
+        ),
+      ])
+      .optional(),
+    connectOrCreate: z
+      .lazy(() => UserCreateOrConnectWithoutConversationsAsDriverInputSchema)
+      .optional(),
+    connect: z.lazy(() => UserWhereUniqueInputSchema).optional(),
+  });
+
+export const MessageCreateNestedManyWithoutConversationInputSchema: z.ZodType<Prisma.MessageCreateNestedManyWithoutConversationInput> =
+  z.strictObject({
+    create: z
+      .union([
+        z.lazy(() => MessageCreateWithoutConversationInputSchema),
+        z.lazy(() => MessageCreateWithoutConversationInputSchema).array(),
+        z.lazy(() => MessageUncheckedCreateWithoutConversationInputSchema),
+        z
+          .lazy(() => MessageUncheckedCreateWithoutConversationInputSchema)
+          .array(),
+      ])
+      .optional(),
+    connectOrCreate: z
+      .union([
+        z.lazy(() => MessageCreateOrConnectWithoutConversationInputSchema),
+        z
+          .lazy(() => MessageCreateOrConnectWithoutConversationInputSchema)
+          .array(),
+      ])
+      .optional(),
+    createMany: z
+      .lazy(() => MessageCreateManyConversationInputEnvelopeSchema)
+      .optional(),
+    connect: z
+      .union([
+        z.lazy(() => MessageWhereUniqueInputSchema),
+        z.lazy(() => MessageWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+  });
+
+export const MessageUncheckedCreateNestedManyWithoutConversationInputSchema: z.ZodType<Prisma.MessageUncheckedCreateNestedManyWithoutConversationInput> =
+  z.strictObject({
+    create: z
+      .union([
+        z.lazy(() => MessageCreateWithoutConversationInputSchema),
+        z.lazy(() => MessageCreateWithoutConversationInputSchema).array(),
+        z.lazy(() => MessageUncheckedCreateWithoutConversationInputSchema),
+        z
+          .lazy(() => MessageUncheckedCreateWithoutConversationInputSchema)
+          .array(),
+      ])
+      .optional(),
+    connectOrCreate: z
+      .union([
+        z.lazy(() => MessageCreateOrConnectWithoutConversationInputSchema),
+        z
+          .lazy(() => MessageCreateOrConnectWithoutConversationInputSchema)
+          .array(),
+      ])
+      .optional(),
+    createMany: z
+      .lazy(() => MessageCreateManyConversationInputEnvelopeSchema)
+      .optional(),
+    connect: z
+      .union([
+        z.lazy(() => MessageWhereUniqueInputSchema),
+        z.lazy(() => MessageWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+  });
+
+export const UserUpdateOneRequiredWithoutConversationsAsAttendantNestedInputSchema: z.ZodType<Prisma.UserUpdateOneRequiredWithoutConversationsAsAttendantNestedInput> =
+  z.strictObject({
+    create: z
+      .union([
+        z.lazy(() => UserCreateWithoutConversationsAsAttendantInputSchema),
+        z.lazy(
+          () => UserUncheckedCreateWithoutConversationsAsAttendantInputSchema,
+        ),
+      ])
+      .optional(),
+    connectOrCreate: z
+      .lazy(() => UserCreateOrConnectWithoutConversationsAsAttendantInputSchema)
+      .optional(),
+    upsert: z
+      .lazy(() => UserUpsertWithoutConversationsAsAttendantInputSchema)
+      .optional(),
+    connect: z.lazy(() => UserWhereUniqueInputSchema).optional(),
+    update: z
+      .union([
+        z.lazy(
+          () =>
+            UserUpdateToOneWithWhereWithoutConversationsAsAttendantInputSchema,
+        ),
+        z.lazy(() => UserUpdateWithoutConversationsAsAttendantInputSchema),
+        z.lazy(
+          () => UserUncheckedUpdateWithoutConversationsAsAttendantInputSchema,
+        ),
+      ])
+      .optional(),
+  });
+
+export const UserUpdateOneRequiredWithoutConversationsAsDriverNestedInputSchema: z.ZodType<Prisma.UserUpdateOneRequiredWithoutConversationsAsDriverNestedInput> =
+  z.strictObject({
+    create: z
+      .union([
+        z.lazy(() => UserCreateWithoutConversationsAsDriverInputSchema),
+        z.lazy(
+          () => UserUncheckedCreateWithoutConversationsAsDriverInputSchema,
+        ),
+      ])
+      .optional(),
+    connectOrCreate: z
+      .lazy(() => UserCreateOrConnectWithoutConversationsAsDriverInputSchema)
+      .optional(),
+    upsert: z
+      .lazy(() => UserUpsertWithoutConversationsAsDriverInputSchema)
+      .optional(),
+    connect: z.lazy(() => UserWhereUniqueInputSchema).optional(),
+    update: z
+      .union([
+        z.lazy(
+          () => UserUpdateToOneWithWhereWithoutConversationsAsDriverInputSchema,
+        ),
+        z.lazy(() => UserUpdateWithoutConversationsAsDriverInputSchema),
+        z.lazy(
+          () => UserUncheckedUpdateWithoutConversationsAsDriverInputSchema,
+        ),
+      ])
+      .optional(),
+  });
+
+export const MessageUpdateManyWithoutConversationNestedInputSchema: z.ZodType<Prisma.MessageUpdateManyWithoutConversationNestedInput> =
+  z.strictObject({
+    create: z
+      .union([
+        z.lazy(() => MessageCreateWithoutConversationInputSchema),
+        z.lazy(() => MessageCreateWithoutConversationInputSchema).array(),
+        z.lazy(() => MessageUncheckedCreateWithoutConversationInputSchema),
+        z
+          .lazy(() => MessageUncheckedCreateWithoutConversationInputSchema)
+          .array(),
+      ])
+      .optional(),
+    connectOrCreate: z
+      .union([
+        z.lazy(() => MessageCreateOrConnectWithoutConversationInputSchema),
+        z
+          .lazy(() => MessageCreateOrConnectWithoutConversationInputSchema)
+          .array(),
+      ])
+      .optional(),
+    upsert: z
+      .union([
+        z.lazy(
+          () => MessageUpsertWithWhereUniqueWithoutConversationInputSchema,
+        ),
+        z
+          .lazy(
+            () => MessageUpsertWithWhereUniqueWithoutConversationInputSchema,
+          )
+          .array(),
+      ])
+      .optional(),
+    createMany: z
+      .lazy(() => MessageCreateManyConversationInputEnvelopeSchema)
+      .optional(),
+    set: z
+      .union([
+        z.lazy(() => MessageWhereUniqueInputSchema),
+        z.lazy(() => MessageWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    disconnect: z
+      .union([
+        z.lazy(() => MessageWhereUniqueInputSchema),
+        z.lazy(() => MessageWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    delete: z
+      .union([
+        z.lazy(() => MessageWhereUniqueInputSchema),
+        z.lazy(() => MessageWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    connect: z
+      .union([
+        z.lazy(() => MessageWhereUniqueInputSchema),
+        z.lazy(() => MessageWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    update: z
+      .union([
+        z.lazy(
+          () => MessageUpdateWithWhereUniqueWithoutConversationInputSchema,
+        ),
+        z
+          .lazy(
+            () => MessageUpdateWithWhereUniqueWithoutConversationInputSchema,
+          )
+          .array(),
+      ])
+      .optional(),
+    updateMany: z
+      .union([
+        z.lazy(() => MessageUpdateManyWithWhereWithoutConversationInputSchema),
+        z
+          .lazy(() => MessageUpdateManyWithWhereWithoutConversationInputSchema)
+          .array(),
+      ])
+      .optional(),
+    deleteMany: z
+      .union([
+        z.lazy(() => MessageScalarWhereInputSchema),
+        z.lazy(() => MessageScalarWhereInputSchema).array(),
+      ])
+      .optional(),
+  });
+
+export const MessageUncheckedUpdateManyWithoutConversationNestedInputSchema: z.ZodType<Prisma.MessageUncheckedUpdateManyWithoutConversationNestedInput> =
+  z.strictObject({
+    create: z
+      .union([
+        z.lazy(() => MessageCreateWithoutConversationInputSchema),
+        z.lazy(() => MessageCreateWithoutConversationInputSchema).array(),
+        z.lazy(() => MessageUncheckedCreateWithoutConversationInputSchema),
+        z
+          .lazy(() => MessageUncheckedCreateWithoutConversationInputSchema)
+          .array(),
+      ])
+      .optional(),
+    connectOrCreate: z
+      .union([
+        z.lazy(() => MessageCreateOrConnectWithoutConversationInputSchema),
+        z
+          .lazy(() => MessageCreateOrConnectWithoutConversationInputSchema)
+          .array(),
+      ])
+      .optional(),
+    upsert: z
+      .union([
+        z.lazy(
+          () => MessageUpsertWithWhereUniqueWithoutConversationInputSchema,
+        ),
+        z
+          .lazy(
+            () => MessageUpsertWithWhereUniqueWithoutConversationInputSchema,
+          )
+          .array(),
+      ])
+      .optional(),
+    createMany: z
+      .lazy(() => MessageCreateManyConversationInputEnvelopeSchema)
+      .optional(),
+    set: z
+      .union([
+        z.lazy(() => MessageWhereUniqueInputSchema),
+        z.lazy(() => MessageWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    disconnect: z
+      .union([
+        z.lazy(() => MessageWhereUniqueInputSchema),
+        z.lazy(() => MessageWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    delete: z
+      .union([
+        z.lazy(() => MessageWhereUniqueInputSchema),
+        z.lazy(() => MessageWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    connect: z
+      .union([
+        z.lazy(() => MessageWhereUniqueInputSchema),
+        z.lazy(() => MessageWhereUniqueInputSchema).array(),
+      ])
+      .optional(),
+    update: z
+      .union([
+        z.lazy(
+          () => MessageUpdateWithWhereUniqueWithoutConversationInputSchema,
+        ),
+        z
+          .lazy(
+            () => MessageUpdateWithWhereUniqueWithoutConversationInputSchema,
+          )
+          .array(),
+      ])
+      .optional(),
+    updateMany: z
+      .union([
+        z.lazy(() => MessageUpdateManyWithWhereWithoutConversationInputSchema),
+        z
+          .lazy(() => MessageUpdateManyWithWhereWithoutConversationInputSchema)
+          .array(),
+      ])
+      .optional(),
+    deleteMany: z
+      .union([
+        z.lazy(() => MessageScalarWhereInputSchema),
+        z.lazy(() => MessageScalarWhereInputSchema).array(),
+      ])
+      .optional(),
+  });
+
+export const UserCreateNestedOneWithoutSentMessagesInputSchema: z.ZodType<Prisma.UserCreateNestedOneWithoutSentMessagesInput> =
+  z.strictObject({
+    create: z
+      .union([
+        z.lazy(() => UserCreateWithoutSentMessagesInputSchema),
+        z.lazy(() => UserUncheckedCreateWithoutSentMessagesInputSchema),
+      ])
+      .optional(),
+    connectOrCreate: z
+      .lazy(() => UserCreateOrConnectWithoutSentMessagesInputSchema)
+      .optional(),
+    connect: z.lazy(() => UserWhereUniqueInputSchema).optional(),
+  });
+
+export const ConversationCreateNestedOneWithoutMessagesInputSchema: z.ZodType<Prisma.ConversationCreateNestedOneWithoutMessagesInput> =
+  z.strictObject({
+    create: z
+      .union([
+        z.lazy(() => ConversationCreateWithoutMessagesInputSchema),
+        z.lazy(() => ConversationUncheckedCreateWithoutMessagesInputSchema),
+      ])
+      .optional(),
+    connectOrCreate: z
+      .lazy(() => ConversationCreateOrConnectWithoutMessagesInputSchema)
+      .optional(),
+    connect: z.lazy(() => ConversationWhereUniqueInputSchema).optional(),
+  });
+
+export const UserUpdateOneRequiredWithoutSentMessagesNestedInputSchema: z.ZodType<Prisma.UserUpdateOneRequiredWithoutSentMessagesNestedInput> =
+  z.strictObject({
+    create: z
+      .union([
+        z.lazy(() => UserCreateWithoutSentMessagesInputSchema),
+        z.lazy(() => UserUncheckedCreateWithoutSentMessagesInputSchema),
+      ])
+      .optional(),
+    connectOrCreate: z
+      .lazy(() => UserCreateOrConnectWithoutSentMessagesInputSchema)
+      .optional(),
+    upsert: z.lazy(() => UserUpsertWithoutSentMessagesInputSchema).optional(),
+    connect: z.lazy(() => UserWhereUniqueInputSchema).optional(),
+    update: z
+      .union([
+        z.lazy(() => UserUpdateToOneWithWhereWithoutSentMessagesInputSchema),
+        z.lazy(() => UserUpdateWithoutSentMessagesInputSchema),
+        z.lazy(() => UserUncheckedUpdateWithoutSentMessagesInputSchema),
+      ])
+      .optional(),
+  });
+
+export const ConversationUpdateOneRequiredWithoutMessagesNestedInputSchema: z.ZodType<Prisma.ConversationUpdateOneRequiredWithoutMessagesNestedInput> =
+  z.strictObject({
+    create: z
+      .union([
+        z.lazy(() => ConversationCreateWithoutMessagesInputSchema),
+        z.lazy(() => ConversationUncheckedCreateWithoutMessagesInputSchema),
+      ])
+      .optional(),
+    connectOrCreate: z
+      .lazy(() => ConversationCreateOrConnectWithoutMessagesInputSchema)
+      .optional(),
+    upsert: z
+      .lazy(() => ConversationUpsertWithoutMessagesInputSchema)
+      .optional(),
+    connect: z.lazy(() => ConversationWhereUniqueInputSchema).optional(),
+    update: z
+      .union([
+        z.lazy(
+          () => ConversationUpdateToOneWithWhereWithoutMessagesInputSchema,
+        ),
+        z.lazy(() => ConversationUpdateWithoutMessagesInputSchema),
+        z.lazy(() => ConversationUncheckedUpdateWithoutMessagesInputSchema),
+      ])
+      .optional(),
+  });
+
+export const EmergencyCallCreateNestedOneWithoutNotificationsInputSchema: z.ZodType<Prisma.EmergencyCallCreateNestedOneWithoutNotificationsInput> =
+  z.strictObject({
+    create: z
+      .union([
+        z.lazy(() => EmergencyCallCreateWithoutNotificationsInputSchema),
+        z.lazy(
+          () => EmergencyCallUncheckedCreateWithoutNotificationsInputSchema,
+        ),
+      ])
+      .optional(),
+    connectOrCreate: z
+      .lazy(() => EmergencyCallCreateOrConnectWithoutNotificationsInputSchema)
+      .optional(),
+    connect: z.lazy(() => EmergencyCallWhereUniqueInputSchema).optional(),
+  });
+
+export const EmergencyCallUpdateOneRequiredWithoutNotificationsNestedInputSchema: z.ZodType<Prisma.EmergencyCallUpdateOneRequiredWithoutNotificationsNestedInput> =
+  z.strictObject({
+    create: z
+      .union([
+        z.lazy(() => EmergencyCallCreateWithoutNotificationsInputSchema),
+        z.lazy(
+          () => EmergencyCallUncheckedCreateWithoutNotificationsInputSchema,
+        ),
+      ])
+      .optional(),
+    connectOrCreate: z
+      .lazy(() => EmergencyCallCreateOrConnectWithoutNotificationsInputSchema)
+      .optional(),
+    upsert: z
+      .lazy(() => EmergencyCallUpsertWithoutNotificationsInputSchema)
+      .optional(),
+    connect: z.lazy(() => EmergencyCallWhereUniqueInputSchema).optional(),
+    update: z
+      .union([
+        z.lazy(
+          () =>
+            EmergencyCallUpdateToOneWithWhereWithoutNotificationsInputSchema,
+        ),
+        z.lazy(() => EmergencyCallUpdateWithoutNotificationsInputSchema),
+        z.lazy(
+          () => EmergencyCallUncheckedUpdateWithoutNotificationsInputSchema,
+        ),
       ])
       .optional(),
   });
@@ -6045,40 +6176,40 @@ export const NestedStringFilterSchema: z.ZodType<Prisma.NestedStringFilter> =
       .optional(),
   });
 
-export const NestedEnumTipoUsuarioFilterSchema: z.ZodType<Prisma.NestedEnumTipoUsuarioFilter> =
+export const NestedEnumUserRoleFilterSchema: z.ZodType<Prisma.NestedEnumUserRoleFilter> =
   z.strictObject({
-    equals: z.lazy(() => TipoUsuarioSchema).optional(),
+    equals: z.lazy(() => UserRoleSchema).optional(),
     in: z
-      .lazy(() => TipoUsuarioSchema)
+      .lazy(() => UserRoleSchema)
       .array()
       .optional(),
     notIn: z
-      .lazy(() => TipoUsuarioSchema)
+      .lazy(() => UserRoleSchema)
       .array()
       .optional(),
     not: z
       .union([
-        z.lazy(() => TipoUsuarioSchema),
-        z.lazy(() => NestedEnumTipoUsuarioFilterSchema),
+        z.lazy(() => UserRoleSchema),
+        z.lazy(() => NestedEnumUserRoleFilterSchema),
       ])
       .optional(),
   });
 
-export const NestedEnumStatusUsuarioFilterSchema: z.ZodType<Prisma.NestedEnumStatusUsuarioFilter> =
+export const NestedEnumUserStatusFilterSchema: z.ZodType<Prisma.NestedEnumUserStatusFilter> =
   z.strictObject({
-    equals: z.lazy(() => StatusUsuarioSchema).optional(),
+    equals: z.lazy(() => UserStatusSchema).optional(),
     in: z
-      .lazy(() => StatusUsuarioSchema)
+      .lazy(() => UserStatusSchema)
       .array()
       .optional(),
     notIn: z
-      .lazy(() => StatusUsuarioSchema)
+      .lazy(() => UserStatusSchema)
       .array()
       .optional(),
     not: z
       .union([
-        z.lazy(() => StatusUsuarioSchema),
-        z.lazy(() => NestedEnumStatusUsuarioFilterSchema),
+        z.lazy(() => UserStatusSchema),
+        z.lazy(() => NestedEnumUserStatusFilterSchema),
       ])
       .optional(),
   });
@@ -6129,48 +6260,48 @@ export const NestedIntFilterSchema: z.ZodType<Prisma.NestedIntFilter> =
     not: z.union([z.number(), z.lazy(() => NestedIntFilterSchema)]).optional(),
   });
 
-export const NestedEnumTipoUsuarioWithAggregatesFilterSchema: z.ZodType<Prisma.NestedEnumTipoUsuarioWithAggregatesFilter> =
+export const NestedEnumUserRoleWithAggregatesFilterSchema: z.ZodType<Prisma.NestedEnumUserRoleWithAggregatesFilter> =
   z.strictObject({
-    equals: z.lazy(() => TipoUsuarioSchema).optional(),
+    equals: z.lazy(() => UserRoleSchema).optional(),
     in: z
-      .lazy(() => TipoUsuarioSchema)
+      .lazy(() => UserRoleSchema)
       .array()
       .optional(),
     notIn: z
-      .lazy(() => TipoUsuarioSchema)
+      .lazy(() => UserRoleSchema)
       .array()
       .optional(),
     not: z
       .union([
-        z.lazy(() => TipoUsuarioSchema),
-        z.lazy(() => NestedEnumTipoUsuarioWithAggregatesFilterSchema),
+        z.lazy(() => UserRoleSchema),
+        z.lazy(() => NestedEnumUserRoleWithAggregatesFilterSchema),
       ])
       .optional(),
     _count: z.lazy(() => NestedIntFilterSchema).optional(),
-    _min: z.lazy(() => NestedEnumTipoUsuarioFilterSchema).optional(),
-    _max: z.lazy(() => NestedEnumTipoUsuarioFilterSchema).optional(),
+    _min: z.lazy(() => NestedEnumUserRoleFilterSchema).optional(),
+    _max: z.lazy(() => NestedEnumUserRoleFilterSchema).optional(),
   });
 
-export const NestedEnumStatusUsuarioWithAggregatesFilterSchema: z.ZodType<Prisma.NestedEnumStatusUsuarioWithAggregatesFilter> =
+export const NestedEnumUserStatusWithAggregatesFilterSchema: z.ZodType<Prisma.NestedEnumUserStatusWithAggregatesFilter> =
   z.strictObject({
-    equals: z.lazy(() => StatusUsuarioSchema).optional(),
+    equals: z.lazy(() => UserStatusSchema).optional(),
     in: z
-      .lazy(() => StatusUsuarioSchema)
+      .lazy(() => UserStatusSchema)
       .array()
       .optional(),
     notIn: z
-      .lazy(() => StatusUsuarioSchema)
+      .lazy(() => UserStatusSchema)
       .array()
       .optional(),
     not: z
       .union([
-        z.lazy(() => StatusUsuarioSchema),
-        z.lazy(() => NestedEnumStatusUsuarioWithAggregatesFilterSchema),
+        z.lazy(() => UserStatusSchema),
+        z.lazy(() => NestedEnumUserStatusWithAggregatesFilterSchema),
       ])
       .optional(),
     _count: z.lazy(() => NestedIntFilterSchema).optional(),
-    _min: z.lazy(() => NestedEnumStatusUsuarioFilterSchema).optional(),
-    _max: z.lazy(() => NestedEnumStatusUsuarioFilterSchema).optional(),
+    _min: z.lazy(() => NestedEnumUserStatusFilterSchema).optional(),
+    _max: z.lazy(() => NestedEnumUserStatusFilterSchema).optional(),
   });
 
 export const NestedDateTimeWithAggregatesFilterSchema: z.ZodType<Prisma.NestedDateTimeWithAggregatesFilter> =
@@ -6340,286 +6471,294 @@ export const NestedStringNullableWithAggregatesFilterSchema: z.ZodType<Prisma.Ne
     _max: z.lazy(() => NestedStringNullableFilterSchema).optional(),
   });
 
-export const NestedEnumStatusAtendimentoFilterSchema: z.ZodType<Prisma.NestedEnumStatusAtendimentoFilter> =
+export const NestedEnumEmergencyCallStatusFilterSchema: z.ZodType<Prisma.NestedEnumEmergencyCallStatusFilter> =
   z.strictObject({
-    equals: z.lazy(() => StatusAtendimentoSchema).optional(),
+    equals: z.lazy(() => EmergencyCallStatusSchema).optional(),
     in: z
-      .lazy(() => StatusAtendimentoSchema)
+      .lazy(() => EmergencyCallStatusSchema)
       .array()
       .optional(),
     notIn: z
-      .lazy(() => StatusAtendimentoSchema)
+      .lazy(() => EmergencyCallStatusSchema)
       .array()
       .optional(),
     not: z
       .union([
-        z.lazy(() => StatusAtendimentoSchema),
-        z.lazy(() => NestedEnumStatusAtendimentoFilterSchema),
+        z.lazy(() => EmergencyCallStatusSchema),
+        z.lazy(() => NestedEnumEmergencyCallStatusFilterSchema),
       ])
       .optional(),
   });
 
-export const NestedEnumStatusAtendimentoWithAggregatesFilterSchema: z.ZodType<Prisma.NestedEnumStatusAtendimentoWithAggregatesFilter> =
+export const NestedEnumEmergencyCallStatusWithAggregatesFilterSchema: z.ZodType<Prisma.NestedEnumEmergencyCallStatusWithAggregatesFilter> =
   z.strictObject({
-    equals: z.lazy(() => StatusAtendimentoSchema).optional(),
+    equals: z.lazy(() => EmergencyCallStatusSchema).optional(),
     in: z
-      .lazy(() => StatusAtendimentoSchema)
+      .lazy(() => EmergencyCallStatusSchema)
       .array()
       .optional(),
     notIn: z
-      .lazy(() => StatusAtendimentoSchema)
+      .lazy(() => EmergencyCallStatusSchema)
       .array()
       .optional(),
     not: z
       .union([
-        z.lazy(() => StatusAtendimentoSchema),
-        z.lazy(() => NestedEnumStatusAtendimentoWithAggregatesFilterSchema),
+        z.lazy(() => EmergencyCallStatusSchema),
+        z.lazy(() => NestedEnumEmergencyCallStatusWithAggregatesFilterSchema),
       ])
       .optional(),
     _count: z.lazy(() => NestedIntFilterSchema).optional(),
-    _min: z.lazy(() => NestedEnumStatusAtendimentoFilterSchema).optional(),
-    _max: z.lazy(() => NestedEnumStatusAtendimentoFilterSchema).optional(),
+    _min: z.lazy(() => NestedEnumEmergencyCallStatusFilterSchema).optional(),
+    _max: z.lazy(() => NestedEnumEmergencyCallStatusFilterSchema).optional(),
   });
 
-export const VeiculoCreateWithoutMotoristaInputSchema: z.ZodType<Prisma.VeiculoCreateWithoutMotoristaInput> =
+export const VehicleCreateWithoutDriverInputSchema: z.ZodType<Prisma.VehicleCreateWithoutDriverInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    placa: z.string(),
+    plate: z.string(),
     latitude: z.number(),
     longitude: z.number(),
-    atendimentos: z
-      .lazy(() => VeiculoAtendimentoCreateNestedManyWithoutVeiculoInputSchema)
+    emergencyCalls: z
+      .lazy(() => VehicleEmergencyCallCreateNestedManyWithoutVehicleInputSchema)
       .optional(),
   });
 
-export const VeiculoUncheckedCreateWithoutMotoristaInputSchema: z.ZodType<Prisma.VeiculoUncheckedCreateWithoutMotoristaInput> =
+export const VehicleUncheckedCreateWithoutDriverInputSchema: z.ZodType<Prisma.VehicleUncheckedCreateWithoutDriverInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    placa: z.string(),
+    plate: z.string(),
     latitude: z.number(),
     longitude: z.number(),
-    atendimentos: z
+    emergencyCalls: z
       .lazy(
         () =>
-          VeiculoAtendimentoUncheckedCreateNestedManyWithoutVeiculoInputSchema,
+          VehicleEmergencyCallUncheckedCreateNestedManyWithoutVehicleInputSchema,
       )
       .optional(),
   });
 
-export const VeiculoCreateOrConnectWithoutMotoristaInputSchema: z.ZodType<Prisma.VeiculoCreateOrConnectWithoutMotoristaInput> =
+export const VehicleCreateOrConnectWithoutDriverInputSchema: z.ZodType<Prisma.VehicleCreateOrConnectWithoutDriverInput> =
   z.strictObject({
-    where: z.lazy(() => VeiculoWhereUniqueInputSchema),
+    where: z.lazy(() => VehicleWhereUniqueInputSchema),
     create: z.union([
-      z.lazy(() => VeiculoCreateWithoutMotoristaInputSchema),
-      z.lazy(() => VeiculoUncheckedCreateWithoutMotoristaInputSchema),
+      z.lazy(() => VehicleCreateWithoutDriverInputSchema),
+      z.lazy(() => VehicleUncheckedCreateWithoutDriverInputSchema),
     ]),
   });
 
-export const AtendimentoCreateWithoutAtendenteInputSchema: z.ZodType<Prisma.AtendimentoCreateWithoutAtendenteInput> =
+export const EmergencyCallCreateWithoutAttendantInputSchema: z.ZodType<Prisma.EmergencyCallCreateWithoutAttendantInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    protocolo: z.string(),
-    endereco: z.string(),
-    localDeRetorno: z.string(),
-    oQueAconteceu: z.string(),
-    estadoDoPaciente: z.string(),
-    idadeAparente: z.number().int().optional().nullable(),
-    quantidadeDePacientes: z.number().int(),
-    estadoDaLesao: z.string(),
-    observacoes: z.string().optional().nullable(),
-    criadoEm: z.coerce.date().optional(),
-    veiculos: z
-      .lazy(
-        () => VeiculoAtendimentoCreateNestedManyWithoutAtendimentoInputSchema,
-      )
-      .optional(),
-    notificacoes: z
-      .lazy(() => NotificacaoCreateNestedManyWithoutAtendimentoInputSchema)
-      .optional(),
-  });
-
-export const AtendimentoUncheckedCreateWithoutAtendenteInputSchema: z.ZodType<Prisma.AtendimentoUncheckedCreateWithoutAtendenteInput> =
-  z.strictObject({
-    id: z.uuid().optional(),
-    protocolo: z.string(),
-    endereco: z.string(),
-    localDeRetorno: z.string(),
-    oQueAconteceu: z.string(),
-    estadoDoPaciente: z.string(),
-    idadeAparente: z.number().int().optional().nullable(),
-    quantidadeDePacientes: z.number().int(),
-    estadoDaLesao: z.string(),
-    observacoes: z.string().optional().nullable(),
-    criadoEm: z.coerce.date().optional(),
-    veiculos: z
+    protocol: z.string(),
+    address: z.string(),
+    returnLocation: z.string(),
+    whatHappened: z.string(),
+    patientCondition: z.string(),
+    apparentAge: z.number().int().optional().nullable(),
+    patientCount: z.number().int(),
+    injuryCondition: z.string(),
+    observations: z.string().optional().nullable(),
+    createdAt: z.coerce.date().optional(),
+    vehicles: z
       .lazy(
         () =>
-          VeiculoAtendimentoUncheckedCreateNestedManyWithoutAtendimentoInputSchema,
+          VehicleEmergencyCallCreateNestedManyWithoutEmergencyCallInputSchema,
       )
       .optional(),
-    notificacoes: z
+    notifications: z
+      .lazy(() => NotificationCreateNestedManyWithoutEmergencyCallInputSchema)
+      .optional(),
+  });
+
+export const EmergencyCallUncheckedCreateWithoutAttendantInputSchema: z.ZodType<Prisma.EmergencyCallUncheckedCreateWithoutAttendantInput> =
+  z.strictObject({
+    id: z.uuid().optional(),
+    protocol: z.string(),
+    address: z.string(),
+    returnLocation: z.string(),
+    whatHappened: z.string(),
+    patientCondition: z.string(),
+    apparentAge: z.number().int().optional().nullable(),
+    patientCount: z.number().int(),
+    injuryCondition: z.string(),
+    observations: z.string().optional().nullable(),
+    createdAt: z.coerce.date().optional(),
+    vehicles: z
       .lazy(
-        () => NotificacaoUncheckedCreateNestedManyWithoutAtendimentoInputSchema,
+        () =>
+          VehicleEmergencyCallUncheckedCreateNestedManyWithoutEmergencyCallInputSchema,
+      )
+      .optional(),
+    notifications: z
+      .lazy(
+        () =>
+          NotificationUncheckedCreateNestedManyWithoutEmergencyCallInputSchema,
       )
       .optional(),
   });
 
-export const AtendimentoCreateOrConnectWithoutAtendenteInputSchema: z.ZodType<Prisma.AtendimentoCreateOrConnectWithoutAtendenteInput> =
+export const EmergencyCallCreateOrConnectWithoutAttendantInputSchema: z.ZodType<Prisma.EmergencyCallCreateOrConnectWithoutAttendantInput> =
   z.strictObject({
-    where: z.lazy(() => AtendimentoWhereUniqueInputSchema),
+    where: z.lazy(() => EmergencyCallWhereUniqueInputSchema),
     create: z.union([
-      z.lazy(() => AtendimentoCreateWithoutAtendenteInputSchema),
-      z.lazy(() => AtendimentoUncheckedCreateWithoutAtendenteInputSchema),
+      z.lazy(() => EmergencyCallCreateWithoutAttendantInputSchema),
+      z.lazy(() => EmergencyCallUncheckedCreateWithoutAttendantInputSchema),
     ]),
   });
 
-export const AtendimentoCreateManyAtendenteInputEnvelopeSchema: z.ZodType<Prisma.AtendimentoCreateManyAtendenteInputEnvelope> =
+export const EmergencyCallCreateManyAttendantInputEnvelopeSchema: z.ZodType<Prisma.EmergencyCallCreateManyAttendantInputEnvelope> =
   z.strictObject({
     data: z.union([
-      z.lazy(() => AtendimentoCreateManyAtendenteInputSchema),
-      z.lazy(() => AtendimentoCreateManyAtendenteInputSchema).array(),
+      z.lazy(() => EmergencyCallCreateManyAttendantInputSchema),
+      z.lazy(() => EmergencyCallCreateManyAttendantInputSchema).array(),
     ]),
     skipDuplicates: z.boolean().optional(),
   });
 
-export const ConversaCreateWithoutAtendenteInputSchema: z.ZodType<Prisma.ConversaCreateWithoutAtendenteInput> =
+export const ConversationCreateWithoutAttendantInputSchema: z.ZodType<Prisma.ConversationCreateWithoutAttendantInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    motorista: z.lazy(
-      () => UsuarioCreateNestedOneWithoutConversasComoMotoristaInputSchema,
+    driver: z.lazy(
+      () => UserCreateNestedOneWithoutConversationsAsDriverInputSchema,
     ),
-    mensagens: z
-      .lazy(() => MensagemCreateNestedManyWithoutConversaInputSchema)
+    messages: z
+      .lazy(() => MessageCreateNestedManyWithoutConversationInputSchema)
       .optional(),
   });
 
-export const ConversaUncheckedCreateWithoutAtendenteInputSchema: z.ZodType<Prisma.ConversaUncheckedCreateWithoutAtendenteInput> =
+export const ConversationUncheckedCreateWithoutAttendantInputSchema: z.ZodType<Prisma.ConversationUncheckedCreateWithoutAttendantInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    motoristaId: z.string(),
-    mensagens: z
-      .lazy(() => MensagemUncheckedCreateNestedManyWithoutConversaInputSchema)
+    driverId: z.string(),
+    messages: z
+      .lazy(
+        () => MessageUncheckedCreateNestedManyWithoutConversationInputSchema,
+      )
       .optional(),
   });
 
-export const ConversaCreateOrConnectWithoutAtendenteInputSchema: z.ZodType<Prisma.ConversaCreateOrConnectWithoutAtendenteInput> =
+export const ConversationCreateOrConnectWithoutAttendantInputSchema: z.ZodType<Prisma.ConversationCreateOrConnectWithoutAttendantInput> =
   z.strictObject({
-    where: z.lazy(() => ConversaWhereUniqueInputSchema),
+    where: z.lazy(() => ConversationWhereUniqueInputSchema),
     create: z.union([
-      z.lazy(() => ConversaCreateWithoutAtendenteInputSchema),
-      z.lazy(() => ConversaUncheckedCreateWithoutAtendenteInputSchema),
+      z.lazy(() => ConversationCreateWithoutAttendantInputSchema),
+      z.lazy(() => ConversationUncheckedCreateWithoutAttendantInputSchema),
     ]),
   });
 
-export const ConversaCreateManyAtendenteInputEnvelopeSchema: z.ZodType<Prisma.ConversaCreateManyAtendenteInputEnvelope> =
+export const ConversationCreateManyAttendantInputEnvelopeSchema: z.ZodType<Prisma.ConversationCreateManyAttendantInputEnvelope> =
   z.strictObject({
     data: z.union([
-      z.lazy(() => ConversaCreateManyAtendenteInputSchema),
-      z.lazy(() => ConversaCreateManyAtendenteInputSchema).array(),
+      z.lazy(() => ConversationCreateManyAttendantInputSchema),
+      z.lazy(() => ConversationCreateManyAttendantInputSchema).array(),
     ]),
     skipDuplicates: z.boolean().optional(),
   });
 
-export const ConversaCreateWithoutMotoristaInputSchema: z.ZodType<Prisma.ConversaCreateWithoutMotoristaInput> =
+export const ConversationCreateWithoutDriverInputSchema: z.ZodType<Prisma.ConversationCreateWithoutDriverInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    atendente: z.lazy(
-      () => UsuarioCreateNestedOneWithoutConversasComoAtendenteInputSchema,
+    attendant: z.lazy(
+      () => UserCreateNestedOneWithoutConversationsAsAttendantInputSchema,
     ),
-    mensagens: z
-      .lazy(() => MensagemCreateNestedManyWithoutConversaInputSchema)
+    messages: z
+      .lazy(() => MessageCreateNestedManyWithoutConversationInputSchema)
       .optional(),
   });
 
-export const ConversaUncheckedCreateWithoutMotoristaInputSchema: z.ZodType<Prisma.ConversaUncheckedCreateWithoutMotoristaInput> =
+export const ConversationUncheckedCreateWithoutDriverInputSchema: z.ZodType<Prisma.ConversationUncheckedCreateWithoutDriverInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    atendenteId: z.string(),
-    mensagens: z
-      .lazy(() => MensagemUncheckedCreateNestedManyWithoutConversaInputSchema)
+    attendantId: z.string(),
+    messages: z
+      .lazy(
+        () => MessageUncheckedCreateNestedManyWithoutConversationInputSchema,
+      )
       .optional(),
   });
 
-export const ConversaCreateOrConnectWithoutMotoristaInputSchema: z.ZodType<Prisma.ConversaCreateOrConnectWithoutMotoristaInput> =
+export const ConversationCreateOrConnectWithoutDriverInputSchema: z.ZodType<Prisma.ConversationCreateOrConnectWithoutDriverInput> =
   z.strictObject({
-    where: z.lazy(() => ConversaWhereUniqueInputSchema),
+    where: z.lazy(() => ConversationWhereUniqueInputSchema),
     create: z.union([
-      z.lazy(() => ConversaCreateWithoutMotoristaInputSchema),
-      z.lazy(() => ConversaUncheckedCreateWithoutMotoristaInputSchema),
+      z.lazy(() => ConversationCreateWithoutDriverInputSchema),
+      z.lazy(() => ConversationUncheckedCreateWithoutDriverInputSchema),
     ]),
   });
 
-export const ConversaCreateManyMotoristaInputEnvelopeSchema: z.ZodType<Prisma.ConversaCreateManyMotoristaInputEnvelope> =
+export const ConversationCreateManyDriverInputEnvelopeSchema: z.ZodType<Prisma.ConversationCreateManyDriverInputEnvelope> =
   z.strictObject({
     data: z.union([
-      z.lazy(() => ConversaCreateManyMotoristaInputSchema),
-      z.lazy(() => ConversaCreateManyMotoristaInputSchema).array(),
+      z.lazy(() => ConversationCreateManyDriverInputSchema),
+      z.lazy(() => ConversationCreateManyDriverInputSchema).array(),
     ]),
     skipDuplicates: z.boolean().optional(),
   });
 
-export const MensagemCreateWithoutQuemMandouInputSchema: z.ZodType<Prisma.MensagemCreateWithoutQuemMandouInput> =
+export const MessageCreateWithoutSenderInputSchema: z.ZodType<Prisma.MessageCreateWithoutSenderInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    texto: z.string(),
-    dataDeEnvio: z.coerce.date().optional(),
-    conversa: z.lazy(() => ConversaCreateNestedOneWithoutMensagensInputSchema),
+    text: z.string(),
+    sentAt: z.coerce.date().optional(),
+    conversation: z.lazy(
+      () => ConversationCreateNestedOneWithoutMessagesInputSchema,
+    ),
   });
 
-export const MensagemUncheckedCreateWithoutQuemMandouInputSchema: z.ZodType<Prisma.MensagemUncheckedCreateWithoutQuemMandouInput> =
+export const MessageUncheckedCreateWithoutSenderInputSchema: z.ZodType<Prisma.MessageUncheckedCreateWithoutSenderInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    texto: z.string(),
-    dataDeEnvio: z.coerce.date().optional(),
-    conversaId: z.string(),
+    text: z.string(),
+    sentAt: z.coerce.date().optional(),
+    conversationId: z.string(),
   });
 
-export const MensagemCreateOrConnectWithoutQuemMandouInputSchema: z.ZodType<Prisma.MensagemCreateOrConnectWithoutQuemMandouInput> =
+export const MessageCreateOrConnectWithoutSenderInputSchema: z.ZodType<Prisma.MessageCreateOrConnectWithoutSenderInput> =
   z.strictObject({
-    where: z.lazy(() => MensagemWhereUniqueInputSchema),
+    where: z.lazy(() => MessageWhereUniqueInputSchema),
     create: z.union([
-      z.lazy(() => MensagemCreateWithoutQuemMandouInputSchema),
-      z.lazy(() => MensagemUncheckedCreateWithoutQuemMandouInputSchema),
+      z.lazy(() => MessageCreateWithoutSenderInputSchema),
+      z.lazy(() => MessageUncheckedCreateWithoutSenderInputSchema),
     ]),
   });
 
-export const MensagemCreateManyQuemMandouInputEnvelopeSchema: z.ZodType<Prisma.MensagemCreateManyQuemMandouInputEnvelope> =
+export const MessageCreateManySenderInputEnvelopeSchema: z.ZodType<Prisma.MessageCreateManySenderInputEnvelope> =
   z.strictObject({
     data: z.union([
-      z.lazy(() => MensagemCreateManyQuemMandouInputSchema),
-      z.lazy(() => MensagemCreateManyQuemMandouInputSchema).array(),
+      z.lazy(() => MessageCreateManySenderInputSchema),
+      z.lazy(() => MessageCreateManySenderInputSchema).array(),
     ]),
     skipDuplicates: z.boolean().optional(),
   });
 
-export const VeiculoUpsertWithoutMotoristaInputSchema: z.ZodType<Prisma.VeiculoUpsertWithoutMotoristaInput> =
+export const VehicleUpsertWithoutDriverInputSchema: z.ZodType<Prisma.VehicleUpsertWithoutDriverInput> =
   z.strictObject({
     update: z.union([
-      z.lazy(() => VeiculoUpdateWithoutMotoristaInputSchema),
-      z.lazy(() => VeiculoUncheckedUpdateWithoutMotoristaInputSchema),
+      z.lazy(() => VehicleUpdateWithoutDriverInputSchema),
+      z.lazy(() => VehicleUncheckedUpdateWithoutDriverInputSchema),
     ]),
     create: z.union([
-      z.lazy(() => VeiculoCreateWithoutMotoristaInputSchema),
-      z.lazy(() => VeiculoUncheckedCreateWithoutMotoristaInputSchema),
+      z.lazy(() => VehicleCreateWithoutDriverInputSchema),
+      z.lazy(() => VehicleUncheckedCreateWithoutDriverInputSchema),
     ]),
-    where: z.lazy(() => VeiculoWhereInputSchema).optional(),
+    where: z.lazy(() => VehicleWhereInputSchema).optional(),
   });
 
-export const VeiculoUpdateToOneWithWhereWithoutMotoristaInputSchema: z.ZodType<Prisma.VeiculoUpdateToOneWithWhereWithoutMotoristaInput> =
+export const VehicleUpdateToOneWithWhereWithoutDriverInputSchema: z.ZodType<Prisma.VehicleUpdateToOneWithWhereWithoutDriverInput> =
   z.strictObject({
-    where: z.lazy(() => VeiculoWhereInputSchema).optional(),
+    where: z.lazy(() => VehicleWhereInputSchema).optional(),
     data: z.union([
-      z.lazy(() => VeiculoUpdateWithoutMotoristaInputSchema),
-      z.lazy(() => VeiculoUncheckedUpdateWithoutMotoristaInputSchema),
+      z.lazy(() => VehicleUpdateWithoutDriverInputSchema),
+      z.lazy(() => VehicleUncheckedUpdateWithoutDriverInputSchema),
     ]),
   });
 
-export const VeiculoUpdateWithoutMotoristaInputSchema: z.ZodType<Prisma.VeiculoUpdateWithoutMotoristaInput> =
+export const VehicleUpdateWithoutDriverInputSchema: z.ZodType<Prisma.VehicleUpdateWithoutDriverInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    placa: z
+    plate: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
     latitude: z
@@ -6628,17 +6767,17 @@ export const VeiculoUpdateWithoutMotoristaInputSchema: z.ZodType<Prisma.VeiculoU
     longitude: z
       .union([z.number(), z.lazy(() => FloatFieldUpdateOperationsInputSchema)])
       .optional(),
-    atendimentos: z
-      .lazy(() => VeiculoAtendimentoUpdateManyWithoutVeiculoNestedInputSchema)
+    emergencyCalls: z
+      .lazy(() => VehicleEmergencyCallUpdateManyWithoutVehicleNestedInputSchema)
       .optional(),
   });
 
-export const VeiculoUncheckedUpdateWithoutMotoristaInputSchema: z.ZodType<Prisma.VeiculoUncheckedUpdateWithoutMotoristaInput> =
+export const VehicleUncheckedUpdateWithoutDriverInputSchema: z.ZodType<Prisma.VehicleUncheckedUpdateWithoutDriverInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    placa: z
+    plate: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
     latitude: z
@@ -6647,975 +6786,990 @@ export const VeiculoUncheckedUpdateWithoutMotoristaInputSchema: z.ZodType<Prisma
     longitude: z
       .union([z.number(), z.lazy(() => FloatFieldUpdateOperationsInputSchema)])
       .optional(),
-    atendimentos: z
+    emergencyCalls: z
       .lazy(
         () =>
-          VeiculoAtendimentoUncheckedUpdateManyWithoutVeiculoNestedInputSchema,
+          VehicleEmergencyCallUncheckedUpdateManyWithoutVehicleNestedInputSchema,
       )
       .optional(),
   });
 
-export const AtendimentoUpsertWithWhereUniqueWithoutAtendenteInputSchema: z.ZodType<Prisma.AtendimentoUpsertWithWhereUniqueWithoutAtendenteInput> =
+export const EmergencyCallUpsertWithWhereUniqueWithoutAttendantInputSchema: z.ZodType<Prisma.EmergencyCallUpsertWithWhereUniqueWithoutAttendantInput> =
   z.strictObject({
-    where: z.lazy(() => AtendimentoWhereUniqueInputSchema),
+    where: z.lazy(() => EmergencyCallWhereUniqueInputSchema),
     update: z.union([
-      z.lazy(() => AtendimentoUpdateWithoutAtendenteInputSchema),
-      z.lazy(() => AtendimentoUncheckedUpdateWithoutAtendenteInputSchema),
+      z.lazy(() => EmergencyCallUpdateWithoutAttendantInputSchema),
+      z.lazy(() => EmergencyCallUncheckedUpdateWithoutAttendantInputSchema),
     ]),
     create: z.union([
-      z.lazy(() => AtendimentoCreateWithoutAtendenteInputSchema),
-      z.lazy(() => AtendimentoUncheckedCreateWithoutAtendenteInputSchema),
+      z.lazy(() => EmergencyCallCreateWithoutAttendantInputSchema),
+      z.lazy(() => EmergencyCallUncheckedCreateWithoutAttendantInputSchema),
     ]),
   });
 
-export const AtendimentoUpdateWithWhereUniqueWithoutAtendenteInputSchema: z.ZodType<Prisma.AtendimentoUpdateWithWhereUniqueWithoutAtendenteInput> =
+export const EmergencyCallUpdateWithWhereUniqueWithoutAttendantInputSchema: z.ZodType<Prisma.EmergencyCallUpdateWithWhereUniqueWithoutAttendantInput> =
   z.strictObject({
-    where: z.lazy(() => AtendimentoWhereUniqueInputSchema),
+    where: z.lazy(() => EmergencyCallWhereUniqueInputSchema),
     data: z.union([
-      z.lazy(() => AtendimentoUpdateWithoutAtendenteInputSchema),
-      z.lazy(() => AtendimentoUncheckedUpdateWithoutAtendenteInputSchema),
+      z.lazy(() => EmergencyCallUpdateWithoutAttendantInputSchema),
+      z.lazy(() => EmergencyCallUncheckedUpdateWithoutAttendantInputSchema),
     ]),
   });
 
-export const AtendimentoUpdateManyWithWhereWithoutAtendenteInputSchema: z.ZodType<Prisma.AtendimentoUpdateManyWithWhereWithoutAtendenteInput> =
+export const EmergencyCallUpdateManyWithWhereWithoutAttendantInputSchema: z.ZodType<Prisma.EmergencyCallUpdateManyWithWhereWithoutAttendantInput> =
   z.strictObject({
-    where: z.lazy(() => AtendimentoScalarWhereInputSchema),
+    where: z.lazy(() => EmergencyCallScalarWhereInputSchema),
     data: z.union([
-      z.lazy(() => AtendimentoUpdateManyMutationInputSchema),
-      z.lazy(() => AtendimentoUncheckedUpdateManyWithoutAtendenteInputSchema),
+      z.lazy(() => EmergencyCallUpdateManyMutationInputSchema),
+      z.lazy(() => EmergencyCallUncheckedUpdateManyWithoutAttendantInputSchema),
     ]),
   });
 
-export const AtendimentoScalarWhereInputSchema: z.ZodType<Prisma.AtendimentoScalarWhereInput> =
+export const EmergencyCallScalarWhereInputSchema: z.ZodType<Prisma.EmergencyCallScalarWhereInput> =
   z.strictObject({
     AND: z
       .union([
-        z.lazy(() => AtendimentoScalarWhereInputSchema),
-        z.lazy(() => AtendimentoScalarWhereInputSchema).array(),
+        z.lazy(() => EmergencyCallScalarWhereInputSchema),
+        z.lazy(() => EmergencyCallScalarWhereInputSchema).array(),
       ])
       .optional(),
     OR: z
-      .lazy(() => AtendimentoScalarWhereInputSchema)
+      .lazy(() => EmergencyCallScalarWhereInputSchema)
       .array()
       .optional(),
     NOT: z
       .union([
-        z.lazy(() => AtendimentoScalarWhereInputSchema),
-        z.lazy(() => AtendimentoScalarWhereInputSchema).array(),
+        z.lazy(() => EmergencyCallScalarWhereInputSchema),
+        z.lazy(() => EmergencyCallScalarWhereInputSchema).array(),
       ])
       .optional(),
     id: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
-    protocolo: z
+    protocol: z
       .union([z.lazy(() => StringFilterSchema), z.string()])
       .optional(),
-    endereco: z
+    address: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
+    returnLocation: z
       .union([z.lazy(() => StringFilterSchema), z.string()])
       .optional(),
-    localDeRetorno: z
+    whatHappened: z
       .union([z.lazy(() => StringFilterSchema), z.string()])
       .optional(),
-    oQueAconteceu: z
+    patientCondition: z
       .union([z.lazy(() => StringFilterSchema), z.string()])
       .optional(),
-    estadoDoPaciente: z
-      .union([z.lazy(() => StringFilterSchema), z.string()])
-      .optional(),
-    idadeAparente: z
+    apparentAge: z
       .union([z.lazy(() => IntNullableFilterSchema), z.number()])
       .optional()
       .nullable(),
-    quantidadeDePacientes: z
+    patientCount: z
       .union([z.lazy(() => IntFilterSchema), z.number()])
       .optional(),
-    estadoDaLesao: z
+    injuryCondition: z
       .union([z.lazy(() => StringFilterSchema), z.string()])
       .optional(),
-    observacoes: z
+    observations: z
       .union([z.lazy(() => StringNullableFilterSchema), z.string()])
       .optional()
       .nullable(),
-    atendenteId: z
+    attendantId: z
       .union([z.lazy(() => StringFilterSchema), z.string()])
       .optional(),
-    criadoEm: z
+    createdAt: z
       .union([z.lazy(() => DateTimeFilterSchema), z.coerce.date()])
       .optional(),
   });
 
-export const ConversaUpsertWithWhereUniqueWithoutAtendenteInputSchema: z.ZodType<Prisma.ConversaUpsertWithWhereUniqueWithoutAtendenteInput> =
+export const ConversationUpsertWithWhereUniqueWithoutAttendantInputSchema: z.ZodType<Prisma.ConversationUpsertWithWhereUniqueWithoutAttendantInput> =
   z.strictObject({
-    where: z.lazy(() => ConversaWhereUniqueInputSchema),
+    where: z.lazy(() => ConversationWhereUniqueInputSchema),
     update: z.union([
-      z.lazy(() => ConversaUpdateWithoutAtendenteInputSchema),
-      z.lazy(() => ConversaUncheckedUpdateWithoutAtendenteInputSchema),
+      z.lazy(() => ConversationUpdateWithoutAttendantInputSchema),
+      z.lazy(() => ConversationUncheckedUpdateWithoutAttendantInputSchema),
     ]),
     create: z.union([
-      z.lazy(() => ConversaCreateWithoutAtendenteInputSchema),
-      z.lazy(() => ConversaUncheckedCreateWithoutAtendenteInputSchema),
+      z.lazy(() => ConversationCreateWithoutAttendantInputSchema),
+      z.lazy(() => ConversationUncheckedCreateWithoutAttendantInputSchema),
     ]),
   });
 
-export const ConversaUpdateWithWhereUniqueWithoutAtendenteInputSchema: z.ZodType<Prisma.ConversaUpdateWithWhereUniqueWithoutAtendenteInput> =
+export const ConversationUpdateWithWhereUniqueWithoutAttendantInputSchema: z.ZodType<Prisma.ConversationUpdateWithWhereUniqueWithoutAttendantInput> =
   z.strictObject({
-    where: z.lazy(() => ConversaWhereUniqueInputSchema),
+    where: z.lazy(() => ConversationWhereUniqueInputSchema),
     data: z.union([
-      z.lazy(() => ConversaUpdateWithoutAtendenteInputSchema),
-      z.lazy(() => ConversaUncheckedUpdateWithoutAtendenteInputSchema),
+      z.lazy(() => ConversationUpdateWithoutAttendantInputSchema),
+      z.lazy(() => ConversationUncheckedUpdateWithoutAttendantInputSchema),
     ]),
   });
 
-export const ConversaUpdateManyWithWhereWithoutAtendenteInputSchema: z.ZodType<Prisma.ConversaUpdateManyWithWhereWithoutAtendenteInput> =
+export const ConversationUpdateManyWithWhereWithoutAttendantInputSchema: z.ZodType<Prisma.ConversationUpdateManyWithWhereWithoutAttendantInput> =
   z.strictObject({
-    where: z.lazy(() => ConversaScalarWhereInputSchema),
+    where: z.lazy(() => ConversationScalarWhereInputSchema),
     data: z.union([
-      z.lazy(() => ConversaUpdateManyMutationInputSchema),
-      z.lazy(() => ConversaUncheckedUpdateManyWithoutAtendenteInputSchema),
+      z.lazy(() => ConversationUpdateManyMutationInputSchema),
+      z.lazy(() => ConversationUncheckedUpdateManyWithoutAttendantInputSchema),
     ]),
   });
 
-export const ConversaScalarWhereInputSchema: z.ZodType<Prisma.ConversaScalarWhereInput> =
+export const ConversationScalarWhereInputSchema: z.ZodType<Prisma.ConversationScalarWhereInput> =
   z.strictObject({
     AND: z
       .union([
-        z.lazy(() => ConversaScalarWhereInputSchema),
-        z.lazy(() => ConversaScalarWhereInputSchema).array(),
+        z.lazy(() => ConversationScalarWhereInputSchema),
+        z.lazy(() => ConversationScalarWhereInputSchema).array(),
       ])
       .optional(),
     OR: z
-      .lazy(() => ConversaScalarWhereInputSchema)
+      .lazy(() => ConversationScalarWhereInputSchema)
       .array()
       .optional(),
     NOT: z
       .union([
-        z.lazy(() => ConversaScalarWhereInputSchema),
-        z.lazy(() => ConversaScalarWhereInputSchema).array(),
+        z.lazy(() => ConversationScalarWhereInputSchema),
+        z.lazy(() => ConversationScalarWhereInputSchema).array(),
       ])
       .optional(),
     id: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
-    atendenteId: z
+    attendantId: z
       .union([z.lazy(() => StringFilterSchema), z.string()])
       .optional(),
-    motoristaId: z
+    driverId: z
       .union([z.lazy(() => StringFilterSchema), z.string()])
       .optional(),
   });
 
-export const ConversaUpsertWithWhereUniqueWithoutMotoristaInputSchema: z.ZodType<Prisma.ConversaUpsertWithWhereUniqueWithoutMotoristaInput> =
+export const ConversationUpsertWithWhereUniqueWithoutDriverInputSchema: z.ZodType<Prisma.ConversationUpsertWithWhereUniqueWithoutDriverInput> =
   z.strictObject({
-    where: z.lazy(() => ConversaWhereUniqueInputSchema),
+    where: z.lazy(() => ConversationWhereUniqueInputSchema),
     update: z.union([
-      z.lazy(() => ConversaUpdateWithoutMotoristaInputSchema),
-      z.lazy(() => ConversaUncheckedUpdateWithoutMotoristaInputSchema),
+      z.lazy(() => ConversationUpdateWithoutDriverInputSchema),
+      z.lazy(() => ConversationUncheckedUpdateWithoutDriverInputSchema),
     ]),
     create: z.union([
-      z.lazy(() => ConversaCreateWithoutMotoristaInputSchema),
-      z.lazy(() => ConversaUncheckedCreateWithoutMotoristaInputSchema),
+      z.lazy(() => ConversationCreateWithoutDriverInputSchema),
+      z.lazy(() => ConversationUncheckedCreateWithoutDriverInputSchema),
     ]),
   });
 
-export const ConversaUpdateWithWhereUniqueWithoutMotoristaInputSchema: z.ZodType<Prisma.ConversaUpdateWithWhereUniqueWithoutMotoristaInput> =
+export const ConversationUpdateWithWhereUniqueWithoutDriverInputSchema: z.ZodType<Prisma.ConversationUpdateWithWhereUniqueWithoutDriverInput> =
   z.strictObject({
-    where: z.lazy(() => ConversaWhereUniqueInputSchema),
+    where: z.lazy(() => ConversationWhereUniqueInputSchema),
     data: z.union([
-      z.lazy(() => ConversaUpdateWithoutMotoristaInputSchema),
-      z.lazy(() => ConversaUncheckedUpdateWithoutMotoristaInputSchema),
+      z.lazy(() => ConversationUpdateWithoutDriverInputSchema),
+      z.lazy(() => ConversationUncheckedUpdateWithoutDriverInputSchema),
     ]),
   });
 
-export const ConversaUpdateManyWithWhereWithoutMotoristaInputSchema: z.ZodType<Prisma.ConversaUpdateManyWithWhereWithoutMotoristaInput> =
+export const ConversationUpdateManyWithWhereWithoutDriverInputSchema: z.ZodType<Prisma.ConversationUpdateManyWithWhereWithoutDriverInput> =
   z.strictObject({
-    where: z.lazy(() => ConversaScalarWhereInputSchema),
+    where: z.lazy(() => ConversationScalarWhereInputSchema),
     data: z.union([
-      z.lazy(() => ConversaUpdateManyMutationInputSchema),
-      z.lazy(() => ConversaUncheckedUpdateManyWithoutMotoristaInputSchema),
+      z.lazy(() => ConversationUpdateManyMutationInputSchema),
+      z.lazy(() => ConversationUncheckedUpdateManyWithoutDriverInputSchema),
     ]),
   });
 
-export const MensagemUpsertWithWhereUniqueWithoutQuemMandouInputSchema: z.ZodType<Prisma.MensagemUpsertWithWhereUniqueWithoutQuemMandouInput> =
+export const MessageUpsertWithWhereUniqueWithoutSenderInputSchema: z.ZodType<Prisma.MessageUpsertWithWhereUniqueWithoutSenderInput> =
   z.strictObject({
-    where: z.lazy(() => MensagemWhereUniqueInputSchema),
+    where: z.lazy(() => MessageWhereUniqueInputSchema),
     update: z.union([
-      z.lazy(() => MensagemUpdateWithoutQuemMandouInputSchema),
-      z.lazy(() => MensagemUncheckedUpdateWithoutQuemMandouInputSchema),
+      z.lazy(() => MessageUpdateWithoutSenderInputSchema),
+      z.lazy(() => MessageUncheckedUpdateWithoutSenderInputSchema),
     ]),
     create: z.union([
-      z.lazy(() => MensagemCreateWithoutQuemMandouInputSchema),
-      z.lazy(() => MensagemUncheckedCreateWithoutQuemMandouInputSchema),
+      z.lazy(() => MessageCreateWithoutSenderInputSchema),
+      z.lazy(() => MessageUncheckedCreateWithoutSenderInputSchema),
     ]),
   });
 
-export const MensagemUpdateWithWhereUniqueWithoutQuemMandouInputSchema: z.ZodType<Prisma.MensagemUpdateWithWhereUniqueWithoutQuemMandouInput> =
+export const MessageUpdateWithWhereUniqueWithoutSenderInputSchema: z.ZodType<Prisma.MessageUpdateWithWhereUniqueWithoutSenderInput> =
   z.strictObject({
-    where: z.lazy(() => MensagemWhereUniqueInputSchema),
+    where: z.lazy(() => MessageWhereUniqueInputSchema),
     data: z.union([
-      z.lazy(() => MensagemUpdateWithoutQuemMandouInputSchema),
-      z.lazy(() => MensagemUncheckedUpdateWithoutQuemMandouInputSchema),
+      z.lazy(() => MessageUpdateWithoutSenderInputSchema),
+      z.lazy(() => MessageUncheckedUpdateWithoutSenderInputSchema),
     ]),
   });
 
-export const MensagemUpdateManyWithWhereWithoutQuemMandouInputSchema: z.ZodType<Prisma.MensagemUpdateManyWithWhereWithoutQuemMandouInput> =
+export const MessageUpdateManyWithWhereWithoutSenderInputSchema: z.ZodType<Prisma.MessageUpdateManyWithWhereWithoutSenderInput> =
   z.strictObject({
-    where: z.lazy(() => MensagemScalarWhereInputSchema),
+    where: z.lazy(() => MessageScalarWhereInputSchema),
     data: z.union([
-      z.lazy(() => MensagemUpdateManyMutationInputSchema),
-      z.lazy(() => MensagemUncheckedUpdateManyWithoutQuemMandouInputSchema),
+      z.lazy(() => MessageUpdateManyMutationInputSchema),
+      z.lazy(() => MessageUncheckedUpdateManyWithoutSenderInputSchema),
     ]),
   });
 
-export const MensagemScalarWhereInputSchema: z.ZodType<Prisma.MensagemScalarWhereInput> =
+export const MessageScalarWhereInputSchema: z.ZodType<Prisma.MessageScalarWhereInput> =
   z.strictObject({
     AND: z
       .union([
-        z.lazy(() => MensagemScalarWhereInputSchema),
-        z.lazy(() => MensagemScalarWhereInputSchema).array(),
+        z.lazy(() => MessageScalarWhereInputSchema),
+        z.lazy(() => MessageScalarWhereInputSchema).array(),
       ])
       .optional(),
     OR: z
-      .lazy(() => MensagemScalarWhereInputSchema)
+      .lazy(() => MessageScalarWhereInputSchema)
       .array()
       .optional(),
     NOT: z
       .union([
-        z.lazy(() => MensagemScalarWhereInputSchema),
-        z.lazy(() => MensagemScalarWhereInputSchema).array(),
+        z.lazy(() => MessageScalarWhereInputSchema),
+        z.lazy(() => MessageScalarWhereInputSchema).array(),
       ])
       .optional(),
     id: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
-    texto: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
-    dataDeEnvio: z
+    text: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
+    sentAt: z
       .union([z.lazy(() => DateTimeFilterSchema), z.coerce.date()])
       .optional(),
-    quemMandouId: z
+    senderId: z
       .union([z.lazy(() => StringFilterSchema), z.string()])
       .optional(),
-    conversaId: z
+    conversationId: z
       .union([z.lazy(() => StringFilterSchema), z.string()])
       .optional(),
   });
 
-export const UsuarioCreateWithoutVeiculoInputSchema: z.ZodType<Prisma.UsuarioCreateWithoutVeiculoInput> =
+export const UserCreateWithoutVehicleInputSchema: z.ZodType<Prisma.UserCreateWithoutVehicleInput> =
   z.strictObject({
     id: z.uuid().optional(),
     email: z.string(),
-    senha: z.string(),
-    tipo: z.lazy(() => TipoUsuarioSchema),
-    telefone: z.string(),
-    status: z.lazy(() => StatusUsuarioSchema).optional(),
-    criadoEm: z.coerce.date().optional(),
-    atendimentosRegistrados: z
-      .lazy(() => AtendimentoCreateNestedManyWithoutAtendenteInputSchema)
+    password: z.string(),
+    role: z.lazy(() => UserRoleSchema),
+    phone: z.string(),
+    status: z.lazy(() => UserStatusSchema).optional(),
+    createdAt: z.coerce.date().optional(),
+    registeredCalls: z
+      .lazy(() => EmergencyCallCreateNestedManyWithoutAttendantInputSchema)
       .optional(),
-    conversasComoAtendente: z
-      .lazy(() => ConversaCreateNestedManyWithoutAtendenteInputSchema)
+    conversationsAsAttendant: z
+      .lazy(() => ConversationCreateNestedManyWithoutAttendantInputSchema)
       .optional(),
-    conversasComoMotorista: z
-      .lazy(() => ConversaCreateNestedManyWithoutMotoristaInputSchema)
+    conversationsAsDriver: z
+      .lazy(() => ConversationCreateNestedManyWithoutDriverInputSchema)
       .optional(),
-    mensagensEnviadas: z
-      .lazy(() => MensagemCreateNestedManyWithoutQuemMandouInputSchema)
+    sentMessages: z
+      .lazy(() => MessageCreateNestedManyWithoutSenderInputSchema)
       .optional(),
   });
 
-export const UsuarioUncheckedCreateWithoutVeiculoInputSchema: z.ZodType<Prisma.UsuarioUncheckedCreateWithoutVeiculoInput> =
+export const UserUncheckedCreateWithoutVehicleInputSchema: z.ZodType<Prisma.UserUncheckedCreateWithoutVehicleInput> =
   z.strictObject({
     id: z.uuid().optional(),
     email: z.string(),
-    senha: z.string(),
-    tipo: z.lazy(() => TipoUsuarioSchema),
-    telefone: z.string(),
-    status: z.lazy(() => StatusUsuarioSchema).optional(),
-    criadoEm: z.coerce.date().optional(),
-    atendimentosRegistrados: z
+    password: z.string(),
+    role: z.lazy(() => UserRoleSchema),
+    phone: z.string(),
+    status: z.lazy(() => UserStatusSchema).optional(),
+    createdAt: z.coerce.date().optional(),
+    registeredCalls: z
       .lazy(
-        () => AtendimentoUncheckedCreateNestedManyWithoutAtendenteInputSchema,
+        () => EmergencyCallUncheckedCreateNestedManyWithoutAttendantInputSchema,
       )
       .optional(),
-    conversasComoAtendente: z
-      .lazy(() => ConversaUncheckedCreateNestedManyWithoutAtendenteInputSchema)
+    conversationsAsAttendant: z
+      .lazy(
+        () => ConversationUncheckedCreateNestedManyWithoutAttendantInputSchema,
+      )
       .optional(),
-    conversasComoMotorista: z
-      .lazy(() => ConversaUncheckedCreateNestedManyWithoutMotoristaInputSchema)
+    conversationsAsDriver: z
+      .lazy(() => ConversationUncheckedCreateNestedManyWithoutDriverInputSchema)
       .optional(),
-    mensagensEnviadas: z
-      .lazy(() => MensagemUncheckedCreateNestedManyWithoutQuemMandouInputSchema)
+    sentMessages: z
+      .lazy(() => MessageUncheckedCreateNestedManyWithoutSenderInputSchema)
       .optional(),
   });
 
-export const UsuarioCreateOrConnectWithoutVeiculoInputSchema: z.ZodType<Prisma.UsuarioCreateOrConnectWithoutVeiculoInput> =
+export const UserCreateOrConnectWithoutVehicleInputSchema: z.ZodType<Prisma.UserCreateOrConnectWithoutVehicleInput> =
   z.strictObject({
-    where: z.lazy(() => UsuarioWhereUniqueInputSchema),
+    where: z.lazy(() => UserWhereUniqueInputSchema),
     create: z.union([
-      z.lazy(() => UsuarioCreateWithoutVeiculoInputSchema),
-      z.lazy(() => UsuarioUncheckedCreateWithoutVeiculoInputSchema),
+      z.lazy(() => UserCreateWithoutVehicleInputSchema),
+      z.lazy(() => UserUncheckedCreateWithoutVehicleInputSchema),
     ]),
   });
 
-export const VeiculoAtendimentoCreateWithoutVeiculoInputSchema: z.ZodType<Prisma.VeiculoAtendimentoCreateWithoutVeiculoInput> =
+export const VehicleEmergencyCallCreateWithoutVehicleInputSchema: z.ZodType<Prisma.VehicleEmergencyCallCreateWithoutVehicleInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    status: z.lazy(() => StatusAtendimentoSchema).optional(),
-    atendimento: z.lazy(
-      () => AtendimentoCreateNestedOneWithoutVeiculosInputSchema,
+    status: z.lazy(() => EmergencyCallStatusSchema).optional(),
+    emergencyCall: z.lazy(
+      () => EmergencyCallCreateNestedOneWithoutVehiclesInputSchema,
     ),
   });
 
-export const VeiculoAtendimentoUncheckedCreateWithoutVeiculoInputSchema: z.ZodType<Prisma.VeiculoAtendimentoUncheckedCreateWithoutVeiculoInput> =
+export const VehicleEmergencyCallUncheckedCreateWithoutVehicleInputSchema: z.ZodType<Prisma.VehicleEmergencyCallUncheckedCreateWithoutVehicleInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    status: z.lazy(() => StatusAtendimentoSchema).optional(),
-    atendimentoId: z.string(),
+    status: z.lazy(() => EmergencyCallStatusSchema).optional(),
+    emergencyCallId: z.string(),
   });
 
-export const VeiculoAtendimentoCreateOrConnectWithoutVeiculoInputSchema: z.ZodType<Prisma.VeiculoAtendimentoCreateOrConnectWithoutVeiculoInput> =
+export const VehicleEmergencyCallCreateOrConnectWithoutVehicleInputSchema: z.ZodType<Prisma.VehicleEmergencyCallCreateOrConnectWithoutVehicleInput> =
   z.strictObject({
-    where: z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema),
+    where: z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema),
     create: z.union([
-      z.lazy(() => VeiculoAtendimentoCreateWithoutVeiculoInputSchema),
-      z.lazy(() => VeiculoAtendimentoUncheckedCreateWithoutVeiculoInputSchema),
-    ]),
-  });
-
-export const VeiculoAtendimentoCreateManyVeiculoInputEnvelopeSchema: z.ZodType<Prisma.VeiculoAtendimentoCreateManyVeiculoInputEnvelope> =
-  z.strictObject({
-    data: z.union([
-      z.lazy(() => VeiculoAtendimentoCreateManyVeiculoInputSchema),
-      z.lazy(() => VeiculoAtendimentoCreateManyVeiculoInputSchema).array(),
-    ]),
-    skipDuplicates: z.boolean().optional(),
-  });
-
-export const UsuarioUpsertWithoutVeiculoInputSchema: z.ZodType<Prisma.UsuarioUpsertWithoutVeiculoInput> =
-  z.strictObject({
-    update: z.union([
-      z.lazy(() => UsuarioUpdateWithoutVeiculoInputSchema),
-      z.lazy(() => UsuarioUncheckedUpdateWithoutVeiculoInputSchema),
-    ]),
-    create: z.union([
-      z.lazy(() => UsuarioCreateWithoutVeiculoInputSchema),
-      z.lazy(() => UsuarioUncheckedCreateWithoutVeiculoInputSchema),
-    ]),
-    where: z.lazy(() => UsuarioWhereInputSchema).optional(),
-  });
-
-export const UsuarioUpdateToOneWithWhereWithoutVeiculoInputSchema: z.ZodType<Prisma.UsuarioUpdateToOneWithWhereWithoutVeiculoInput> =
-  z.strictObject({
-    where: z.lazy(() => UsuarioWhereInputSchema).optional(),
-    data: z.union([
-      z.lazy(() => UsuarioUpdateWithoutVeiculoInputSchema),
-      z.lazy(() => UsuarioUncheckedUpdateWithoutVeiculoInputSchema),
-    ]),
-  });
-
-export const UsuarioUpdateWithoutVeiculoInputSchema: z.ZodType<Prisma.UsuarioUpdateWithoutVeiculoInput> =
-  z.strictObject({
-    id: z
-      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    email: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    senha: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    tipo: z
-      .union([
-        z.lazy(() => TipoUsuarioSchema),
-        z.lazy(() => EnumTipoUsuarioFieldUpdateOperationsInputSchema),
-      ])
-      .optional(),
-    telefone: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    status: z
-      .union([
-        z.lazy(() => StatusUsuarioSchema),
-        z.lazy(() => EnumStatusUsuarioFieldUpdateOperationsInputSchema),
-      ])
-      .optional(),
-    criadoEm: z
-      .union([
-        z.coerce.date(),
-        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
-      ])
-      .optional(),
-    atendimentosRegistrados: z
-      .lazy(() => AtendimentoUpdateManyWithoutAtendenteNestedInputSchema)
-      .optional(),
-    conversasComoAtendente: z
-      .lazy(() => ConversaUpdateManyWithoutAtendenteNestedInputSchema)
-      .optional(),
-    conversasComoMotorista: z
-      .lazy(() => ConversaUpdateManyWithoutMotoristaNestedInputSchema)
-      .optional(),
-    mensagensEnviadas: z
-      .lazy(() => MensagemUpdateManyWithoutQuemMandouNestedInputSchema)
-      .optional(),
-  });
-
-export const UsuarioUncheckedUpdateWithoutVeiculoInputSchema: z.ZodType<Prisma.UsuarioUncheckedUpdateWithoutVeiculoInput> =
-  z.strictObject({
-    id: z
-      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    email: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    senha: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    tipo: z
-      .union([
-        z.lazy(() => TipoUsuarioSchema),
-        z.lazy(() => EnumTipoUsuarioFieldUpdateOperationsInputSchema),
-      ])
-      .optional(),
-    telefone: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    status: z
-      .union([
-        z.lazy(() => StatusUsuarioSchema),
-        z.lazy(() => EnumStatusUsuarioFieldUpdateOperationsInputSchema),
-      ])
-      .optional(),
-    criadoEm: z
-      .union([
-        z.coerce.date(),
-        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
-      ])
-      .optional(),
-    atendimentosRegistrados: z
-      .lazy(
-        () => AtendimentoUncheckedUpdateManyWithoutAtendenteNestedInputSchema,
-      )
-      .optional(),
-    conversasComoAtendente: z
-      .lazy(() => ConversaUncheckedUpdateManyWithoutAtendenteNestedInputSchema)
-      .optional(),
-    conversasComoMotorista: z
-      .lazy(() => ConversaUncheckedUpdateManyWithoutMotoristaNestedInputSchema)
-      .optional(),
-    mensagensEnviadas: z
-      .lazy(() => MensagemUncheckedUpdateManyWithoutQuemMandouNestedInputSchema)
-      .optional(),
-  });
-
-export const VeiculoAtendimentoUpsertWithWhereUniqueWithoutVeiculoInputSchema: z.ZodType<Prisma.VeiculoAtendimentoUpsertWithWhereUniqueWithoutVeiculoInput> =
-  z.strictObject({
-    where: z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema),
-    update: z.union([
-      z.lazy(() => VeiculoAtendimentoUpdateWithoutVeiculoInputSchema),
-      z.lazy(() => VeiculoAtendimentoUncheckedUpdateWithoutVeiculoInputSchema),
-    ]),
-    create: z.union([
-      z.lazy(() => VeiculoAtendimentoCreateWithoutVeiculoInputSchema),
-      z.lazy(() => VeiculoAtendimentoUncheckedCreateWithoutVeiculoInputSchema),
-    ]),
-  });
-
-export const VeiculoAtendimentoUpdateWithWhereUniqueWithoutVeiculoInputSchema: z.ZodType<Prisma.VeiculoAtendimentoUpdateWithWhereUniqueWithoutVeiculoInput> =
-  z.strictObject({
-    where: z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema),
-    data: z.union([
-      z.lazy(() => VeiculoAtendimentoUpdateWithoutVeiculoInputSchema),
-      z.lazy(() => VeiculoAtendimentoUncheckedUpdateWithoutVeiculoInputSchema),
-    ]),
-  });
-
-export const VeiculoAtendimentoUpdateManyWithWhereWithoutVeiculoInputSchema: z.ZodType<Prisma.VeiculoAtendimentoUpdateManyWithWhereWithoutVeiculoInput> =
-  z.strictObject({
-    where: z.lazy(() => VeiculoAtendimentoScalarWhereInputSchema),
-    data: z.union([
-      z.lazy(() => VeiculoAtendimentoUpdateManyMutationInputSchema),
+      z.lazy(() => VehicleEmergencyCallCreateWithoutVehicleInputSchema),
       z.lazy(
-        () => VeiculoAtendimentoUncheckedUpdateManyWithoutVeiculoInputSchema,
+        () => VehicleEmergencyCallUncheckedCreateWithoutVehicleInputSchema,
       ),
     ]),
   });
 
-export const VeiculoAtendimentoScalarWhereInputSchema: z.ZodType<Prisma.VeiculoAtendimentoScalarWhereInput> =
+export const VehicleEmergencyCallCreateManyVehicleInputEnvelopeSchema: z.ZodType<Prisma.VehicleEmergencyCallCreateManyVehicleInputEnvelope> =
+  z.strictObject({
+    data: z.union([
+      z.lazy(() => VehicleEmergencyCallCreateManyVehicleInputSchema),
+      z.lazy(() => VehicleEmergencyCallCreateManyVehicleInputSchema).array(),
+    ]),
+    skipDuplicates: z.boolean().optional(),
+  });
+
+export const UserUpsertWithoutVehicleInputSchema: z.ZodType<Prisma.UserUpsertWithoutVehicleInput> =
+  z.strictObject({
+    update: z.union([
+      z.lazy(() => UserUpdateWithoutVehicleInputSchema),
+      z.lazy(() => UserUncheckedUpdateWithoutVehicleInputSchema),
+    ]),
+    create: z.union([
+      z.lazy(() => UserCreateWithoutVehicleInputSchema),
+      z.lazy(() => UserUncheckedCreateWithoutVehicleInputSchema),
+    ]),
+    where: z.lazy(() => UserWhereInputSchema).optional(),
+  });
+
+export const UserUpdateToOneWithWhereWithoutVehicleInputSchema: z.ZodType<Prisma.UserUpdateToOneWithWhereWithoutVehicleInput> =
+  z.strictObject({
+    where: z.lazy(() => UserWhereInputSchema).optional(),
+    data: z.union([
+      z.lazy(() => UserUpdateWithoutVehicleInputSchema),
+      z.lazy(() => UserUncheckedUpdateWithoutVehicleInputSchema),
+    ]),
+  });
+
+export const UserUpdateWithoutVehicleInputSchema: z.ZodType<Prisma.UserUpdateWithoutVehicleInput> =
+  z.strictObject({
+    id: z
+      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    email: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    password: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    role: z
+      .union([
+        z.lazy(() => UserRoleSchema),
+        z.lazy(() => EnumUserRoleFieldUpdateOperationsInputSchema),
+      ])
+      .optional(),
+    phone: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    status: z
+      .union([
+        z.lazy(() => UserStatusSchema),
+        z.lazy(() => EnumUserStatusFieldUpdateOperationsInputSchema),
+      ])
+      .optional(),
+    createdAt: z
+      .union([
+        z.coerce.date(),
+        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
+      ])
+      .optional(),
+    registeredCalls: z
+      .lazy(() => EmergencyCallUpdateManyWithoutAttendantNestedInputSchema)
+      .optional(),
+    conversationsAsAttendant: z
+      .lazy(() => ConversationUpdateManyWithoutAttendantNestedInputSchema)
+      .optional(),
+    conversationsAsDriver: z
+      .lazy(() => ConversationUpdateManyWithoutDriverNestedInputSchema)
+      .optional(),
+    sentMessages: z
+      .lazy(() => MessageUpdateManyWithoutSenderNestedInputSchema)
+      .optional(),
+  });
+
+export const UserUncheckedUpdateWithoutVehicleInputSchema: z.ZodType<Prisma.UserUncheckedUpdateWithoutVehicleInput> =
+  z.strictObject({
+    id: z
+      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    email: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    password: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    role: z
+      .union([
+        z.lazy(() => UserRoleSchema),
+        z.lazy(() => EnumUserRoleFieldUpdateOperationsInputSchema),
+      ])
+      .optional(),
+    phone: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    status: z
+      .union([
+        z.lazy(() => UserStatusSchema),
+        z.lazy(() => EnumUserStatusFieldUpdateOperationsInputSchema),
+      ])
+      .optional(),
+    createdAt: z
+      .union([
+        z.coerce.date(),
+        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
+      ])
+      .optional(),
+    registeredCalls: z
+      .lazy(
+        () => EmergencyCallUncheckedUpdateManyWithoutAttendantNestedInputSchema,
+      )
+      .optional(),
+    conversationsAsAttendant: z
+      .lazy(
+        () => ConversationUncheckedUpdateManyWithoutAttendantNestedInputSchema,
+      )
+      .optional(),
+    conversationsAsDriver: z
+      .lazy(() => ConversationUncheckedUpdateManyWithoutDriverNestedInputSchema)
+      .optional(),
+    sentMessages: z
+      .lazy(() => MessageUncheckedUpdateManyWithoutSenderNestedInputSchema)
+      .optional(),
+  });
+
+export const VehicleEmergencyCallUpsertWithWhereUniqueWithoutVehicleInputSchema: z.ZodType<Prisma.VehicleEmergencyCallUpsertWithWhereUniqueWithoutVehicleInput> =
+  z.strictObject({
+    where: z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema),
+    update: z.union([
+      z.lazy(() => VehicleEmergencyCallUpdateWithoutVehicleInputSchema),
+      z.lazy(
+        () => VehicleEmergencyCallUncheckedUpdateWithoutVehicleInputSchema,
+      ),
+    ]),
+    create: z.union([
+      z.lazy(() => VehicleEmergencyCallCreateWithoutVehicleInputSchema),
+      z.lazy(
+        () => VehicleEmergencyCallUncheckedCreateWithoutVehicleInputSchema,
+      ),
+    ]),
+  });
+
+export const VehicleEmergencyCallUpdateWithWhereUniqueWithoutVehicleInputSchema: z.ZodType<Prisma.VehicleEmergencyCallUpdateWithWhereUniqueWithoutVehicleInput> =
+  z.strictObject({
+    where: z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema),
+    data: z.union([
+      z.lazy(() => VehicleEmergencyCallUpdateWithoutVehicleInputSchema),
+      z.lazy(
+        () => VehicleEmergencyCallUncheckedUpdateWithoutVehicleInputSchema,
+      ),
+    ]),
+  });
+
+export const VehicleEmergencyCallUpdateManyWithWhereWithoutVehicleInputSchema: z.ZodType<Prisma.VehicleEmergencyCallUpdateManyWithWhereWithoutVehicleInput> =
+  z.strictObject({
+    where: z.lazy(() => VehicleEmergencyCallScalarWhereInputSchema),
+    data: z.union([
+      z.lazy(() => VehicleEmergencyCallUpdateManyMutationInputSchema),
+      z.lazy(
+        () => VehicleEmergencyCallUncheckedUpdateManyWithoutVehicleInputSchema,
+      ),
+    ]),
+  });
+
+export const VehicleEmergencyCallScalarWhereInputSchema: z.ZodType<Prisma.VehicleEmergencyCallScalarWhereInput> =
   z.strictObject({
     AND: z
       .union([
-        z.lazy(() => VeiculoAtendimentoScalarWhereInputSchema),
-        z.lazy(() => VeiculoAtendimentoScalarWhereInputSchema).array(),
+        z.lazy(() => VehicleEmergencyCallScalarWhereInputSchema),
+        z.lazy(() => VehicleEmergencyCallScalarWhereInputSchema).array(),
       ])
       .optional(),
     OR: z
-      .lazy(() => VeiculoAtendimentoScalarWhereInputSchema)
+      .lazy(() => VehicleEmergencyCallScalarWhereInputSchema)
       .array()
       .optional(),
     NOT: z
       .union([
-        z.lazy(() => VeiculoAtendimentoScalarWhereInputSchema),
-        z.lazy(() => VeiculoAtendimentoScalarWhereInputSchema).array(),
+        z.lazy(() => VehicleEmergencyCallScalarWhereInputSchema),
+        z.lazy(() => VehicleEmergencyCallScalarWhereInputSchema).array(),
       ])
       .optional(),
     id: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
     status: z
       .union([
-        z.lazy(() => EnumStatusAtendimentoFilterSchema),
-        z.lazy(() => StatusAtendimentoSchema),
+        z.lazy(() => EnumEmergencyCallStatusFilterSchema),
+        z.lazy(() => EmergencyCallStatusSchema),
       ])
       .optional(),
-    veiculoId: z
+    vehicleId: z
       .union([z.lazy(() => StringFilterSchema), z.string()])
       .optional(),
-    atendimentoId: z
+    emergencyCallId: z
       .union([z.lazy(() => StringFilterSchema), z.string()])
       .optional(),
   });
 
-export const UsuarioCreateWithoutAtendimentosRegistradosInputSchema: z.ZodType<Prisma.UsuarioCreateWithoutAtendimentosRegistradosInput> =
+export const UserCreateWithoutRegisteredCallsInputSchema: z.ZodType<Prisma.UserCreateWithoutRegisteredCallsInput> =
   z.strictObject({
     id: z.uuid().optional(),
     email: z.string(),
-    senha: z.string(),
-    tipo: z.lazy(() => TipoUsuarioSchema),
-    telefone: z.string(),
-    status: z.lazy(() => StatusUsuarioSchema).optional(),
-    criadoEm: z.coerce.date().optional(),
-    veiculo: z
-      .lazy(() => VeiculoCreateNestedOneWithoutMotoristaInputSchema)
+    password: z.string(),
+    role: z.lazy(() => UserRoleSchema),
+    phone: z.string(),
+    status: z.lazy(() => UserStatusSchema).optional(),
+    createdAt: z.coerce.date().optional(),
+    vehicle: z
+      .lazy(() => VehicleCreateNestedOneWithoutDriverInputSchema)
       .optional(),
-    conversasComoAtendente: z
-      .lazy(() => ConversaCreateNestedManyWithoutAtendenteInputSchema)
+    conversationsAsAttendant: z
+      .lazy(() => ConversationCreateNestedManyWithoutAttendantInputSchema)
       .optional(),
-    conversasComoMotorista: z
-      .lazy(() => ConversaCreateNestedManyWithoutMotoristaInputSchema)
+    conversationsAsDriver: z
+      .lazy(() => ConversationCreateNestedManyWithoutDriverInputSchema)
       .optional(),
-    mensagensEnviadas: z
-      .lazy(() => MensagemCreateNestedManyWithoutQuemMandouInputSchema)
+    sentMessages: z
+      .lazy(() => MessageCreateNestedManyWithoutSenderInputSchema)
       .optional(),
   });
 
-export const UsuarioUncheckedCreateWithoutAtendimentosRegistradosInputSchema: z.ZodType<Prisma.UsuarioUncheckedCreateWithoutAtendimentosRegistradosInput> =
+export const UserUncheckedCreateWithoutRegisteredCallsInputSchema: z.ZodType<Prisma.UserUncheckedCreateWithoutRegisteredCallsInput> =
   z.strictObject({
     id: z.uuid().optional(),
     email: z.string(),
-    senha: z.string(),
-    tipo: z.lazy(() => TipoUsuarioSchema),
-    telefone: z.string(),
-    status: z.lazy(() => StatusUsuarioSchema).optional(),
-    criadoEm: z.coerce.date().optional(),
-    veiculo: z
-      .lazy(() => VeiculoUncheckedCreateNestedOneWithoutMotoristaInputSchema)
+    password: z.string(),
+    role: z.lazy(() => UserRoleSchema),
+    phone: z.string(),
+    status: z.lazy(() => UserStatusSchema).optional(),
+    createdAt: z.coerce.date().optional(),
+    vehicle: z
+      .lazy(() => VehicleUncheckedCreateNestedOneWithoutDriverInputSchema)
       .optional(),
-    conversasComoAtendente: z
-      .lazy(() => ConversaUncheckedCreateNestedManyWithoutAtendenteInputSchema)
+    conversationsAsAttendant: z
+      .lazy(
+        () => ConversationUncheckedCreateNestedManyWithoutAttendantInputSchema,
+      )
       .optional(),
-    conversasComoMotorista: z
-      .lazy(() => ConversaUncheckedCreateNestedManyWithoutMotoristaInputSchema)
+    conversationsAsDriver: z
+      .lazy(() => ConversationUncheckedCreateNestedManyWithoutDriverInputSchema)
       .optional(),
-    mensagensEnviadas: z
-      .lazy(() => MensagemUncheckedCreateNestedManyWithoutQuemMandouInputSchema)
+    sentMessages: z
+      .lazy(() => MessageUncheckedCreateNestedManyWithoutSenderInputSchema)
       .optional(),
   });
 
-export const UsuarioCreateOrConnectWithoutAtendimentosRegistradosInputSchema: z.ZodType<Prisma.UsuarioCreateOrConnectWithoutAtendimentosRegistradosInput> =
+export const UserCreateOrConnectWithoutRegisteredCallsInputSchema: z.ZodType<Prisma.UserCreateOrConnectWithoutRegisteredCallsInput> =
   z.strictObject({
-    where: z.lazy(() => UsuarioWhereUniqueInputSchema),
+    where: z.lazy(() => UserWhereUniqueInputSchema),
     create: z.union([
-      z.lazy(() => UsuarioCreateWithoutAtendimentosRegistradosInputSchema),
-      z.lazy(
-        () => UsuarioUncheckedCreateWithoutAtendimentosRegistradosInputSchema,
-      ),
+      z.lazy(() => UserCreateWithoutRegisteredCallsInputSchema),
+      z.lazy(() => UserUncheckedCreateWithoutRegisteredCallsInputSchema),
     ]),
   });
 
-export const VeiculoAtendimentoCreateWithoutAtendimentoInputSchema: z.ZodType<Prisma.VeiculoAtendimentoCreateWithoutAtendimentoInput> =
+export const VehicleEmergencyCallCreateWithoutEmergencyCallInputSchema: z.ZodType<Prisma.VehicleEmergencyCallCreateWithoutEmergencyCallInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    status: z.lazy(() => StatusAtendimentoSchema).optional(),
-    veiculo: z.lazy(() => VeiculoCreateNestedOneWithoutAtendimentosInputSchema),
+    status: z.lazy(() => EmergencyCallStatusSchema).optional(),
+    vehicle: z.lazy(
+      () => VehicleCreateNestedOneWithoutEmergencyCallsInputSchema,
+    ),
   });
 
-export const VeiculoAtendimentoUncheckedCreateWithoutAtendimentoInputSchema: z.ZodType<Prisma.VeiculoAtendimentoUncheckedCreateWithoutAtendimentoInput> =
+export const VehicleEmergencyCallUncheckedCreateWithoutEmergencyCallInputSchema: z.ZodType<Prisma.VehicleEmergencyCallUncheckedCreateWithoutEmergencyCallInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    status: z.lazy(() => StatusAtendimentoSchema).optional(),
-    veiculoId: z.string(),
+    status: z.lazy(() => EmergencyCallStatusSchema).optional(),
+    vehicleId: z.string(),
   });
 
-export const VeiculoAtendimentoCreateOrConnectWithoutAtendimentoInputSchema: z.ZodType<Prisma.VeiculoAtendimentoCreateOrConnectWithoutAtendimentoInput> =
+export const VehicleEmergencyCallCreateOrConnectWithoutEmergencyCallInputSchema: z.ZodType<Prisma.VehicleEmergencyCallCreateOrConnectWithoutEmergencyCallInput> =
   z.strictObject({
-    where: z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema),
+    where: z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema),
     create: z.union([
-      z.lazy(() => VeiculoAtendimentoCreateWithoutAtendimentoInputSchema),
-      z.lazy(
-        () => VeiculoAtendimentoUncheckedCreateWithoutAtendimentoInputSchema,
-      ),
-    ]),
-  });
-
-export const VeiculoAtendimentoCreateManyAtendimentoInputEnvelopeSchema: z.ZodType<Prisma.VeiculoAtendimentoCreateManyAtendimentoInputEnvelope> =
-  z.strictObject({
-    data: z.union([
-      z.lazy(() => VeiculoAtendimentoCreateManyAtendimentoInputSchema),
-      z.lazy(() => VeiculoAtendimentoCreateManyAtendimentoInputSchema).array(),
-    ]),
-    skipDuplicates: z.boolean().optional(),
-  });
-
-export const NotificacaoCreateWithoutAtendimentoInputSchema: z.ZodType<Prisma.NotificacaoCreateWithoutAtendimentoInput> =
-  z.strictObject({
-    id: z.uuid().optional(),
-    mensagem: z.string(),
-    dataDaNotificacao: z.coerce.date().optional(),
-  });
-
-export const NotificacaoUncheckedCreateWithoutAtendimentoInputSchema: z.ZodType<Prisma.NotificacaoUncheckedCreateWithoutAtendimentoInput> =
-  z.strictObject({
-    id: z.uuid().optional(),
-    mensagem: z.string(),
-    dataDaNotificacao: z.coerce.date().optional(),
-  });
-
-export const NotificacaoCreateOrConnectWithoutAtendimentoInputSchema: z.ZodType<Prisma.NotificacaoCreateOrConnectWithoutAtendimentoInput> =
-  z.strictObject({
-    where: z.lazy(() => NotificacaoWhereUniqueInputSchema),
-    create: z.union([
-      z.lazy(() => NotificacaoCreateWithoutAtendimentoInputSchema),
-      z.lazy(() => NotificacaoUncheckedCreateWithoutAtendimentoInputSchema),
-    ]),
-  });
-
-export const NotificacaoCreateManyAtendimentoInputEnvelopeSchema: z.ZodType<Prisma.NotificacaoCreateManyAtendimentoInputEnvelope> =
-  z.strictObject({
-    data: z.union([
-      z.lazy(() => NotificacaoCreateManyAtendimentoInputSchema),
-      z.lazy(() => NotificacaoCreateManyAtendimentoInputSchema).array(),
-    ]),
-    skipDuplicates: z.boolean().optional(),
-  });
-
-export const UsuarioUpsertWithoutAtendimentosRegistradosInputSchema: z.ZodType<Prisma.UsuarioUpsertWithoutAtendimentosRegistradosInput> =
-  z.strictObject({
-    update: z.union([
-      z.lazy(() => UsuarioUpdateWithoutAtendimentosRegistradosInputSchema),
-      z.lazy(
-        () => UsuarioUncheckedUpdateWithoutAtendimentosRegistradosInputSchema,
-      ),
-    ]),
-    create: z.union([
-      z.lazy(() => UsuarioCreateWithoutAtendimentosRegistradosInputSchema),
-      z.lazy(
-        () => UsuarioUncheckedCreateWithoutAtendimentosRegistradosInputSchema,
-      ),
-    ]),
-    where: z.lazy(() => UsuarioWhereInputSchema).optional(),
-  });
-
-export const UsuarioUpdateToOneWithWhereWithoutAtendimentosRegistradosInputSchema: z.ZodType<Prisma.UsuarioUpdateToOneWithWhereWithoutAtendimentosRegistradosInput> =
-  z.strictObject({
-    where: z.lazy(() => UsuarioWhereInputSchema).optional(),
-    data: z.union([
-      z.lazy(() => UsuarioUpdateWithoutAtendimentosRegistradosInputSchema),
-      z.lazy(
-        () => UsuarioUncheckedUpdateWithoutAtendimentosRegistradosInputSchema,
-      ),
-    ]),
-  });
-
-export const UsuarioUpdateWithoutAtendimentosRegistradosInputSchema: z.ZodType<Prisma.UsuarioUpdateWithoutAtendimentosRegistradosInput> =
-  z.strictObject({
-    id: z
-      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    email: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    senha: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    tipo: z
-      .union([
-        z.lazy(() => TipoUsuarioSchema),
-        z.lazy(() => EnumTipoUsuarioFieldUpdateOperationsInputSchema),
-      ])
-      .optional(),
-    telefone: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    status: z
-      .union([
-        z.lazy(() => StatusUsuarioSchema),
-        z.lazy(() => EnumStatusUsuarioFieldUpdateOperationsInputSchema),
-      ])
-      .optional(),
-    criadoEm: z
-      .union([
-        z.coerce.date(),
-        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
-      ])
-      .optional(),
-    veiculo: z
-      .lazy(() => VeiculoUpdateOneWithoutMotoristaNestedInputSchema)
-      .optional(),
-    conversasComoAtendente: z
-      .lazy(() => ConversaUpdateManyWithoutAtendenteNestedInputSchema)
-      .optional(),
-    conversasComoMotorista: z
-      .lazy(() => ConversaUpdateManyWithoutMotoristaNestedInputSchema)
-      .optional(),
-    mensagensEnviadas: z
-      .lazy(() => MensagemUpdateManyWithoutQuemMandouNestedInputSchema)
-      .optional(),
-  });
-
-export const UsuarioUncheckedUpdateWithoutAtendimentosRegistradosInputSchema: z.ZodType<Prisma.UsuarioUncheckedUpdateWithoutAtendimentosRegistradosInput> =
-  z.strictObject({
-    id: z
-      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    email: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    senha: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    tipo: z
-      .union([
-        z.lazy(() => TipoUsuarioSchema),
-        z.lazy(() => EnumTipoUsuarioFieldUpdateOperationsInputSchema),
-      ])
-      .optional(),
-    telefone: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    status: z
-      .union([
-        z.lazy(() => StatusUsuarioSchema),
-        z.lazy(() => EnumStatusUsuarioFieldUpdateOperationsInputSchema),
-      ])
-      .optional(),
-    criadoEm: z
-      .union([
-        z.coerce.date(),
-        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
-      ])
-      .optional(),
-    veiculo: z
-      .lazy(() => VeiculoUncheckedUpdateOneWithoutMotoristaNestedInputSchema)
-      .optional(),
-    conversasComoAtendente: z
-      .lazy(() => ConversaUncheckedUpdateManyWithoutAtendenteNestedInputSchema)
-      .optional(),
-    conversasComoMotorista: z
-      .lazy(() => ConversaUncheckedUpdateManyWithoutMotoristaNestedInputSchema)
-      .optional(),
-    mensagensEnviadas: z
-      .lazy(() => MensagemUncheckedUpdateManyWithoutQuemMandouNestedInputSchema)
-      .optional(),
-  });
-
-export const VeiculoAtendimentoUpsertWithWhereUniqueWithoutAtendimentoInputSchema: z.ZodType<Prisma.VeiculoAtendimentoUpsertWithWhereUniqueWithoutAtendimentoInput> =
-  z.strictObject({
-    where: z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema),
-    update: z.union([
-      z.lazy(() => VeiculoAtendimentoUpdateWithoutAtendimentoInputSchema),
-      z.lazy(
-        () => VeiculoAtendimentoUncheckedUpdateWithoutAtendimentoInputSchema,
-      ),
-    ]),
-    create: z.union([
-      z.lazy(() => VeiculoAtendimentoCreateWithoutAtendimentoInputSchema),
-      z.lazy(
-        () => VeiculoAtendimentoUncheckedCreateWithoutAtendimentoInputSchema,
-      ),
-    ]),
-  });
-
-export const VeiculoAtendimentoUpdateWithWhereUniqueWithoutAtendimentoInputSchema: z.ZodType<Prisma.VeiculoAtendimentoUpdateWithWhereUniqueWithoutAtendimentoInput> =
-  z.strictObject({
-    where: z.lazy(() => VeiculoAtendimentoWhereUniqueInputSchema),
-    data: z.union([
-      z.lazy(() => VeiculoAtendimentoUpdateWithoutAtendimentoInputSchema),
-      z.lazy(
-        () => VeiculoAtendimentoUncheckedUpdateWithoutAtendimentoInputSchema,
-      ),
-    ]),
-  });
-
-export const VeiculoAtendimentoUpdateManyWithWhereWithoutAtendimentoInputSchema: z.ZodType<Prisma.VeiculoAtendimentoUpdateManyWithWhereWithoutAtendimentoInput> =
-  z.strictObject({
-    where: z.lazy(() => VeiculoAtendimentoScalarWhereInputSchema),
-    data: z.union([
-      z.lazy(() => VeiculoAtendimentoUpdateManyMutationInputSchema),
+      z.lazy(() => VehicleEmergencyCallCreateWithoutEmergencyCallInputSchema),
       z.lazy(
         () =>
-          VeiculoAtendimentoUncheckedUpdateManyWithoutAtendimentoInputSchema,
+          VehicleEmergencyCallUncheckedCreateWithoutEmergencyCallInputSchema,
       ),
     ]),
   });
 
-export const NotificacaoUpsertWithWhereUniqueWithoutAtendimentoInputSchema: z.ZodType<Prisma.NotificacaoUpsertWithWhereUniqueWithoutAtendimentoInput> =
+export const VehicleEmergencyCallCreateManyEmergencyCallInputEnvelopeSchema: z.ZodType<Prisma.VehicleEmergencyCallCreateManyEmergencyCallInputEnvelope> =
   z.strictObject({
-    where: z.lazy(() => NotificacaoWhereUniqueInputSchema),
-    update: z.union([
-      z.lazy(() => NotificacaoUpdateWithoutAtendimentoInputSchema),
-      z.lazy(() => NotificacaoUncheckedUpdateWithoutAtendimentoInputSchema),
-    ]),
-    create: z.union([
-      z.lazy(() => NotificacaoCreateWithoutAtendimentoInputSchema),
-      z.lazy(() => NotificacaoUncheckedCreateWithoutAtendimentoInputSchema),
-    ]),
-  });
-
-export const NotificacaoUpdateWithWhereUniqueWithoutAtendimentoInputSchema: z.ZodType<Prisma.NotificacaoUpdateWithWhereUniqueWithoutAtendimentoInput> =
-  z.strictObject({
-    where: z.lazy(() => NotificacaoWhereUniqueInputSchema),
     data: z.union([
-      z.lazy(() => NotificacaoUpdateWithoutAtendimentoInputSchema),
-      z.lazy(() => NotificacaoUncheckedUpdateWithoutAtendimentoInputSchema),
+      z.lazy(() => VehicleEmergencyCallCreateManyEmergencyCallInputSchema),
+      z
+        .lazy(() => VehicleEmergencyCallCreateManyEmergencyCallInputSchema)
+        .array(),
+    ]),
+    skipDuplicates: z.boolean().optional(),
+  });
+
+export const NotificationCreateWithoutEmergencyCallInputSchema: z.ZodType<Prisma.NotificationCreateWithoutEmergencyCallInput> =
+  z.strictObject({
+    id: z.uuid().optional(),
+    message: z.string(),
+    notifiedAt: z.coerce.date().optional(),
+  });
+
+export const NotificationUncheckedCreateWithoutEmergencyCallInputSchema: z.ZodType<Prisma.NotificationUncheckedCreateWithoutEmergencyCallInput> =
+  z.strictObject({
+    id: z.uuid().optional(),
+    message: z.string(),
+    notifiedAt: z.coerce.date().optional(),
+  });
+
+export const NotificationCreateOrConnectWithoutEmergencyCallInputSchema: z.ZodType<Prisma.NotificationCreateOrConnectWithoutEmergencyCallInput> =
+  z.strictObject({
+    where: z.lazy(() => NotificationWhereUniqueInputSchema),
+    create: z.union([
+      z.lazy(() => NotificationCreateWithoutEmergencyCallInputSchema),
+      z.lazy(() => NotificationUncheckedCreateWithoutEmergencyCallInputSchema),
     ]),
   });
 
-export const NotificacaoUpdateManyWithWhereWithoutAtendimentoInputSchema: z.ZodType<Prisma.NotificacaoUpdateManyWithWhereWithoutAtendimentoInput> =
+export const NotificationCreateManyEmergencyCallInputEnvelopeSchema: z.ZodType<Prisma.NotificationCreateManyEmergencyCallInputEnvelope> =
   z.strictObject({
-    where: z.lazy(() => NotificacaoScalarWhereInputSchema),
     data: z.union([
-      z.lazy(() => NotificacaoUpdateManyMutationInputSchema),
-      z.lazy(() => NotificacaoUncheckedUpdateManyWithoutAtendimentoInputSchema),
+      z.lazy(() => NotificationCreateManyEmergencyCallInputSchema),
+      z.lazy(() => NotificationCreateManyEmergencyCallInputSchema).array(),
     ]),
+    skipDuplicates: z.boolean().optional(),
   });
 
-export const NotificacaoScalarWhereInputSchema: z.ZodType<Prisma.NotificacaoScalarWhereInput> =
-  z.strictObject({
-    AND: z
-      .union([
-        z.lazy(() => NotificacaoScalarWhereInputSchema),
-        z.lazy(() => NotificacaoScalarWhereInputSchema).array(),
-      ])
-      .optional(),
-    OR: z
-      .lazy(() => NotificacaoScalarWhereInputSchema)
-      .array()
-      .optional(),
-    NOT: z
-      .union([
-        z.lazy(() => NotificacaoScalarWhereInputSchema),
-        z.lazy(() => NotificacaoScalarWhereInputSchema).array(),
-      ])
-      .optional(),
-    id: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
-    mensagem: z
-      .union([z.lazy(() => StringFilterSchema), z.string()])
-      .optional(),
-    dataDaNotificacao: z
-      .union([z.lazy(() => DateTimeFilterSchema), z.coerce.date()])
-      .optional(),
-    atendimentoId: z
-      .union([z.lazy(() => StringFilterSchema), z.string()])
-      .optional(),
-  });
-
-export const VeiculoCreateWithoutAtendimentosInputSchema: z.ZodType<Prisma.VeiculoCreateWithoutAtendimentosInput> =
-  z.strictObject({
-    id: z.uuid().optional(),
-    placa: z.string(),
-    latitude: z.number(),
-    longitude: z.number(),
-    motorista: z.lazy(() => UsuarioCreateNestedOneWithoutVeiculoInputSchema),
-  });
-
-export const VeiculoUncheckedCreateWithoutAtendimentosInputSchema: z.ZodType<Prisma.VeiculoUncheckedCreateWithoutAtendimentosInput> =
-  z.strictObject({
-    id: z.uuid().optional(),
-    placa: z.string(),
-    latitude: z.number(),
-    longitude: z.number(),
-    motoristaId: z.string(),
-  });
-
-export const VeiculoCreateOrConnectWithoutAtendimentosInputSchema: z.ZodType<Prisma.VeiculoCreateOrConnectWithoutAtendimentosInput> =
-  z.strictObject({
-    where: z.lazy(() => VeiculoWhereUniqueInputSchema),
-    create: z.union([
-      z.lazy(() => VeiculoCreateWithoutAtendimentosInputSchema),
-      z.lazy(() => VeiculoUncheckedCreateWithoutAtendimentosInputSchema),
-    ]),
-  });
-
-export const AtendimentoCreateWithoutVeiculosInputSchema: z.ZodType<Prisma.AtendimentoCreateWithoutVeiculosInput> =
-  z.strictObject({
-    id: z.uuid().optional(),
-    protocolo: z.string(),
-    endereco: z.string(),
-    localDeRetorno: z.string(),
-    oQueAconteceu: z.string(),
-    estadoDoPaciente: z.string(),
-    idadeAparente: z.number().int().optional().nullable(),
-    quantidadeDePacientes: z.number().int(),
-    estadoDaLesao: z.string(),
-    observacoes: z.string().optional().nullable(),
-    criadoEm: z.coerce.date().optional(),
-    atendente: z.lazy(
-      () => UsuarioCreateNestedOneWithoutAtendimentosRegistradosInputSchema,
-    ),
-    notificacoes: z
-      .lazy(() => NotificacaoCreateNestedManyWithoutAtendimentoInputSchema)
-      .optional(),
-  });
-
-export const AtendimentoUncheckedCreateWithoutVeiculosInputSchema: z.ZodType<Prisma.AtendimentoUncheckedCreateWithoutVeiculosInput> =
-  z.strictObject({
-    id: z.uuid().optional(),
-    protocolo: z.string(),
-    endereco: z.string(),
-    localDeRetorno: z.string(),
-    oQueAconteceu: z.string(),
-    estadoDoPaciente: z.string(),
-    idadeAparente: z.number().int().optional().nullable(),
-    quantidadeDePacientes: z.number().int(),
-    estadoDaLesao: z.string(),
-    observacoes: z.string().optional().nullable(),
-    atendenteId: z.string(),
-    criadoEm: z.coerce.date().optional(),
-    notificacoes: z
-      .lazy(
-        () => NotificacaoUncheckedCreateNestedManyWithoutAtendimentoInputSchema,
-      )
-      .optional(),
-  });
-
-export const AtendimentoCreateOrConnectWithoutVeiculosInputSchema: z.ZodType<Prisma.AtendimentoCreateOrConnectWithoutVeiculosInput> =
-  z.strictObject({
-    where: z.lazy(() => AtendimentoWhereUniqueInputSchema),
-    create: z.union([
-      z.lazy(() => AtendimentoCreateWithoutVeiculosInputSchema),
-      z.lazy(() => AtendimentoUncheckedCreateWithoutVeiculosInputSchema),
-    ]),
-  });
-
-export const VeiculoUpsertWithoutAtendimentosInputSchema: z.ZodType<Prisma.VeiculoUpsertWithoutAtendimentosInput> =
+export const UserUpsertWithoutRegisteredCallsInputSchema: z.ZodType<Prisma.UserUpsertWithoutRegisteredCallsInput> =
   z.strictObject({
     update: z.union([
-      z.lazy(() => VeiculoUpdateWithoutAtendimentosInputSchema),
-      z.lazy(() => VeiculoUncheckedUpdateWithoutAtendimentosInputSchema),
+      z.lazy(() => UserUpdateWithoutRegisteredCallsInputSchema),
+      z.lazy(() => UserUncheckedUpdateWithoutRegisteredCallsInputSchema),
     ]),
     create: z.union([
-      z.lazy(() => VeiculoCreateWithoutAtendimentosInputSchema),
-      z.lazy(() => VeiculoUncheckedCreateWithoutAtendimentosInputSchema),
+      z.lazy(() => UserCreateWithoutRegisteredCallsInputSchema),
+      z.lazy(() => UserUncheckedCreateWithoutRegisteredCallsInputSchema),
     ]),
-    where: z.lazy(() => VeiculoWhereInputSchema).optional(),
+    where: z.lazy(() => UserWhereInputSchema).optional(),
   });
 
-export const VeiculoUpdateToOneWithWhereWithoutAtendimentosInputSchema: z.ZodType<Prisma.VeiculoUpdateToOneWithWhereWithoutAtendimentosInput> =
+export const UserUpdateToOneWithWhereWithoutRegisteredCallsInputSchema: z.ZodType<Prisma.UserUpdateToOneWithWhereWithoutRegisteredCallsInput> =
   z.strictObject({
-    where: z.lazy(() => VeiculoWhereInputSchema).optional(),
+    where: z.lazy(() => UserWhereInputSchema).optional(),
     data: z.union([
-      z.lazy(() => VeiculoUpdateWithoutAtendimentosInputSchema),
-      z.lazy(() => VeiculoUncheckedUpdateWithoutAtendimentosInputSchema),
+      z.lazy(() => UserUpdateWithoutRegisteredCallsInputSchema),
+      z.lazy(() => UserUncheckedUpdateWithoutRegisteredCallsInputSchema),
     ]),
   });
 
-export const VeiculoUpdateWithoutAtendimentosInputSchema: z.ZodType<Prisma.VeiculoUpdateWithoutAtendimentosInput> =
+export const UserUpdateWithoutRegisteredCallsInputSchema: z.ZodType<Prisma.UserUpdateWithoutRegisteredCallsInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    placa: z
+    email: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    password: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    role: z
+      .union([
+        z.lazy(() => UserRoleSchema),
+        z.lazy(() => EnumUserRoleFieldUpdateOperationsInputSchema),
+      ])
+      .optional(),
+    phone: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    status: z
+      .union([
+        z.lazy(() => UserStatusSchema),
+        z.lazy(() => EnumUserStatusFieldUpdateOperationsInputSchema),
+      ])
+      .optional(),
+    createdAt: z
+      .union([
+        z.coerce.date(),
+        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
+      ])
+      .optional(),
+    vehicle: z
+      .lazy(() => VehicleUpdateOneWithoutDriverNestedInputSchema)
+      .optional(),
+    conversationsAsAttendant: z
+      .lazy(() => ConversationUpdateManyWithoutAttendantNestedInputSchema)
+      .optional(),
+    conversationsAsDriver: z
+      .lazy(() => ConversationUpdateManyWithoutDriverNestedInputSchema)
+      .optional(),
+    sentMessages: z
+      .lazy(() => MessageUpdateManyWithoutSenderNestedInputSchema)
+      .optional(),
+  });
+
+export const UserUncheckedUpdateWithoutRegisteredCallsInputSchema: z.ZodType<Prisma.UserUncheckedUpdateWithoutRegisteredCallsInput> =
+  z.strictObject({
+    id: z
+      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    email: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    password: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    role: z
+      .union([
+        z.lazy(() => UserRoleSchema),
+        z.lazy(() => EnumUserRoleFieldUpdateOperationsInputSchema),
+      ])
+      .optional(),
+    phone: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    status: z
+      .union([
+        z.lazy(() => UserStatusSchema),
+        z.lazy(() => EnumUserStatusFieldUpdateOperationsInputSchema),
+      ])
+      .optional(),
+    createdAt: z
+      .union([
+        z.coerce.date(),
+        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
+      ])
+      .optional(),
+    vehicle: z
+      .lazy(() => VehicleUncheckedUpdateOneWithoutDriverNestedInputSchema)
+      .optional(),
+    conversationsAsAttendant: z
+      .lazy(
+        () => ConversationUncheckedUpdateManyWithoutAttendantNestedInputSchema,
+      )
+      .optional(),
+    conversationsAsDriver: z
+      .lazy(() => ConversationUncheckedUpdateManyWithoutDriverNestedInputSchema)
+      .optional(),
+    sentMessages: z
+      .lazy(() => MessageUncheckedUpdateManyWithoutSenderNestedInputSchema)
+      .optional(),
+  });
+
+export const VehicleEmergencyCallUpsertWithWhereUniqueWithoutEmergencyCallInputSchema: z.ZodType<Prisma.VehicleEmergencyCallUpsertWithWhereUniqueWithoutEmergencyCallInput> =
+  z.strictObject({
+    where: z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema),
+    update: z.union([
+      z.lazy(() => VehicleEmergencyCallUpdateWithoutEmergencyCallInputSchema),
+      z.lazy(
+        () =>
+          VehicleEmergencyCallUncheckedUpdateWithoutEmergencyCallInputSchema,
+      ),
+    ]),
+    create: z.union([
+      z.lazy(() => VehicleEmergencyCallCreateWithoutEmergencyCallInputSchema),
+      z.lazy(
+        () =>
+          VehicleEmergencyCallUncheckedCreateWithoutEmergencyCallInputSchema,
+      ),
+    ]),
+  });
+
+export const VehicleEmergencyCallUpdateWithWhereUniqueWithoutEmergencyCallInputSchema: z.ZodType<Prisma.VehicleEmergencyCallUpdateWithWhereUniqueWithoutEmergencyCallInput> =
+  z.strictObject({
+    where: z.lazy(() => VehicleEmergencyCallWhereUniqueInputSchema),
+    data: z.union([
+      z.lazy(() => VehicleEmergencyCallUpdateWithoutEmergencyCallInputSchema),
+      z.lazy(
+        () =>
+          VehicleEmergencyCallUncheckedUpdateWithoutEmergencyCallInputSchema,
+      ),
+    ]),
+  });
+
+export const VehicleEmergencyCallUpdateManyWithWhereWithoutEmergencyCallInputSchema: z.ZodType<Prisma.VehicleEmergencyCallUpdateManyWithWhereWithoutEmergencyCallInput> =
+  z.strictObject({
+    where: z.lazy(() => VehicleEmergencyCallScalarWhereInputSchema),
+    data: z.union([
+      z.lazy(() => VehicleEmergencyCallUpdateManyMutationInputSchema),
+      z.lazy(
+        () =>
+          VehicleEmergencyCallUncheckedUpdateManyWithoutEmergencyCallInputSchema,
+      ),
+    ]),
+  });
+
+export const NotificationUpsertWithWhereUniqueWithoutEmergencyCallInputSchema: z.ZodType<Prisma.NotificationUpsertWithWhereUniqueWithoutEmergencyCallInput> =
+  z.strictObject({
+    where: z.lazy(() => NotificationWhereUniqueInputSchema),
+    update: z.union([
+      z.lazy(() => NotificationUpdateWithoutEmergencyCallInputSchema),
+      z.lazy(() => NotificationUncheckedUpdateWithoutEmergencyCallInputSchema),
+    ]),
+    create: z.union([
+      z.lazy(() => NotificationCreateWithoutEmergencyCallInputSchema),
+      z.lazy(() => NotificationUncheckedCreateWithoutEmergencyCallInputSchema),
+    ]),
+  });
+
+export const NotificationUpdateWithWhereUniqueWithoutEmergencyCallInputSchema: z.ZodType<Prisma.NotificationUpdateWithWhereUniqueWithoutEmergencyCallInput> =
+  z.strictObject({
+    where: z.lazy(() => NotificationWhereUniqueInputSchema),
+    data: z.union([
+      z.lazy(() => NotificationUpdateWithoutEmergencyCallInputSchema),
+      z.lazy(() => NotificationUncheckedUpdateWithoutEmergencyCallInputSchema),
+    ]),
+  });
+
+export const NotificationUpdateManyWithWhereWithoutEmergencyCallInputSchema: z.ZodType<Prisma.NotificationUpdateManyWithWhereWithoutEmergencyCallInput> =
+  z.strictObject({
+    where: z.lazy(() => NotificationScalarWhereInputSchema),
+    data: z.union([
+      z.lazy(() => NotificationUpdateManyMutationInputSchema),
+      z.lazy(
+        () => NotificationUncheckedUpdateManyWithoutEmergencyCallInputSchema,
+      ),
+    ]),
+  });
+
+export const NotificationScalarWhereInputSchema: z.ZodType<Prisma.NotificationScalarWhereInput> =
+  z.strictObject({
+    AND: z
+      .union([
+        z.lazy(() => NotificationScalarWhereInputSchema),
+        z.lazy(() => NotificationScalarWhereInputSchema).array(),
+      ])
+      .optional(),
+    OR: z
+      .lazy(() => NotificationScalarWhereInputSchema)
+      .array()
+      .optional(),
+    NOT: z
+      .union([
+        z.lazy(() => NotificationScalarWhereInputSchema),
+        z.lazy(() => NotificationScalarWhereInputSchema).array(),
+      ])
+      .optional(),
+    id: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
+    message: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
+    notifiedAt: z
+      .union([z.lazy(() => DateTimeFilterSchema), z.coerce.date()])
+      .optional(),
+    emergencyCallId: z
+      .union([z.lazy(() => StringFilterSchema), z.string()])
+      .optional(),
+  });
+
+export const VehicleCreateWithoutEmergencyCallsInputSchema: z.ZodType<Prisma.VehicleCreateWithoutEmergencyCallsInput> =
+  z.strictObject({
+    id: z.uuid().optional(),
+    plate: z.string(),
+    latitude: z.number(),
+    longitude: z.number(),
+    driver: z.lazy(() => UserCreateNestedOneWithoutVehicleInputSchema),
+  });
+
+export const VehicleUncheckedCreateWithoutEmergencyCallsInputSchema: z.ZodType<Prisma.VehicleUncheckedCreateWithoutEmergencyCallsInput> =
+  z.strictObject({
+    id: z.uuid().optional(),
+    plate: z.string(),
+    latitude: z.number(),
+    longitude: z.number(),
+    driverId: z.string(),
+  });
+
+export const VehicleCreateOrConnectWithoutEmergencyCallsInputSchema: z.ZodType<Prisma.VehicleCreateOrConnectWithoutEmergencyCallsInput> =
+  z.strictObject({
+    where: z.lazy(() => VehicleWhereUniqueInputSchema),
+    create: z.union([
+      z.lazy(() => VehicleCreateWithoutEmergencyCallsInputSchema),
+      z.lazy(() => VehicleUncheckedCreateWithoutEmergencyCallsInputSchema),
+    ]),
+  });
+
+export const EmergencyCallCreateWithoutVehiclesInputSchema: z.ZodType<Prisma.EmergencyCallCreateWithoutVehiclesInput> =
+  z.strictObject({
+    id: z.uuid().optional(),
+    protocol: z.string(),
+    address: z.string(),
+    returnLocation: z.string(),
+    whatHappened: z.string(),
+    patientCondition: z.string(),
+    apparentAge: z.number().int().optional().nullable(),
+    patientCount: z.number().int(),
+    injuryCondition: z.string(),
+    observations: z.string().optional().nullable(),
+    createdAt: z.coerce.date().optional(),
+    attendant: z.lazy(
+      () => UserCreateNestedOneWithoutRegisteredCallsInputSchema,
+    ),
+    notifications: z
+      .lazy(() => NotificationCreateNestedManyWithoutEmergencyCallInputSchema)
+      .optional(),
+  });
+
+export const EmergencyCallUncheckedCreateWithoutVehiclesInputSchema: z.ZodType<Prisma.EmergencyCallUncheckedCreateWithoutVehiclesInput> =
+  z.strictObject({
+    id: z.uuid().optional(),
+    protocol: z.string(),
+    address: z.string(),
+    returnLocation: z.string(),
+    whatHappened: z.string(),
+    patientCondition: z.string(),
+    apparentAge: z.number().int().optional().nullable(),
+    patientCount: z.number().int(),
+    injuryCondition: z.string(),
+    observations: z.string().optional().nullable(),
+    attendantId: z.string(),
+    createdAt: z.coerce.date().optional(),
+    notifications: z
+      .lazy(
+        () =>
+          NotificationUncheckedCreateNestedManyWithoutEmergencyCallInputSchema,
+      )
+      .optional(),
+  });
+
+export const EmergencyCallCreateOrConnectWithoutVehiclesInputSchema: z.ZodType<Prisma.EmergencyCallCreateOrConnectWithoutVehiclesInput> =
+  z.strictObject({
+    where: z.lazy(() => EmergencyCallWhereUniqueInputSchema),
+    create: z.union([
+      z.lazy(() => EmergencyCallCreateWithoutVehiclesInputSchema),
+      z.lazy(() => EmergencyCallUncheckedCreateWithoutVehiclesInputSchema),
+    ]),
+  });
+
+export const VehicleUpsertWithoutEmergencyCallsInputSchema: z.ZodType<Prisma.VehicleUpsertWithoutEmergencyCallsInput> =
+  z.strictObject({
+    update: z.union([
+      z.lazy(() => VehicleUpdateWithoutEmergencyCallsInputSchema),
+      z.lazy(() => VehicleUncheckedUpdateWithoutEmergencyCallsInputSchema),
+    ]),
+    create: z.union([
+      z.lazy(() => VehicleCreateWithoutEmergencyCallsInputSchema),
+      z.lazy(() => VehicleUncheckedCreateWithoutEmergencyCallsInputSchema),
+    ]),
+    where: z.lazy(() => VehicleWhereInputSchema).optional(),
+  });
+
+export const VehicleUpdateToOneWithWhereWithoutEmergencyCallsInputSchema: z.ZodType<Prisma.VehicleUpdateToOneWithWhereWithoutEmergencyCallsInput> =
+  z.strictObject({
+    where: z.lazy(() => VehicleWhereInputSchema).optional(),
+    data: z.union([
+      z.lazy(() => VehicleUpdateWithoutEmergencyCallsInputSchema),
+      z.lazy(() => VehicleUncheckedUpdateWithoutEmergencyCallsInputSchema),
+    ]),
+  });
+
+export const VehicleUpdateWithoutEmergencyCallsInputSchema: z.ZodType<Prisma.VehicleUpdateWithoutEmergencyCallsInput> =
+  z.strictObject({
+    id: z
+      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    plate: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
     latitude: z
@@ -7624,17 +7778,17 @@ export const VeiculoUpdateWithoutAtendimentosInputSchema: z.ZodType<Prisma.Veicu
     longitude: z
       .union([z.number(), z.lazy(() => FloatFieldUpdateOperationsInputSchema)])
       .optional(),
-    motorista: z
-      .lazy(() => UsuarioUpdateOneRequiredWithoutVeiculoNestedInputSchema)
+    driver: z
+      .lazy(() => UserUpdateOneRequiredWithoutVehicleNestedInputSchema)
       .optional(),
   });
 
-export const VeiculoUncheckedUpdateWithoutAtendimentosInputSchema: z.ZodType<Prisma.VeiculoUncheckedUpdateWithoutAtendimentosInput> =
+export const VehicleUncheckedUpdateWithoutEmergencyCallsInputSchema: z.ZodType<Prisma.VehicleUncheckedUpdateWithoutEmergencyCallsInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    placa: z
+    plate: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
     latitude: z
@@ -7643,335 +7797,331 @@ export const VeiculoUncheckedUpdateWithoutAtendimentosInputSchema: z.ZodType<Pri
     longitude: z
       .union([z.number(), z.lazy(() => FloatFieldUpdateOperationsInputSchema)])
       .optional(),
-    motoristaId: z
+    driverId: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
   });
 
-export const AtendimentoUpsertWithoutVeiculosInputSchema: z.ZodType<Prisma.AtendimentoUpsertWithoutVeiculosInput> =
+export const EmergencyCallUpsertWithoutVehiclesInputSchema: z.ZodType<Prisma.EmergencyCallUpsertWithoutVehiclesInput> =
   z.strictObject({
     update: z.union([
-      z.lazy(() => AtendimentoUpdateWithoutVeiculosInputSchema),
-      z.lazy(() => AtendimentoUncheckedUpdateWithoutVeiculosInputSchema),
+      z.lazy(() => EmergencyCallUpdateWithoutVehiclesInputSchema),
+      z.lazy(() => EmergencyCallUncheckedUpdateWithoutVehiclesInputSchema),
     ]),
     create: z.union([
-      z.lazy(() => AtendimentoCreateWithoutVeiculosInputSchema),
-      z.lazy(() => AtendimentoUncheckedCreateWithoutVeiculosInputSchema),
+      z.lazy(() => EmergencyCallCreateWithoutVehiclesInputSchema),
+      z.lazy(() => EmergencyCallUncheckedCreateWithoutVehiclesInputSchema),
     ]),
-    where: z.lazy(() => AtendimentoWhereInputSchema).optional(),
+    where: z.lazy(() => EmergencyCallWhereInputSchema).optional(),
   });
 
-export const AtendimentoUpdateToOneWithWhereWithoutVeiculosInputSchema: z.ZodType<Prisma.AtendimentoUpdateToOneWithWhereWithoutVeiculosInput> =
+export const EmergencyCallUpdateToOneWithWhereWithoutVehiclesInputSchema: z.ZodType<Prisma.EmergencyCallUpdateToOneWithWhereWithoutVehiclesInput> =
   z.strictObject({
-    where: z.lazy(() => AtendimentoWhereInputSchema).optional(),
+    where: z.lazy(() => EmergencyCallWhereInputSchema).optional(),
     data: z.union([
-      z.lazy(() => AtendimentoUpdateWithoutVeiculosInputSchema),
-      z.lazy(() => AtendimentoUncheckedUpdateWithoutVeiculosInputSchema),
+      z.lazy(() => EmergencyCallUpdateWithoutVehiclesInputSchema),
+      z.lazy(() => EmergencyCallUncheckedUpdateWithoutVehiclesInputSchema),
     ]),
   });
 
-export const AtendimentoUpdateWithoutVeiculosInputSchema: z.ZodType<Prisma.AtendimentoUpdateWithoutVeiculosInput> =
+export const EmergencyCallUpdateWithoutVehiclesInputSchema: z.ZodType<Prisma.EmergencyCallUpdateWithoutVehiclesInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    protocolo: z
+    protocol: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    endereco: z
+    address: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    localDeRetorno: z
+    returnLocation: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    oQueAconteceu: z
+    whatHappened: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    estadoDoPaciente: z
+    patientCondition: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    idadeAparente: z
+    apparentAge: z
       .union([
         z.number().int(),
         z.lazy(() => NullableIntFieldUpdateOperationsInputSchema),
       ])
       .optional()
       .nullable(),
-    quantidadeDePacientes: z
+    patientCount: z
       .union([
         z.number().int(),
         z.lazy(() => IntFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    estadoDaLesao: z
+    injuryCondition: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    observacoes: z
+    observations: z
       .union([
         z.string(),
         z.lazy(() => NullableStringFieldUpdateOperationsInputSchema),
       ])
       .optional()
       .nullable(),
-    criadoEm: z
+    createdAt: z
       .union([
         z.coerce.date(),
         z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    atendente: z
+    attendant: z
+      .lazy(() => UserUpdateOneRequiredWithoutRegisteredCallsNestedInputSchema)
+      .optional(),
+    notifications: z
+      .lazy(() => NotificationUpdateManyWithoutEmergencyCallNestedInputSchema)
+      .optional(),
+  });
+
+export const EmergencyCallUncheckedUpdateWithoutVehiclesInputSchema: z.ZodType<Prisma.EmergencyCallUncheckedUpdateWithoutVehiclesInput> =
+  z.strictObject({
+    id: z
+      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    protocol: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    address: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    returnLocation: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    whatHappened: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    patientCondition: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    apparentAge: z
+      .union([
+        z.number().int(),
+        z.lazy(() => NullableIntFieldUpdateOperationsInputSchema),
+      ])
+      .optional()
+      .nullable(),
+    patientCount: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema),
+      ])
+      .optional(),
+    injuryCondition: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    observations: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema),
+      ])
+      .optional()
+      .nullable(),
+    attendantId: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    createdAt: z
+      .union([
+        z.coerce.date(),
+        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
+      ])
+      .optional(),
+    notifications: z
       .lazy(
         () =>
-          UsuarioUpdateOneRequiredWithoutAtendimentosRegistradosNestedInputSchema,
-      )
-      .optional(),
-    notificacoes: z
-      .lazy(() => NotificacaoUpdateManyWithoutAtendimentoNestedInputSchema)
-      .optional(),
-  });
-
-export const AtendimentoUncheckedUpdateWithoutVeiculosInputSchema: z.ZodType<Prisma.AtendimentoUncheckedUpdateWithoutVeiculosInput> =
-  z.strictObject({
-    id: z
-      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    protocolo: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    endereco: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    localDeRetorno: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    oQueAconteceu: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    estadoDoPaciente: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    idadeAparente: z
-      .union([
-        z.number().int(),
-        z.lazy(() => NullableIntFieldUpdateOperationsInputSchema),
-      ])
-      .optional()
-      .nullable(),
-    quantidadeDePacientes: z
-      .union([
-        z.number().int(),
-        z.lazy(() => IntFieldUpdateOperationsInputSchema),
-      ])
-      .optional(),
-    estadoDaLesao: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    observacoes: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema),
-      ])
-      .optional()
-      .nullable(),
-    atendenteId: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    criadoEm: z
-      .union([
-        z.coerce.date(),
-        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
-      ])
-      .optional(),
-    notificacoes: z
-      .lazy(
-        () => NotificacaoUncheckedUpdateManyWithoutAtendimentoNestedInputSchema,
+          NotificationUncheckedUpdateManyWithoutEmergencyCallNestedInputSchema,
       )
       .optional(),
   });
 
-export const UsuarioCreateWithoutConversasComoAtendenteInputSchema: z.ZodType<Prisma.UsuarioCreateWithoutConversasComoAtendenteInput> =
+export const UserCreateWithoutConversationsAsAttendantInputSchema: z.ZodType<Prisma.UserCreateWithoutConversationsAsAttendantInput> =
   z.strictObject({
     id: z.uuid().optional(),
     email: z.string(),
-    senha: z.string(),
-    tipo: z.lazy(() => TipoUsuarioSchema),
-    telefone: z.string(),
-    status: z.lazy(() => StatusUsuarioSchema).optional(),
-    criadoEm: z.coerce.date().optional(),
-    veiculo: z
-      .lazy(() => VeiculoCreateNestedOneWithoutMotoristaInputSchema)
+    password: z.string(),
+    role: z.lazy(() => UserRoleSchema),
+    phone: z.string(),
+    status: z.lazy(() => UserStatusSchema).optional(),
+    createdAt: z.coerce.date().optional(),
+    vehicle: z
+      .lazy(() => VehicleCreateNestedOneWithoutDriverInputSchema)
       .optional(),
-    atendimentosRegistrados: z
-      .lazy(() => AtendimentoCreateNestedManyWithoutAtendenteInputSchema)
+    registeredCalls: z
+      .lazy(() => EmergencyCallCreateNestedManyWithoutAttendantInputSchema)
       .optional(),
-    conversasComoMotorista: z
-      .lazy(() => ConversaCreateNestedManyWithoutMotoristaInputSchema)
+    conversationsAsDriver: z
+      .lazy(() => ConversationCreateNestedManyWithoutDriverInputSchema)
       .optional(),
-    mensagensEnviadas: z
-      .lazy(() => MensagemCreateNestedManyWithoutQuemMandouInputSchema)
+    sentMessages: z
+      .lazy(() => MessageCreateNestedManyWithoutSenderInputSchema)
       .optional(),
   });
 
-export const UsuarioUncheckedCreateWithoutConversasComoAtendenteInputSchema: z.ZodType<Prisma.UsuarioUncheckedCreateWithoutConversasComoAtendenteInput> =
+export const UserUncheckedCreateWithoutConversationsAsAttendantInputSchema: z.ZodType<Prisma.UserUncheckedCreateWithoutConversationsAsAttendantInput> =
   z.strictObject({
     id: z.uuid().optional(),
     email: z.string(),
-    senha: z.string(),
-    tipo: z.lazy(() => TipoUsuarioSchema),
-    telefone: z.string(),
-    status: z.lazy(() => StatusUsuarioSchema).optional(),
-    criadoEm: z.coerce.date().optional(),
-    veiculo: z
-      .lazy(() => VeiculoUncheckedCreateNestedOneWithoutMotoristaInputSchema)
+    password: z.string(),
+    role: z.lazy(() => UserRoleSchema),
+    phone: z.string(),
+    status: z.lazy(() => UserStatusSchema).optional(),
+    createdAt: z.coerce.date().optional(),
+    vehicle: z
+      .lazy(() => VehicleUncheckedCreateNestedOneWithoutDriverInputSchema)
       .optional(),
-    atendimentosRegistrados: z
+    registeredCalls: z
       .lazy(
-        () => AtendimentoUncheckedCreateNestedManyWithoutAtendenteInputSchema,
+        () => EmergencyCallUncheckedCreateNestedManyWithoutAttendantInputSchema,
       )
       .optional(),
-    conversasComoMotorista: z
-      .lazy(() => ConversaUncheckedCreateNestedManyWithoutMotoristaInputSchema)
+    conversationsAsDriver: z
+      .lazy(() => ConversationUncheckedCreateNestedManyWithoutDriverInputSchema)
       .optional(),
-    mensagensEnviadas: z
-      .lazy(() => MensagemUncheckedCreateNestedManyWithoutQuemMandouInputSchema)
+    sentMessages: z
+      .lazy(() => MessageUncheckedCreateNestedManyWithoutSenderInputSchema)
       .optional(),
   });
 
-export const UsuarioCreateOrConnectWithoutConversasComoAtendenteInputSchema: z.ZodType<Prisma.UsuarioCreateOrConnectWithoutConversasComoAtendenteInput> =
+export const UserCreateOrConnectWithoutConversationsAsAttendantInputSchema: z.ZodType<Prisma.UserCreateOrConnectWithoutConversationsAsAttendantInput> =
   z.strictObject({
-    where: z.lazy(() => UsuarioWhereUniqueInputSchema),
+    where: z.lazy(() => UserWhereUniqueInputSchema),
     create: z.union([
-      z.lazy(() => UsuarioCreateWithoutConversasComoAtendenteInputSchema),
+      z.lazy(() => UserCreateWithoutConversationsAsAttendantInputSchema),
       z.lazy(
-        () => UsuarioUncheckedCreateWithoutConversasComoAtendenteInputSchema,
+        () => UserUncheckedCreateWithoutConversationsAsAttendantInputSchema,
       ),
     ]),
   });
 
-export const UsuarioCreateWithoutConversasComoMotoristaInputSchema: z.ZodType<Prisma.UsuarioCreateWithoutConversasComoMotoristaInput> =
+export const UserCreateWithoutConversationsAsDriverInputSchema: z.ZodType<Prisma.UserCreateWithoutConversationsAsDriverInput> =
   z.strictObject({
     id: z.uuid().optional(),
     email: z.string(),
-    senha: z.string(),
-    tipo: z.lazy(() => TipoUsuarioSchema),
-    telefone: z.string(),
-    status: z.lazy(() => StatusUsuarioSchema).optional(),
-    criadoEm: z.coerce.date().optional(),
-    veiculo: z
-      .lazy(() => VeiculoCreateNestedOneWithoutMotoristaInputSchema)
+    password: z.string(),
+    role: z.lazy(() => UserRoleSchema),
+    phone: z.string(),
+    status: z.lazy(() => UserStatusSchema).optional(),
+    createdAt: z.coerce.date().optional(),
+    vehicle: z
+      .lazy(() => VehicleCreateNestedOneWithoutDriverInputSchema)
       .optional(),
-    atendimentosRegistrados: z
-      .lazy(() => AtendimentoCreateNestedManyWithoutAtendenteInputSchema)
+    registeredCalls: z
+      .lazy(() => EmergencyCallCreateNestedManyWithoutAttendantInputSchema)
       .optional(),
-    conversasComoAtendente: z
-      .lazy(() => ConversaCreateNestedManyWithoutAtendenteInputSchema)
+    conversationsAsAttendant: z
+      .lazy(() => ConversationCreateNestedManyWithoutAttendantInputSchema)
       .optional(),
-    mensagensEnviadas: z
-      .lazy(() => MensagemCreateNestedManyWithoutQuemMandouInputSchema)
+    sentMessages: z
+      .lazy(() => MessageCreateNestedManyWithoutSenderInputSchema)
       .optional(),
   });
 
-export const UsuarioUncheckedCreateWithoutConversasComoMotoristaInputSchema: z.ZodType<Prisma.UsuarioUncheckedCreateWithoutConversasComoMotoristaInput> =
+export const UserUncheckedCreateWithoutConversationsAsDriverInputSchema: z.ZodType<Prisma.UserUncheckedCreateWithoutConversationsAsDriverInput> =
   z.strictObject({
     id: z.uuid().optional(),
     email: z.string(),
-    senha: z.string(),
-    tipo: z.lazy(() => TipoUsuarioSchema),
-    telefone: z.string(),
-    status: z.lazy(() => StatusUsuarioSchema).optional(),
-    criadoEm: z.coerce.date().optional(),
-    veiculo: z
-      .lazy(() => VeiculoUncheckedCreateNestedOneWithoutMotoristaInputSchema)
+    password: z.string(),
+    role: z.lazy(() => UserRoleSchema),
+    phone: z.string(),
+    status: z.lazy(() => UserStatusSchema).optional(),
+    createdAt: z.coerce.date().optional(),
+    vehicle: z
+      .lazy(() => VehicleUncheckedCreateNestedOneWithoutDriverInputSchema)
       .optional(),
-    atendimentosRegistrados: z
+    registeredCalls: z
       .lazy(
-        () => AtendimentoUncheckedCreateNestedManyWithoutAtendenteInputSchema,
+        () => EmergencyCallUncheckedCreateNestedManyWithoutAttendantInputSchema,
       )
       .optional(),
-    conversasComoAtendente: z
-      .lazy(() => ConversaUncheckedCreateNestedManyWithoutAtendenteInputSchema)
+    conversationsAsAttendant: z
+      .lazy(
+        () => ConversationUncheckedCreateNestedManyWithoutAttendantInputSchema,
+      )
       .optional(),
-    mensagensEnviadas: z
-      .lazy(() => MensagemUncheckedCreateNestedManyWithoutQuemMandouInputSchema)
+    sentMessages: z
+      .lazy(() => MessageUncheckedCreateNestedManyWithoutSenderInputSchema)
       .optional(),
   });
 
-export const UsuarioCreateOrConnectWithoutConversasComoMotoristaInputSchema: z.ZodType<Prisma.UsuarioCreateOrConnectWithoutConversasComoMotoristaInput> =
+export const UserCreateOrConnectWithoutConversationsAsDriverInputSchema: z.ZodType<Prisma.UserCreateOrConnectWithoutConversationsAsDriverInput> =
   z.strictObject({
-    where: z.lazy(() => UsuarioWhereUniqueInputSchema),
+    where: z.lazy(() => UserWhereUniqueInputSchema),
     create: z.union([
-      z.lazy(() => UsuarioCreateWithoutConversasComoMotoristaInputSchema),
-      z.lazy(
-        () => UsuarioUncheckedCreateWithoutConversasComoMotoristaInputSchema,
-      ),
+      z.lazy(() => UserCreateWithoutConversationsAsDriverInputSchema),
+      z.lazy(() => UserUncheckedCreateWithoutConversationsAsDriverInputSchema),
     ]),
   });
 
-export const MensagemCreateWithoutConversaInputSchema: z.ZodType<Prisma.MensagemCreateWithoutConversaInput> =
+export const MessageCreateWithoutConversationInputSchema: z.ZodType<Prisma.MessageCreateWithoutConversationInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    texto: z.string(),
-    dataDeEnvio: z.coerce.date().optional(),
-    quemMandou: z.lazy(
-      () => UsuarioCreateNestedOneWithoutMensagensEnviadasInputSchema,
-    ),
+    text: z.string(),
+    sentAt: z.coerce.date().optional(),
+    sender: z.lazy(() => UserCreateNestedOneWithoutSentMessagesInputSchema),
   });
 
-export const MensagemUncheckedCreateWithoutConversaInputSchema: z.ZodType<Prisma.MensagemUncheckedCreateWithoutConversaInput> =
+export const MessageUncheckedCreateWithoutConversationInputSchema: z.ZodType<Prisma.MessageUncheckedCreateWithoutConversationInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    texto: z.string(),
-    dataDeEnvio: z.coerce.date().optional(),
-    quemMandouId: z.string(),
+    text: z.string(),
+    sentAt: z.coerce.date().optional(),
+    senderId: z.string(),
   });
 
-export const MensagemCreateOrConnectWithoutConversaInputSchema: z.ZodType<Prisma.MensagemCreateOrConnectWithoutConversaInput> =
+export const MessageCreateOrConnectWithoutConversationInputSchema: z.ZodType<Prisma.MessageCreateOrConnectWithoutConversationInput> =
   z.strictObject({
-    where: z.lazy(() => MensagemWhereUniqueInputSchema),
+    where: z.lazy(() => MessageWhereUniqueInputSchema),
     create: z.union([
-      z.lazy(() => MensagemCreateWithoutConversaInputSchema),
-      z.lazy(() => MensagemUncheckedCreateWithoutConversaInputSchema),
+      z.lazy(() => MessageCreateWithoutConversationInputSchema),
+      z.lazy(() => MessageUncheckedCreateWithoutConversationInputSchema),
     ]),
   });
 
-export const MensagemCreateManyConversaInputEnvelopeSchema: z.ZodType<Prisma.MensagemCreateManyConversaInputEnvelope> =
+export const MessageCreateManyConversationInputEnvelopeSchema: z.ZodType<Prisma.MessageCreateManyConversationInputEnvelope> =
   z.strictObject({
     data: z.union([
-      z.lazy(() => MensagemCreateManyConversaInputSchema),
-      z.lazy(() => MensagemCreateManyConversaInputSchema).array(),
+      z.lazy(() => MessageCreateManyConversationInputSchema),
+      z.lazy(() => MessageCreateManyConversationInputSchema).array(),
     ]),
     skipDuplicates: z.boolean().optional(),
   });
 
-export const UsuarioUpsertWithoutConversasComoAtendenteInputSchema: z.ZodType<Prisma.UsuarioUpsertWithoutConversasComoAtendenteInput> =
+export const UserUpsertWithoutConversationsAsAttendantInputSchema: z.ZodType<Prisma.UserUpsertWithoutConversationsAsAttendantInput> =
   z.strictObject({
     update: z.union([
-      z.lazy(() => UsuarioUpdateWithoutConversasComoAtendenteInputSchema),
+      z.lazy(() => UserUpdateWithoutConversationsAsAttendantInputSchema),
       z.lazy(
-        () => UsuarioUncheckedUpdateWithoutConversasComoAtendenteInputSchema,
+        () => UserUncheckedUpdateWithoutConversationsAsAttendantInputSchema,
       ),
     ]),
     create: z.union([
-      z.lazy(() => UsuarioCreateWithoutConversasComoAtendenteInputSchema),
+      z.lazy(() => UserCreateWithoutConversationsAsAttendantInputSchema),
       z.lazy(
-        () => UsuarioUncheckedCreateWithoutConversasComoAtendenteInputSchema,
+        () => UserUncheckedCreateWithoutConversationsAsAttendantInputSchema,
       ),
     ]),
-    where: z.lazy(() => UsuarioWhereInputSchema).optional(),
+    where: z.lazy(() => UserWhereInputSchema).optional(),
   });
 
-export const UsuarioUpdateToOneWithWhereWithoutConversasComoAtendenteInputSchema: z.ZodType<Prisma.UsuarioUpdateToOneWithWhereWithoutConversasComoAtendenteInput> =
+export const UserUpdateToOneWithWhereWithoutConversationsAsAttendantInputSchema: z.ZodType<Prisma.UserUpdateToOneWithWhereWithoutConversationsAsAttendantInput> =
   z.strictObject({
-    where: z.lazy(() => UsuarioWhereInputSchema).optional(),
+    where: z.lazy(() => UserWhereInputSchema).optional(),
     data: z.union([
-      z.lazy(() => UsuarioUpdateWithoutConversasComoAtendenteInputSchema),
+      z.lazy(() => UserUpdateWithoutConversationsAsAttendantInputSchema),
       z.lazy(
-        () => UsuarioUncheckedUpdateWithoutConversasComoAtendenteInputSchema,
+        () => UserUncheckedUpdateWithoutConversationsAsAttendantInputSchema,
       ),
     ]),
   });
 
-export const UsuarioUpdateWithoutConversasComoAtendenteInputSchema: z.ZodType<Prisma.UsuarioUpdateWithoutConversasComoAtendenteInput> =
+export const UserUpdateWithoutConversationsAsAttendantInputSchema: z.ZodType<Prisma.UserUpdateWithoutConversationsAsAttendantInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
@@ -7979,45 +8129,45 @@ export const UsuarioUpdateWithoutConversasComoAtendenteInputSchema: z.ZodType<Pr
     email: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    senha: z
+    password: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    tipo: z
+    role: z
       .union([
-        z.lazy(() => TipoUsuarioSchema),
-        z.lazy(() => EnumTipoUsuarioFieldUpdateOperationsInputSchema),
+        z.lazy(() => UserRoleSchema),
+        z.lazy(() => EnumUserRoleFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    telefone: z
+    phone: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
     status: z
       .union([
-        z.lazy(() => StatusUsuarioSchema),
-        z.lazy(() => EnumStatusUsuarioFieldUpdateOperationsInputSchema),
+        z.lazy(() => UserStatusSchema),
+        z.lazy(() => EnumUserStatusFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    criadoEm: z
+    createdAt: z
       .union([
         z.coerce.date(),
         z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    veiculo: z
-      .lazy(() => VeiculoUpdateOneWithoutMotoristaNestedInputSchema)
+    vehicle: z
+      .lazy(() => VehicleUpdateOneWithoutDriverNestedInputSchema)
       .optional(),
-    atendimentosRegistrados: z
-      .lazy(() => AtendimentoUpdateManyWithoutAtendenteNestedInputSchema)
+    registeredCalls: z
+      .lazy(() => EmergencyCallUpdateManyWithoutAttendantNestedInputSchema)
       .optional(),
-    conversasComoMotorista: z
-      .lazy(() => ConversaUpdateManyWithoutMotoristaNestedInputSchema)
+    conversationsAsDriver: z
+      .lazy(() => ConversationUpdateManyWithoutDriverNestedInputSchema)
       .optional(),
-    mensagensEnviadas: z
-      .lazy(() => MensagemUpdateManyWithoutQuemMandouNestedInputSchema)
+    sentMessages: z
+      .lazy(() => MessageUpdateManyWithoutSenderNestedInputSchema)
       .optional(),
   });
 
-export const UsuarioUncheckedUpdateWithoutConversasComoAtendenteInputSchema: z.ZodType<Prisma.UsuarioUncheckedUpdateWithoutConversasComoAtendenteInput> =
+export const UserUncheckedUpdateWithoutConversationsAsAttendantInputSchema: z.ZodType<Prisma.UserUncheckedUpdateWithoutConversationsAsAttendantInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
@@ -8025,75 +8175,69 @@ export const UsuarioUncheckedUpdateWithoutConversasComoAtendenteInputSchema: z.Z
     email: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    senha: z
+    password: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    tipo: z
+    role: z
       .union([
-        z.lazy(() => TipoUsuarioSchema),
-        z.lazy(() => EnumTipoUsuarioFieldUpdateOperationsInputSchema),
+        z.lazy(() => UserRoleSchema),
+        z.lazy(() => EnumUserRoleFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    telefone: z
+    phone: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
     status: z
       .union([
-        z.lazy(() => StatusUsuarioSchema),
-        z.lazy(() => EnumStatusUsuarioFieldUpdateOperationsInputSchema),
+        z.lazy(() => UserStatusSchema),
+        z.lazy(() => EnumUserStatusFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    criadoEm: z
+    createdAt: z
       .union([
         z.coerce.date(),
         z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    veiculo: z
-      .lazy(() => VeiculoUncheckedUpdateOneWithoutMotoristaNestedInputSchema)
+    vehicle: z
+      .lazy(() => VehicleUncheckedUpdateOneWithoutDriverNestedInputSchema)
       .optional(),
-    atendimentosRegistrados: z
+    registeredCalls: z
       .lazy(
-        () => AtendimentoUncheckedUpdateManyWithoutAtendenteNestedInputSchema,
+        () => EmergencyCallUncheckedUpdateManyWithoutAttendantNestedInputSchema,
       )
       .optional(),
-    conversasComoMotorista: z
-      .lazy(() => ConversaUncheckedUpdateManyWithoutMotoristaNestedInputSchema)
+    conversationsAsDriver: z
+      .lazy(() => ConversationUncheckedUpdateManyWithoutDriverNestedInputSchema)
       .optional(),
-    mensagensEnviadas: z
-      .lazy(() => MensagemUncheckedUpdateManyWithoutQuemMandouNestedInputSchema)
+    sentMessages: z
+      .lazy(() => MessageUncheckedUpdateManyWithoutSenderNestedInputSchema)
       .optional(),
   });
 
-export const UsuarioUpsertWithoutConversasComoMotoristaInputSchema: z.ZodType<Prisma.UsuarioUpsertWithoutConversasComoMotoristaInput> =
+export const UserUpsertWithoutConversationsAsDriverInputSchema: z.ZodType<Prisma.UserUpsertWithoutConversationsAsDriverInput> =
   z.strictObject({
     update: z.union([
-      z.lazy(() => UsuarioUpdateWithoutConversasComoMotoristaInputSchema),
-      z.lazy(
-        () => UsuarioUncheckedUpdateWithoutConversasComoMotoristaInputSchema,
-      ),
+      z.lazy(() => UserUpdateWithoutConversationsAsDriverInputSchema),
+      z.lazy(() => UserUncheckedUpdateWithoutConversationsAsDriverInputSchema),
     ]),
     create: z.union([
-      z.lazy(() => UsuarioCreateWithoutConversasComoMotoristaInputSchema),
-      z.lazy(
-        () => UsuarioUncheckedCreateWithoutConversasComoMotoristaInputSchema,
-      ),
+      z.lazy(() => UserCreateWithoutConversationsAsDriverInputSchema),
+      z.lazy(() => UserUncheckedCreateWithoutConversationsAsDriverInputSchema),
     ]),
-    where: z.lazy(() => UsuarioWhereInputSchema).optional(),
+    where: z.lazy(() => UserWhereInputSchema).optional(),
   });
 
-export const UsuarioUpdateToOneWithWhereWithoutConversasComoMotoristaInputSchema: z.ZodType<Prisma.UsuarioUpdateToOneWithWhereWithoutConversasComoMotoristaInput> =
+export const UserUpdateToOneWithWhereWithoutConversationsAsDriverInputSchema: z.ZodType<Prisma.UserUpdateToOneWithWhereWithoutConversationsAsDriverInput> =
   z.strictObject({
-    where: z.lazy(() => UsuarioWhereInputSchema).optional(),
+    where: z.lazy(() => UserWhereInputSchema).optional(),
     data: z.union([
-      z.lazy(() => UsuarioUpdateWithoutConversasComoMotoristaInputSchema),
-      z.lazy(
-        () => UsuarioUncheckedUpdateWithoutConversasComoMotoristaInputSchema,
-      ),
+      z.lazy(() => UserUpdateWithoutConversationsAsDriverInputSchema),
+      z.lazy(() => UserUncheckedUpdateWithoutConversationsAsDriverInputSchema),
     ]),
   });
 
-export const UsuarioUpdateWithoutConversasComoMotoristaInputSchema: z.ZodType<Prisma.UsuarioUpdateWithoutConversasComoMotoristaInput> =
+export const UserUpdateWithoutConversationsAsDriverInputSchema: z.ZodType<Prisma.UserUpdateWithoutConversationsAsDriverInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
@@ -8101,45 +8245,45 @@ export const UsuarioUpdateWithoutConversasComoMotoristaInputSchema: z.ZodType<Pr
     email: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    senha: z
+    password: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    tipo: z
+    role: z
       .union([
-        z.lazy(() => TipoUsuarioSchema),
-        z.lazy(() => EnumTipoUsuarioFieldUpdateOperationsInputSchema),
+        z.lazy(() => UserRoleSchema),
+        z.lazy(() => EnumUserRoleFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    telefone: z
+    phone: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
     status: z
       .union([
-        z.lazy(() => StatusUsuarioSchema),
-        z.lazy(() => EnumStatusUsuarioFieldUpdateOperationsInputSchema),
+        z.lazy(() => UserStatusSchema),
+        z.lazy(() => EnumUserStatusFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    criadoEm: z
+    createdAt: z
       .union([
         z.coerce.date(),
         z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    veiculo: z
-      .lazy(() => VeiculoUpdateOneWithoutMotoristaNestedInputSchema)
+    vehicle: z
+      .lazy(() => VehicleUpdateOneWithoutDriverNestedInputSchema)
       .optional(),
-    atendimentosRegistrados: z
-      .lazy(() => AtendimentoUpdateManyWithoutAtendenteNestedInputSchema)
+    registeredCalls: z
+      .lazy(() => EmergencyCallUpdateManyWithoutAttendantNestedInputSchema)
       .optional(),
-    conversasComoAtendente: z
-      .lazy(() => ConversaUpdateManyWithoutAtendenteNestedInputSchema)
+    conversationsAsAttendant: z
+      .lazy(() => ConversationUpdateManyWithoutAttendantNestedInputSchema)
       .optional(),
-    mensagensEnviadas: z
-      .lazy(() => MensagemUpdateManyWithoutQuemMandouNestedInputSchema)
+    sentMessages: z
+      .lazy(() => MessageUpdateManyWithoutSenderNestedInputSchema)
       .optional(),
   });
 
-export const UsuarioUncheckedUpdateWithoutConversasComoMotoristaInputSchema: z.ZodType<Prisma.UsuarioUncheckedUpdateWithoutConversasComoMotoristaInput> =
+export const UserUncheckedUpdateWithoutConversationsAsDriverInputSchema: z.ZodType<Prisma.UserUncheckedUpdateWithoutConversationsAsDriverInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
@@ -8147,184 +8291,188 @@ export const UsuarioUncheckedUpdateWithoutConversasComoMotoristaInputSchema: z.Z
     email: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    senha: z
+    password: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    tipo: z
+    role: z
       .union([
-        z.lazy(() => TipoUsuarioSchema),
-        z.lazy(() => EnumTipoUsuarioFieldUpdateOperationsInputSchema),
+        z.lazy(() => UserRoleSchema),
+        z.lazy(() => EnumUserRoleFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    telefone: z
+    phone: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
     status: z
       .union([
-        z.lazy(() => StatusUsuarioSchema),
-        z.lazy(() => EnumStatusUsuarioFieldUpdateOperationsInputSchema),
+        z.lazy(() => UserStatusSchema),
+        z.lazy(() => EnumUserStatusFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    criadoEm: z
+    createdAt: z
       .union([
         z.coerce.date(),
         z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    veiculo: z
-      .lazy(() => VeiculoUncheckedUpdateOneWithoutMotoristaNestedInputSchema)
+    vehicle: z
+      .lazy(() => VehicleUncheckedUpdateOneWithoutDriverNestedInputSchema)
       .optional(),
-    atendimentosRegistrados: z
+    registeredCalls: z
       .lazy(
-        () => AtendimentoUncheckedUpdateManyWithoutAtendenteNestedInputSchema,
+        () => EmergencyCallUncheckedUpdateManyWithoutAttendantNestedInputSchema,
       )
       .optional(),
-    conversasComoAtendente: z
-      .lazy(() => ConversaUncheckedUpdateManyWithoutAtendenteNestedInputSchema)
+    conversationsAsAttendant: z
+      .lazy(
+        () => ConversationUncheckedUpdateManyWithoutAttendantNestedInputSchema,
+      )
       .optional(),
-    mensagensEnviadas: z
-      .lazy(() => MensagemUncheckedUpdateManyWithoutQuemMandouNestedInputSchema)
+    sentMessages: z
+      .lazy(() => MessageUncheckedUpdateManyWithoutSenderNestedInputSchema)
       .optional(),
   });
 
-export const MensagemUpsertWithWhereUniqueWithoutConversaInputSchema: z.ZodType<Prisma.MensagemUpsertWithWhereUniqueWithoutConversaInput> =
+export const MessageUpsertWithWhereUniqueWithoutConversationInputSchema: z.ZodType<Prisma.MessageUpsertWithWhereUniqueWithoutConversationInput> =
   z.strictObject({
-    where: z.lazy(() => MensagemWhereUniqueInputSchema),
+    where: z.lazy(() => MessageWhereUniqueInputSchema),
     update: z.union([
-      z.lazy(() => MensagemUpdateWithoutConversaInputSchema),
-      z.lazy(() => MensagemUncheckedUpdateWithoutConversaInputSchema),
+      z.lazy(() => MessageUpdateWithoutConversationInputSchema),
+      z.lazy(() => MessageUncheckedUpdateWithoutConversationInputSchema),
     ]),
     create: z.union([
-      z.lazy(() => MensagemCreateWithoutConversaInputSchema),
-      z.lazy(() => MensagemUncheckedCreateWithoutConversaInputSchema),
+      z.lazy(() => MessageCreateWithoutConversationInputSchema),
+      z.lazy(() => MessageUncheckedCreateWithoutConversationInputSchema),
     ]),
   });
 
-export const MensagemUpdateWithWhereUniqueWithoutConversaInputSchema: z.ZodType<Prisma.MensagemUpdateWithWhereUniqueWithoutConversaInput> =
+export const MessageUpdateWithWhereUniqueWithoutConversationInputSchema: z.ZodType<Prisma.MessageUpdateWithWhereUniqueWithoutConversationInput> =
   z.strictObject({
-    where: z.lazy(() => MensagemWhereUniqueInputSchema),
+    where: z.lazy(() => MessageWhereUniqueInputSchema),
     data: z.union([
-      z.lazy(() => MensagemUpdateWithoutConversaInputSchema),
-      z.lazy(() => MensagemUncheckedUpdateWithoutConversaInputSchema),
+      z.lazy(() => MessageUpdateWithoutConversationInputSchema),
+      z.lazy(() => MessageUncheckedUpdateWithoutConversationInputSchema),
     ]),
   });
 
-export const MensagemUpdateManyWithWhereWithoutConversaInputSchema: z.ZodType<Prisma.MensagemUpdateManyWithWhereWithoutConversaInput> =
+export const MessageUpdateManyWithWhereWithoutConversationInputSchema: z.ZodType<Prisma.MessageUpdateManyWithWhereWithoutConversationInput> =
   z.strictObject({
-    where: z.lazy(() => MensagemScalarWhereInputSchema),
+    where: z.lazy(() => MessageScalarWhereInputSchema),
     data: z.union([
-      z.lazy(() => MensagemUpdateManyMutationInputSchema),
-      z.lazy(() => MensagemUncheckedUpdateManyWithoutConversaInputSchema),
+      z.lazy(() => MessageUpdateManyMutationInputSchema),
+      z.lazy(() => MessageUncheckedUpdateManyWithoutConversationInputSchema),
     ]),
   });
 
-export const UsuarioCreateWithoutMensagensEnviadasInputSchema: z.ZodType<Prisma.UsuarioCreateWithoutMensagensEnviadasInput> =
+export const UserCreateWithoutSentMessagesInputSchema: z.ZodType<Prisma.UserCreateWithoutSentMessagesInput> =
   z.strictObject({
     id: z.uuid().optional(),
     email: z.string(),
-    senha: z.string(),
-    tipo: z.lazy(() => TipoUsuarioSchema),
-    telefone: z.string(),
-    status: z.lazy(() => StatusUsuarioSchema).optional(),
-    criadoEm: z.coerce.date().optional(),
-    veiculo: z
-      .lazy(() => VeiculoCreateNestedOneWithoutMotoristaInputSchema)
+    password: z.string(),
+    role: z.lazy(() => UserRoleSchema),
+    phone: z.string(),
+    status: z.lazy(() => UserStatusSchema).optional(),
+    createdAt: z.coerce.date().optional(),
+    vehicle: z
+      .lazy(() => VehicleCreateNestedOneWithoutDriverInputSchema)
       .optional(),
-    atendimentosRegistrados: z
-      .lazy(() => AtendimentoCreateNestedManyWithoutAtendenteInputSchema)
+    registeredCalls: z
+      .lazy(() => EmergencyCallCreateNestedManyWithoutAttendantInputSchema)
       .optional(),
-    conversasComoAtendente: z
-      .lazy(() => ConversaCreateNestedManyWithoutAtendenteInputSchema)
+    conversationsAsAttendant: z
+      .lazy(() => ConversationCreateNestedManyWithoutAttendantInputSchema)
       .optional(),
-    conversasComoMotorista: z
-      .lazy(() => ConversaCreateNestedManyWithoutMotoristaInputSchema)
+    conversationsAsDriver: z
+      .lazy(() => ConversationCreateNestedManyWithoutDriverInputSchema)
       .optional(),
   });
 
-export const UsuarioUncheckedCreateWithoutMensagensEnviadasInputSchema: z.ZodType<Prisma.UsuarioUncheckedCreateWithoutMensagensEnviadasInput> =
+export const UserUncheckedCreateWithoutSentMessagesInputSchema: z.ZodType<Prisma.UserUncheckedCreateWithoutSentMessagesInput> =
   z.strictObject({
     id: z.uuid().optional(),
     email: z.string(),
-    senha: z.string(),
-    tipo: z.lazy(() => TipoUsuarioSchema),
-    telefone: z.string(),
-    status: z.lazy(() => StatusUsuarioSchema).optional(),
-    criadoEm: z.coerce.date().optional(),
-    veiculo: z
-      .lazy(() => VeiculoUncheckedCreateNestedOneWithoutMotoristaInputSchema)
+    password: z.string(),
+    role: z.lazy(() => UserRoleSchema),
+    phone: z.string(),
+    status: z.lazy(() => UserStatusSchema).optional(),
+    createdAt: z.coerce.date().optional(),
+    vehicle: z
+      .lazy(() => VehicleUncheckedCreateNestedOneWithoutDriverInputSchema)
       .optional(),
-    atendimentosRegistrados: z
+    registeredCalls: z
       .lazy(
-        () => AtendimentoUncheckedCreateNestedManyWithoutAtendenteInputSchema,
+        () => EmergencyCallUncheckedCreateNestedManyWithoutAttendantInputSchema,
       )
       .optional(),
-    conversasComoAtendente: z
-      .lazy(() => ConversaUncheckedCreateNestedManyWithoutAtendenteInputSchema)
+    conversationsAsAttendant: z
+      .lazy(
+        () => ConversationUncheckedCreateNestedManyWithoutAttendantInputSchema,
+      )
       .optional(),
-    conversasComoMotorista: z
-      .lazy(() => ConversaUncheckedCreateNestedManyWithoutMotoristaInputSchema)
+    conversationsAsDriver: z
+      .lazy(() => ConversationUncheckedCreateNestedManyWithoutDriverInputSchema)
       .optional(),
   });
 
-export const UsuarioCreateOrConnectWithoutMensagensEnviadasInputSchema: z.ZodType<Prisma.UsuarioCreateOrConnectWithoutMensagensEnviadasInput> =
+export const UserCreateOrConnectWithoutSentMessagesInputSchema: z.ZodType<Prisma.UserCreateOrConnectWithoutSentMessagesInput> =
   z.strictObject({
-    where: z.lazy(() => UsuarioWhereUniqueInputSchema),
+    where: z.lazy(() => UserWhereUniqueInputSchema),
     create: z.union([
-      z.lazy(() => UsuarioCreateWithoutMensagensEnviadasInputSchema),
-      z.lazy(() => UsuarioUncheckedCreateWithoutMensagensEnviadasInputSchema),
+      z.lazy(() => UserCreateWithoutSentMessagesInputSchema),
+      z.lazy(() => UserUncheckedCreateWithoutSentMessagesInputSchema),
     ]),
   });
 
-export const ConversaCreateWithoutMensagensInputSchema: z.ZodType<Prisma.ConversaCreateWithoutMensagensInput> =
+export const ConversationCreateWithoutMessagesInputSchema: z.ZodType<Prisma.ConversationCreateWithoutMessagesInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    atendente: z.lazy(
-      () => UsuarioCreateNestedOneWithoutConversasComoAtendenteInputSchema,
+    attendant: z.lazy(
+      () => UserCreateNestedOneWithoutConversationsAsAttendantInputSchema,
     ),
-    motorista: z.lazy(
-      () => UsuarioCreateNestedOneWithoutConversasComoMotoristaInputSchema,
+    driver: z.lazy(
+      () => UserCreateNestedOneWithoutConversationsAsDriverInputSchema,
     ),
   });
 
-export const ConversaUncheckedCreateWithoutMensagensInputSchema: z.ZodType<Prisma.ConversaUncheckedCreateWithoutMensagensInput> =
+export const ConversationUncheckedCreateWithoutMessagesInputSchema: z.ZodType<Prisma.ConversationUncheckedCreateWithoutMessagesInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    atendenteId: z.string(),
-    motoristaId: z.string(),
+    attendantId: z.string(),
+    driverId: z.string(),
   });
 
-export const ConversaCreateOrConnectWithoutMensagensInputSchema: z.ZodType<Prisma.ConversaCreateOrConnectWithoutMensagensInput> =
+export const ConversationCreateOrConnectWithoutMessagesInputSchema: z.ZodType<Prisma.ConversationCreateOrConnectWithoutMessagesInput> =
   z.strictObject({
-    where: z.lazy(() => ConversaWhereUniqueInputSchema),
+    where: z.lazy(() => ConversationWhereUniqueInputSchema),
     create: z.union([
-      z.lazy(() => ConversaCreateWithoutMensagensInputSchema),
-      z.lazy(() => ConversaUncheckedCreateWithoutMensagensInputSchema),
+      z.lazy(() => ConversationCreateWithoutMessagesInputSchema),
+      z.lazy(() => ConversationUncheckedCreateWithoutMessagesInputSchema),
     ]),
   });
 
-export const UsuarioUpsertWithoutMensagensEnviadasInputSchema: z.ZodType<Prisma.UsuarioUpsertWithoutMensagensEnviadasInput> =
+export const UserUpsertWithoutSentMessagesInputSchema: z.ZodType<Prisma.UserUpsertWithoutSentMessagesInput> =
   z.strictObject({
     update: z.union([
-      z.lazy(() => UsuarioUpdateWithoutMensagensEnviadasInputSchema),
-      z.lazy(() => UsuarioUncheckedUpdateWithoutMensagensEnviadasInputSchema),
+      z.lazy(() => UserUpdateWithoutSentMessagesInputSchema),
+      z.lazy(() => UserUncheckedUpdateWithoutSentMessagesInputSchema),
     ]),
     create: z.union([
-      z.lazy(() => UsuarioCreateWithoutMensagensEnviadasInputSchema),
-      z.lazy(() => UsuarioUncheckedCreateWithoutMensagensEnviadasInputSchema),
+      z.lazy(() => UserCreateWithoutSentMessagesInputSchema),
+      z.lazy(() => UserUncheckedCreateWithoutSentMessagesInputSchema),
     ]),
-    where: z.lazy(() => UsuarioWhereInputSchema).optional(),
+    where: z.lazy(() => UserWhereInputSchema).optional(),
   });
 
-export const UsuarioUpdateToOneWithWhereWithoutMensagensEnviadasInputSchema: z.ZodType<Prisma.UsuarioUpdateToOneWithWhereWithoutMensagensEnviadasInput> =
+export const UserUpdateToOneWithWhereWithoutSentMessagesInputSchema: z.ZodType<Prisma.UserUpdateToOneWithWhereWithoutSentMessagesInput> =
   z.strictObject({
-    where: z.lazy(() => UsuarioWhereInputSchema).optional(),
+    where: z.lazy(() => UserWhereInputSchema).optional(),
     data: z.union([
-      z.lazy(() => UsuarioUpdateWithoutMensagensEnviadasInputSchema),
-      z.lazy(() => UsuarioUncheckedUpdateWithoutMensagensEnviadasInputSchema),
+      z.lazy(() => UserUpdateWithoutSentMessagesInputSchema),
+      z.lazy(() => UserUncheckedUpdateWithoutSentMessagesInputSchema),
     ]),
   });
 
-export const UsuarioUpdateWithoutMensagensEnviadasInputSchema: z.ZodType<Prisma.UsuarioUpdateWithoutMensagensEnviadasInput> =
+export const UserUpdateWithoutSentMessagesInputSchema: z.ZodType<Prisma.UserUpdateWithoutSentMessagesInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
@@ -8332,45 +8480,45 @@ export const UsuarioUpdateWithoutMensagensEnviadasInputSchema: z.ZodType<Prisma.
     email: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    senha: z
+    password: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    tipo: z
+    role: z
       .union([
-        z.lazy(() => TipoUsuarioSchema),
-        z.lazy(() => EnumTipoUsuarioFieldUpdateOperationsInputSchema),
+        z.lazy(() => UserRoleSchema),
+        z.lazy(() => EnumUserRoleFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    telefone: z
+    phone: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
     status: z
       .union([
-        z.lazy(() => StatusUsuarioSchema),
-        z.lazy(() => EnumStatusUsuarioFieldUpdateOperationsInputSchema),
+        z.lazy(() => UserStatusSchema),
+        z.lazy(() => EnumUserStatusFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    criadoEm: z
+    createdAt: z
       .union([
         z.coerce.date(),
         z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    veiculo: z
-      .lazy(() => VeiculoUpdateOneWithoutMotoristaNestedInputSchema)
+    vehicle: z
+      .lazy(() => VehicleUpdateOneWithoutDriverNestedInputSchema)
       .optional(),
-    atendimentosRegistrados: z
-      .lazy(() => AtendimentoUpdateManyWithoutAtendenteNestedInputSchema)
+    registeredCalls: z
+      .lazy(() => EmergencyCallUpdateManyWithoutAttendantNestedInputSchema)
       .optional(),
-    conversasComoAtendente: z
-      .lazy(() => ConversaUpdateManyWithoutAtendenteNestedInputSchema)
+    conversationsAsAttendant: z
+      .lazy(() => ConversationUpdateManyWithoutAttendantNestedInputSchema)
       .optional(),
-    conversasComoMotorista: z
-      .lazy(() => ConversaUpdateManyWithoutMotoristaNestedInputSchema)
+    conversationsAsDriver: z
+      .lazy(() => ConversationUpdateManyWithoutDriverNestedInputSchema)
       .optional(),
   });
 
-export const UsuarioUncheckedUpdateWithoutMensagensEnviadasInputSchema: z.ZodType<Prisma.UsuarioUncheckedUpdateWithoutMensagensEnviadasInput> =
+export const UserUncheckedUpdateWithoutSentMessagesInputSchema: z.ZodType<Prisma.UserUncheckedUpdateWithoutSentMessagesInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
@@ -8378,498 +8526,501 @@ export const UsuarioUncheckedUpdateWithoutMensagensEnviadasInputSchema: z.ZodTyp
     email: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    senha: z
+    password: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    tipo: z
+    role: z
       .union([
-        z.lazy(() => TipoUsuarioSchema),
-        z.lazy(() => EnumTipoUsuarioFieldUpdateOperationsInputSchema),
+        z.lazy(() => UserRoleSchema),
+        z.lazy(() => EnumUserRoleFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    telefone: z
+    phone: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
     status: z
       .union([
-        z.lazy(() => StatusUsuarioSchema),
-        z.lazy(() => EnumStatusUsuarioFieldUpdateOperationsInputSchema),
+        z.lazy(() => UserStatusSchema),
+        z.lazy(() => EnumUserStatusFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    criadoEm: z
+    createdAt: z
       .union([
         z.coerce.date(),
         z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    veiculo: z
-      .lazy(() => VeiculoUncheckedUpdateOneWithoutMotoristaNestedInputSchema)
+    vehicle: z
+      .lazy(() => VehicleUncheckedUpdateOneWithoutDriverNestedInputSchema)
       .optional(),
-    atendimentosRegistrados: z
+    registeredCalls: z
       .lazy(
-        () => AtendimentoUncheckedUpdateManyWithoutAtendenteNestedInputSchema,
+        () => EmergencyCallUncheckedUpdateManyWithoutAttendantNestedInputSchema,
       )
       .optional(),
-    conversasComoAtendente: z
-      .lazy(() => ConversaUncheckedUpdateManyWithoutAtendenteNestedInputSchema)
+    conversationsAsAttendant: z
+      .lazy(
+        () => ConversationUncheckedUpdateManyWithoutAttendantNestedInputSchema,
+      )
       .optional(),
-    conversasComoMotorista: z
-      .lazy(() => ConversaUncheckedUpdateManyWithoutMotoristaNestedInputSchema)
+    conversationsAsDriver: z
+      .lazy(() => ConversationUncheckedUpdateManyWithoutDriverNestedInputSchema)
       .optional(),
   });
 
-export const ConversaUpsertWithoutMensagensInputSchema: z.ZodType<Prisma.ConversaUpsertWithoutMensagensInput> =
+export const ConversationUpsertWithoutMessagesInputSchema: z.ZodType<Prisma.ConversationUpsertWithoutMessagesInput> =
   z.strictObject({
     update: z.union([
-      z.lazy(() => ConversaUpdateWithoutMensagensInputSchema),
-      z.lazy(() => ConversaUncheckedUpdateWithoutMensagensInputSchema),
+      z.lazy(() => ConversationUpdateWithoutMessagesInputSchema),
+      z.lazy(() => ConversationUncheckedUpdateWithoutMessagesInputSchema),
     ]),
     create: z.union([
-      z.lazy(() => ConversaCreateWithoutMensagensInputSchema),
-      z.lazy(() => ConversaUncheckedCreateWithoutMensagensInputSchema),
+      z.lazy(() => ConversationCreateWithoutMessagesInputSchema),
+      z.lazy(() => ConversationUncheckedCreateWithoutMessagesInputSchema),
     ]),
-    where: z.lazy(() => ConversaWhereInputSchema).optional(),
+    where: z.lazy(() => ConversationWhereInputSchema).optional(),
   });
 
-export const ConversaUpdateToOneWithWhereWithoutMensagensInputSchema: z.ZodType<Prisma.ConversaUpdateToOneWithWhereWithoutMensagensInput> =
+export const ConversationUpdateToOneWithWhereWithoutMessagesInputSchema: z.ZodType<Prisma.ConversationUpdateToOneWithWhereWithoutMessagesInput> =
   z.strictObject({
-    where: z.lazy(() => ConversaWhereInputSchema).optional(),
+    where: z.lazy(() => ConversationWhereInputSchema).optional(),
     data: z.union([
-      z.lazy(() => ConversaUpdateWithoutMensagensInputSchema),
-      z.lazy(() => ConversaUncheckedUpdateWithoutMensagensInputSchema),
+      z.lazy(() => ConversationUpdateWithoutMessagesInputSchema),
+      z.lazy(() => ConversationUncheckedUpdateWithoutMessagesInputSchema),
     ]),
   });
 
-export const ConversaUpdateWithoutMensagensInputSchema: z.ZodType<Prisma.ConversaUpdateWithoutMensagensInput> =
+export const ConversationUpdateWithoutMessagesInputSchema: z.ZodType<Prisma.ConversationUpdateWithoutMessagesInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    atendente: z
+    attendant: z
       .lazy(
         () =>
-          UsuarioUpdateOneRequiredWithoutConversasComoAtendenteNestedInputSchema,
+          UserUpdateOneRequiredWithoutConversationsAsAttendantNestedInputSchema,
       )
       .optional(),
-    motorista: z
+    driver: z
       .lazy(
         () =>
-          UsuarioUpdateOneRequiredWithoutConversasComoMotoristaNestedInputSchema,
+          UserUpdateOneRequiredWithoutConversationsAsDriverNestedInputSchema,
       )
       .optional(),
   });
 
-export const ConversaUncheckedUpdateWithoutMensagensInputSchema: z.ZodType<Prisma.ConversaUncheckedUpdateWithoutMensagensInput> =
+export const ConversationUncheckedUpdateWithoutMessagesInputSchema: z.ZodType<Prisma.ConversationUncheckedUpdateWithoutMessagesInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    atendenteId: z
+    attendantId: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    motoristaId: z
+    driverId: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
   });
 
-export const AtendimentoCreateWithoutNotificacoesInputSchema: z.ZodType<Prisma.AtendimentoCreateWithoutNotificacoesInput> =
+export const EmergencyCallCreateWithoutNotificationsInputSchema: z.ZodType<Prisma.EmergencyCallCreateWithoutNotificationsInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    protocolo: z.string(),
-    endereco: z.string(),
-    localDeRetorno: z.string(),
-    oQueAconteceu: z.string(),
-    estadoDoPaciente: z.string(),
-    idadeAparente: z.number().int().optional().nullable(),
-    quantidadeDePacientes: z.number().int(),
-    estadoDaLesao: z.string(),
-    observacoes: z.string().optional().nullable(),
-    criadoEm: z.coerce.date().optional(),
-    atendente: z.lazy(
-      () => UsuarioCreateNestedOneWithoutAtendimentosRegistradosInputSchema,
+    protocol: z.string(),
+    address: z.string(),
+    returnLocation: z.string(),
+    whatHappened: z.string(),
+    patientCondition: z.string(),
+    apparentAge: z.number().int().optional().nullable(),
+    patientCount: z.number().int(),
+    injuryCondition: z.string(),
+    observations: z.string().optional().nullable(),
+    createdAt: z.coerce.date().optional(),
+    attendant: z.lazy(
+      () => UserCreateNestedOneWithoutRegisteredCallsInputSchema,
     ),
-    veiculos: z
-      .lazy(
-        () => VeiculoAtendimentoCreateNestedManyWithoutAtendimentoInputSchema,
-      )
-      .optional(),
-  });
-
-export const AtendimentoUncheckedCreateWithoutNotificacoesInputSchema: z.ZodType<Prisma.AtendimentoUncheckedCreateWithoutNotificacoesInput> =
-  z.strictObject({
-    id: z.uuid().optional(),
-    protocolo: z.string(),
-    endereco: z.string(),
-    localDeRetorno: z.string(),
-    oQueAconteceu: z.string(),
-    estadoDoPaciente: z.string(),
-    idadeAparente: z.number().int().optional().nullable(),
-    quantidadeDePacientes: z.number().int(),
-    estadoDaLesao: z.string(),
-    observacoes: z.string().optional().nullable(),
-    atendenteId: z.string(),
-    criadoEm: z.coerce.date().optional(),
-    veiculos: z
+    vehicles: z
       .lazy(
         () =>
-          VeiculoAtendimentoUncheckedCreateNestedManyWithoutAtendimentoInputSchema,
+          VehicleEmergencyCallCreateNestedManyWithoutEmergencyCallInputSchema,
       )
       .optional(),
   });
 
-export const AtendimentoCreateOrConnectWithoutNotificacoesInputSchema: z.ZodType<Prisma.AtendimentoCreateOrConnectWithoutNotificacoesInput> =
+export const EmergencyCallUncheckedCreateWithoutNotificationsInputSchema: z.ZodType<Prisma.EmergencyCallUncheckedCreateWithoutNotificationsInput> =
   z.strictObject({
-    where: z.lazy(() => AtendimentoWhereUniqueInputSchema),
+    id: z.uuid().optional(),
+    protocol: z.string(),
+    address: z.string(),
+    returnLocation: z.string(),
+    whatHappened: z.string(),
+    patientCondition: z.string(),
+    apparentAge: z.number().int().optional().nullable(),
+    patientCount: z.number().int(),
+    injuryCondition: z.string(),
+    observations: z.string().optional().nullable(),
+    attendantId: z.string(),
+    createdAt: z.coerce.date().optional(),
+    vehicles: z
+      .lazy(
+        () =>
+          VehicleEmergencyCallUncheckedCreateNestedManyWithoutEmergencyCallInputSchema,
+      )
+      .optional(),
+  });
+
+export const EmergencyCallCreateOrConnectWithoutNotificationsInputSchema: z.ZodType<Prisma.EmergencyCallCreateOrConnectWithoutNotificationsInput> =
+  z.strictObject({
+    where: z.lazy(() => EmergencyCallWhereUniqueInputSchema),
     create: z.union([
-      z.lazy(() => AtendimentoCreateWithoutNotificacoesInputSchema),
-      z.lazy(() => AtendimentoUncheckedCreateWithoutNotificacoesInputSchema),
+      z.lazy(() => EmergencyCallCreateWithoutNotificationsInputSchema),
+      z.lazy(() => EmergencyCallUncheckedCreateWithoutNotificationsInputSchema),
     ]),
   });
 
-export const AtendimentoUpsertWithoutNotificacoesInputSchema: z.ZodType<Prisma.AtendimentoUpsertWithoutNotificacoesInput> =
+export const EmergencyCallUpsertWithoutNotificationsInputSchema: z.ZodType<Prisma.EmergencyCallUpsertWithoutNotificationsInput> =
   z.strictObject({
     update: z.union([
-      z.lazy(() => AtendimentoUpdateWithoutNotificacoesInputSchema),
-      z.lazy(() => AtendimentoUncheckedUpdateWithoutNotificacoesInputSchema),
+      z.lazy(() => EmergencyCallUpdateWithoutNotificationsInputSchema),
+      z.lazy(() => EmergencyCallUncheckedUpdateWithoutNotificationsInputSchema),
     ]),
     create: z.union([
-      z.lazy(() => AtendimentoCreateWithoutNotificacoesInputSchema),
-      z.lazy(() => AtendimentoUncheckedCreateWithoutNotificacoesInputSchema),
+      z.lazy(() => EmergencyCallCreateWithoutNotificationsInputSchema),
+      z.lazy(() => EmergencyCallUncheckedCreateWithoutNotificationsInputSchema),
     ]),
-    where: z.lazy(() => AtendimentoWhereInputSchema).optional(),
+    where: z.lazy(() => EmergencyCallWhereInputSchema).optional(),
   });
 
-export const AtendimentoUpdateToOneWithWhereWithoutNotificacoesInputSchema: z.ZodType<Prisma.AtendimentoUpdateToOneWithWhereWithoutNotificacoesInput> =
+export const EmergencyCallUpdateToOneWithWhereWithoutNotificationsInputSchema: z.ZodType<Prisma.EmergencyCallUpdateToOneWithWhereWithoutNotificationsInput> =
   z.strictObject({
-    where: z.lazy(() => AtendimentoWhereInputSchema).optional(),
+    where: z.lazy(() => EmergencyCallWhereInputSchema).optional(),
     data: z.union([
-      z.lazy(() => AtendimentoUpdateWithoutNotificacoesInputSchema),
-      z.lazy(() => AtendimentoUncheckedUpdateWithoutNotificacoesInputSchema),
+      z.lazy(() => EmergencyCallUpdateWithoutNotificationsInputSchema),
+      z.lazy(() => EmergencyCallUncheckedUpdateWithoutNotificationsInputSchema),
     ]),
   });
 
-export const AtendimentoUpdateWithoutNotificacoesInputSchema: z.ZodType<Prisma.AtendimentoUpdateWithoutNotificacoesInput> =
+export const EmergencyCallUpdateWithoutNotificationsInputSchema: z.ZodType<Prisma.EmergencyCallUpdateWithoutNotificationsInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    protocolo: z
+    protocol: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    endereco: z
+    address: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    localDeRetorno: z
+    returnLocation: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    oQueAconteceu: z
+    whatHappened: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    estadoDoPaciente: z
+    patientCondition: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    idadeAparente: z
+    apparentAge: z
       .union([
         z.number().int(),
         z.lazy(() => NullableIntFieldUpdateOperationsInputSchema),
       ])
       .optional()
       .nullable(),
-    quantidadeDePacientes: z
+    patientCount: z
       .union([
         z.number().int(),
         z.lazy(() => IntFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    estadoDaLesao: z
+    injuryCondition: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    observacoes: z
+    observations: z
       .union([
         z.string(),
         z.lazy(() => NullableStringFieldUpdateOperationsInputSchema),
       ])
       .optional()
       .nullable(),
-    criadoEm: z
+    createdAt: z
       .union([
         z.coerce.date(),
         z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    atendente: z
+    attendant: z
+      .lazy(() => UserUpdateOneRequiredWithoutRegisteredCallsNestedInputSchema)
+      .optional(),
+    vehicles: z
       .lazy(
         () =>
-          UsuarioUpdateOneRequiredWithoutAtendimentosRegistradosNestedInputSchema,
-      )
-      .optional(),
-    veiculos: z
-      .lazy(
-        () => VeiculoAtendimentoUpdateManyWithoutAtendimentoNestedInputSchema,
+          VehicleEmergencyCallUpdateManyWithoutEmergencyCallNestedInputSchema,
       )
       .optional(),
   });
 
-export const AtendimentoUncheckedUpdateWithoutNotificacoesInputSchema: z.ZodType<Prisma.AtendimentoUncheckedUpdateWithoutNotificacoesInput> =
+export const EmergencyCallUncheckedUpdateWithoutNotificationsInputSchema: z.ZodType<Prisma.EmergencyCallUncheckedUpdateWithoutNotificationsInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    protocolo: z
+    protocol: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    endereco: z
+    address: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    localDeRetorno: z
+    returnLocation: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    oQueAconteceu: z
+    whatHappened: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    estadoDoPaciente: z
+    patientCondition: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    idadeAparente: z
+    apparentAge: z
       .union([
         z.number().int(),
         z.lazy(() => NullableIntFieldUpdateOperationsInputSchema),
       ])
       .optional()
       .nullable(),
-    quantidadeDePacientes: z
+    patientCount: z
       .union([
         z.number().int(),
         z.lazy(() => IntFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    estadoDaLesao: z
+    injuryCondition: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    observacoes: z
+    observations: z
       .union([
         z.string(),
         z.lazy(() => NullableStringFieldUpdateOperationsInputSchema),
       ])
       .optional()
       .nullable(),
-    atendenteId: z
+    attendantId: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    criadoEm: z
+    createdAt: z
       .union([
         z.coerce.date(),
         z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    veiculos: z
+    vehicles: z
       .lazy(
         () =>
-          VeiculoAtendimentoUncheckedUpdateManyWithoutAtendimentoNestedInputSchema,
+          VehicleEmergencyCallUncheckedUpdateManyWithoutEmergencyCallNestedInputSchema,
       )
       .optional(),
   });
 
-export const AtendimentoCreateManyAtendenteInputSchema: z.ZodType<Prisma.AtendimentoCreateManyAtendenteInput> =
+export const EmergencyCallCreateManyAttendantInputSchema: z.ZodType<Prisma.EmergencyCallCreateManyAttendantInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    protocolo: z.string(),
-    endereco: z.string(),
-    localDeRetorno: z.string(),
-    oQueAconteceu: z.string(),
-    estadoDoPaciente: z.string(),
-    idadeAparente: z.number().int().optional().nullable(),
-    quantidadeDePacientes: z.number().int(),
-    estadoDaLesao: z.string(),
-    observacoes: z.string().optional().nullable(),
-    criadoEm: z.coerce.date().optional(),
+    protocol: z.string(),
+    address: z.string(),
+    returnLocation: z.string(),
+    whatHappened: z.string(),
+    patientCondition: z.string(),
+    apparentAge: z.number().int().optional().nullable(),
+    patientCount: z.number().int(),
+    injuryCondition: z.string(),
+    observations: z.string().optional().nullable(),
+    createdAt: z.coerce.date().optional(),
   });
 
-export const ConversaCreateManyAtendenteInputSchema: z.ZodType<Prisma.ConversaCreateManyAtendenteInput> =
+export const ConversationCreateManyAttendantInputSchema: z.ZodType<Prisma.ConversationCreateManyAttendantInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    motoristaId: z.string(),
+    driverId: z.string(),
   });
 
-export const ConversaCreateManyMotoristaInputSchema: z.ZodType<Prisma.ConversaCreateManyMotoristaInput> =
+export const ConversationCreateManyDriverInputSchema: z.ZodType<Prisma.ConversationCreateManyDriverInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    atendenteId: z.string(),
+    attendantId: z.string(),
   });
 
-export const MensagemCreateManyQuemMandouInputSchema: z.ZodType<Prisma.MensagemCreateManyQuemMandouInput> =
+export const MessageCreateManySenderInputSchema: z.ZodType<Prisma.MessageCreateManySenderInput> =
   z.strictObject({
     id: z.uuid().optional(),
-    texto: z.string(),
-    dataDeEnvio: z.coerce.date().optional(),
-    conversaId: z.string(),
+    text: z.string(),
+    sentAt: z.coerce.date().optional(),
+    conversationId: z.string(),
   });
 
-export const AtendimentoUpdateWithoutAtendenteInputSchema: z.ZodType<Prisma.AtendimentoUpdateWithoutAtendenteInput> =
+export const EmergencyCallUpdateWithoutAttendantInputSchema: z.ZodType<Prisma.EmergencyCallUpdateWithoutAttendantInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    protocolo: z
+    protocol: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    endereco: z
+    address: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    localDeRetorno: z
+    returnLocation: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    oQueAconteceu: z
+    whatHappened: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    estadoDoPaciente: z
+    patientCondition: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    idadeAparente: z
+    apparentAge: z
       .union([
         z.number().int(),
         z.lazy(() => NullableIntFieldUpdateOperationsInputSchema),
       ])
       .optional()
       .nullable(),
-    quantidadeDePacientes: z
+    patientCount: z
       .union([
         z.number().int(),
         z.lazy(() => IntFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    estadoDaLesao: z
+    injuryCondition: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    observacoes: z
+    observations: z
       .union([
         z.string(),
         z.lazy(() => NullableStringFieldUpdateOperationsInputSchema),
       ])
       .optional()
       .nullable(),
-    criadoEm: z
+    createdAt: z
       .union([
         z.coerce.date(),
         z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    veiculos: z
+    vehicles: z
       .lazy(
-        () => VeiculoAtendimentoUpdateManyWithoutAtendimentoNestedInputSchema,
+        () =>
+          VehicleEmergencyCallUpdateManyWithoutEmergencyCallNestedInputSchema,
       )
       .optional(),
-    notificacoes: z
-      .lazy(() => NotificacaoUpdateManyWithoutAtendimentoNestedInputSchema)
+    notifications: z
+      .lazy(() => NotificationUpdateManyWithoutEmergencyCallNestedInputSchema)
       .optional(),
   });
 
-export const AtendimentoUncheckedUpdateWithoutAtendenteInputSchema: z.ZodType<Prisma.AtendimentoUncheckedUpdateWithoutAtendenteInput> =
+export const EmergencyCallUncheckedUpdateWithoutAttendantInputSchema: z.ZodType<Prisma.EmergencyCallUncheckedUpdateWithoutAttendantInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    protocolo: z
+    protocol: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    endereco: z
+    address: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    localDeRetorno: z
+    returnLocation: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    oQueAconteceu: z
+    whatHappened: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    estadoDoPaciente: z
+    patientCondition: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    idadeAparente: z
+    apparentAge: z
       .union([
         z.number().int(),
         z.lazy(() => NullableIntFieldUpdateOperationsInputSchema),
       ])
       .optional()
       .nullable(),
-    quantidadeDePacientes: z
+    patientCount: z
       .union([
         z.number().int(),
         z.lazy(() => IntFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    estadoDaLesao: z
+    injuryCondition: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    observacoes: z
+    observations: z
       .union([
         z.string(),
         z.lazy(() => NullableStringFieldUpdateOperationsInputSchema),
       ])
       .optional()
       .nullable(),
-    criadoEm: z
+    createdAt: z
       .union([
         z.coerce.date(),
         z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    veiculos: z
+    vehicles: z
       .lazy(
         () =>
-          VeiculoAtendimentoUncheckedUpdateManyWithoutAtendimentoNestedInputSchema,
+          VehicleEmergencyCallUncheckedUpdateManyWithoutEmergencyCallNestedInputSchema,
       )
       .optional(),
-    notificacoes: z
+    notifications: z
       .lazy(
-        () => NotificacaoUncheckedUpdateManyWithoutAtendimentoNestedInputSchema,
+        () =>
+          NotificationUncheckedUpdateManyWithoutEmergencyCallNestedInputSchema,
       )
       .optional(),
   });
 
-export const AtendimentoUncheckedUpdateManyWithoutAtendenteInputSchema: z.ZodType<Prisma.AtendimentoUncheckedUpdateManyWithoutAtendenteInput> =
+export const EmergencyCallUncheckedUpdateManyWithoutAttendantInputSchema: z.ZodType<Prisma.EmergencyCallUncheckedUpdateManyWithoutAttendantInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    protocolo: z
+    protocol: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    endereco: z
+    address: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    localDeRetorno: z
+    returnLocation: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    oQueAconteceu: z
+    whatHappened: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    estadoDoPaciente: z
+    patientCondition: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    idadeAparente: z
+    apparentAge: z
       .union([
         z.number().int(),
         z.lazy(() => NullableIntFieldUpdateOperationsInputSchema),
       ])
       .optional()
       .nullable(),
-    quantidadeDePacientes: z
+    patientCount: z
       .union([
         z.number().int(),
         z.lazy(() => IntFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    estadoDaLesao: z
+    injuryCondition: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    observacoes: z
+    observations: z
       .union([
         z.string(),
         z.lazy(() => NullableStringFieldUpdateOperationsInputSchema),
       ])
       .optional()
       .nullable(),
-    criadoEm: z
+    createdAt: z
       .union([
         z.coerce.date(),
         z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
@@ -8877,369 +9028,375 @@ export const AtendimentoUncheckedUpdateManyWithoutAtendenteInputSchema: z.ZodTyp
       .optional(),
   });
 
-export const ConversaUpdateWithoutAtendenteInputSchema: z.ZodType<Prisma.ConversaUpdateWithoutAtendenteInput> =
+export const ConversationUpdateWithoutAttendantInputSchema: z.ZodType<Prisma.ConversationUpdateWithoutAttendantInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    motorista: z
+    driver: z
       .lazy(
         () =>
-          UsuarioUpdateOneRequiredWithoutConversasComoMotoristaNestedInputSchema,
+          UserUpdateOneRequiredWithoutConversationsAsDriverNestedInputSchema,
       )
       .optional(),
-    mensagens: z
-      .lazy(() => MensagemUpdateManyWithoutConversaNestedInputSchema)
+    messages: z
+      .lazy(() => MessageUpdateManyWithoutConversationNestedInputSchema)
       .optional(),
   });
 
-export const ConversaUncheckedUpdateWithoutAtendenteInputSchema: z.ZodType<Prisma.ConversaUncheckedUpdateWithoutAtendenteInput> =
+export const ConversationUncheckedUpdateWithoutAttendantInputSchema: z.ZodType<Prisma.ConversationUncheckedUpdateWithoutAttendantInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    motoristaId: z
+    driverId: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    mensagens: z
-      .lazy(() => MensagemUncheckedUpdateManyWithoutConversaNestedInputSchema)
+    messages: z
+      .lazy(
+        () => MessageUncheckedUpdateManyWithoutConversationNestedInputSchema,
+      )
       .optional(),
   });
 
-export const ConversaUncheckedUpdateManyWithoutAtendenteInputSchema: z.ZodType<Prisma.ConversaUncheckedUpdateManyWithoutAtendenteInput> =
+export const ConversationUncheckedUpdateManyWithoutAttendantInputSchema: z.ZodType<Prisma.ConversationUncheckedUpdateManyWithoutAttendantInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    motoristaId: z
+    driverId: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
   });
 
-export const ConversaUpdateWithoutMotoristaInputSchema: z.ZodType<Prisma.ConversaUpdateWithoutMotoristaInput> =
+export const ConversationUpdateWithoutDriverInputSchema: z.ZodType<Prisma.ConversationUpdateWithoutDriverInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    atendente: z
+    attendant: z
       .lazy(
         () =>
-          UsuarioUpdateOneRequiredWithoutConversasComoAtendenteNestedInputSchema,
+          UserUpdateOneRequiredWithoutConversationsAsAttendantNestedInputSchema,
       )
       .optional(),
-    mensagens: z
-      .lazy(() => MensagemUpdateManyWithoutConversaNestedInputSchema)
+    messages: z
+      .lazy(() => MessageUpdateManyWithoutConversationNestedInputSchema)
       .optional(),
   });
 
-export const ConversaUncheckedUpdateWithoutMotoristaInputSchema: z.ZodType<Prisma.ConversaUncheckedUpdateWithoutMotoristaInput> =
+export const ConversationUncheckedUpdateWithoutDriverInputSchema: z.ZodType<Prisma.ConversationUncheckedUpdateWithoutDriverInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    atendenteId: z
+    attendantId: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    mensagens: z
-      .lazy(() => MensagemUncheckedUpdateManyWithoutConversaNestedInputSchema)
-      .optional(),
-  });
-
-export const ConversaUncheckedUpdateManyWithoutMotoristaInputSchema: z.ZodType<Prisma.ConversaUncheckedUpdateManyWithoutMotoristaInput> =
-  z.strictObject({
-    id: z
-      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    atendenteId: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-  });
-
-export const MensagemUpdateWithoutQuemMandouInputSchema: z.ZodType<Prisma.MensagemUpdateWithoutQuemMandouInput> =
-  z.strictObject({
-    id: z
-      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    texto: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    dataDeEnvio: z
-      .union([
-        z.coerce.date(),
-        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
-      ])
-      .optional(),
-    conversa: z
-      .lazy(() => ConversaUpdateOneRequiredWithoutMensagensNestedInputSchema)
-      .optional(),
-  });
-
-export const MensagemUncheckedUpdateWithoutQuemMandouInputSchema: z.ZodType<Prisma.MensagemUncheckedUpdateWithoutQuemMandouInput> =
-  z.strictObject({
-    id: z
-      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    texto: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    dataDeEnvio: z
-      .union([
-        z.coerce.date(),
-        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
-      ])
-      .optional(),
-    conversaId: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-  });
-
-export const MensagemUncheckedUpdateManyWithoutQuemMandouInputSchema: z.ZodType<Prisma.MensagemUncheckedUpdateManyWithoutQuemMandouInput> =
-  z.strictObject({
-    id: z
-      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    texto: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    dataDeEnvio: z
-      .union([
-        z.coerce.date(),
-        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
-      ])
-      .optional(),
-    conversaId: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-  });
-
-export const VeiculoAtendimentoCreateManyVeiculoInputSchema: z.ZodType<Prisma.VeiculoAtendimentoCreateManyVeiculoInput> =
-  z.strictObject({
-    id: z.uuid().optional(),
-    status: z.lazy(() => StatusAtendimentoSchema).optional(),
-    atendimentoId: z.string(),
-  });
-
-export const VeiculoAtendimentoUpdateWithoutVeiculoInputSchema: z.ZodType<Prisma.VeiculoAtendimentoUpdateWithoutVeiculoInput> =
-  z.strictObject({
-    id: z
-      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    status: z
-      .union([
-        z.lazy(() => StatusAtendimentoSchema),
-        z.lazy(() => EnumStatusAtendimentoFieldUpdateOperationsInputSchema),
-      ])
-      .optional(),
-    atendimento: z
-      .lazy(() => AtendimentoUpdateOneRequiredWithoutVeiculosNestedInputSchema)
-      .optional(),
-  });
-
-export const VeiculoAtendimentoUncheckedUpdateWithoutVeiculoInputSchema: z.ZodType<Prisma.VeiculoAtendimentoUncheckedUpdateWithoutVeiculoInput> =
-  z.strictObject({
-    id: z
-      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    status: z
-      .union([
-        z.lazy(() => StatusAtendimentoSchema),
-        z.lazy(() => EnumStatusAtendimentoFieldUpdateOperationsInputSchema),
-      ])
-      .optional(),
-    atendimentoId: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-  });
-
-export const VeiculoAtendimentoUncheckedUpdateManyWithoutVeiculoInputSchema: z.ZodType<Prisma.VeiculoAtendimentoUncheckedUpdateManyWithoutVeiculoInput> =
-  z.strictObject({
-    id: z
-      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    status: z
-      .union([
-        z.lazy(() => StatusAtendimentoSchema),
-        z.lazy(() => EnumStatusAtendimentoFieldUpdateOperationsInputSchema),
-      ])
-      .optional(),
-    atendimentoId: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-  });
-
-export const VeiculoAtendimentoCreateManyAtendimentoInputSchema: z.ZodType<Prisma.VeiculoAtendimentoCreateManyAtendimentoInput> =
-  z.strictObject({
-    id: z.uuid().optional(),
-    status: z.lazy(() => StatusAtendimentoSchema).optional(),
-    veiculoId: z.string(),
-  });
-
-export const NotificacaoCreateManyAtendimentoInputSchema: z.ZodType<Prisma.NotificacaoCreateManyAtendimentoInput> =
-  z.strictObject({
-    id: z.uuid().optional(),
-    mensagem: z.string(),
-    dataDaNotificacao: z.coerce.date().optional(),
-  });
-
-export const VeiculoAtendimentoUpdateWithoutAtendimentoInputSchema: z.ZodType<Prisma.VeiculoAtendimentoUpdateWithoutAtendimentoInput> =
-  z.strictObject({
-    id: z
-      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    status: z
-      .union([
-        z.lazy(() => StatusAtendimentoSchema),
-        z.lazy(() => EnumStatusAtendimentoFieldUpdateOperationsInputSchema),
-      ])
-      .optional(),
-    veiculo: z
-      .lazy(() => VeiculoUpdateOneRequiredWithoutAtendimentosNestedInputSchema)
-      .optional(),
-  });
-
-export const VeiculoAtendimentoUncheckedUpdateWithoutAtendimentoInputSchema: z.ZodType<Prisma.VeiculoAtendimentoUncheckedUpdateWithoutAtendimentoInput> =
-  z.strictObject({
-    id: z
-      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    status: z
-      .union([
-        z.lazy(() => StatusAtendimentoSchema),
-        z.lazy(() => EnumStatusAtendimentoFieldUpdateOperationsInputSchema),
-      ])
-      .optional(),
-    veiculoId: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-  });
-
-export const VeiculoAtendimentoUncheckedUpdateManyWithoutAtendimentoInputSchema: z.ZodType<Prisma.VeiculoAtendimentoUncheckedUpdateManyWithoutAtendimentoInput> =
-  z.strictObject({
-    id: z
-      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    status: z
-      .union([
-        z.lazy(() => StatusAtendimentoSchema),
-        z.lazy(() => EnumStatusAtendimentoFieldUpdateOperationsInputSchema),
-      ])
-      .optional(),
-    veiculoId: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-  });
-
-export const NotificacaoUpdateWithoutAtendimentoInputSchema: z.ZodType<Prisma.NotificacaoUpdateWithoutAtendimentoInput> =
-  z.strictObject({
-    id: z
-      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    mensagem: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    dataDaNotificacao: z
-      .union([
-        z.coerce.date(),
-        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
-      ])
-      .optional(),
-  });
-
-export const NotificacaoUncheckedUpdateWithoutAtendimentoInputSchema: z.ZodType<Prisma.NotificacaoUncheckedUpdateWithoutAtendimentoInput> =
-  z.strictObject({
-    id: z
-      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    mensagem: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    dataDaNotificacao: z
-      .union([
-        z.coerce.date(),
-        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
-      ])
-      .optional(),
-  });
-
-export const NotificacaoUncheckedUpdateManyWithoutAtendimentoInputSchema: z.ZodType<Prisma.NotificacaoUncheckedUpdateManyWithoutAtendimentoInput> =
-  z.strictObject({
-    id: z
-      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    mensagem: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    dataDaNotificacao: z
-      .union([
-        z.coerce.date(),
-        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
-      ])
-      .optional(),
-  });
-
-export const MensagemCreateManyConversaInputSchema: z.ZodType<Prisma.MensagemCreateManyConversaInput> =
-  z.strictObject({
-    id: z.uuid().optional(),
-    texto: z.string(),
-    dataDeEnvio: z.coerce.date().optional(),
-    quemMandouId: z.string(),
-  });
-
-export const MensagemUpdateWithoutConversaInputSchema: z.ZodType<Prisma.MensagemUpdateWithoutConversaInput> =
-  z.strictObject({
-    id: z
-      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    texto: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    dataDeEnvio: z
-      .union([
-        z.coerce.date(),
-        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
-      ])
-      .optional(),
-    quemMandou: z
+    messages: z
       .lazy(
-        () => UsuarioUpdateOneRequiredWithoutMensagensEnviadasNestedInputSchema,
+        () => MessageUncheckedUpdateManyWithoutConversationNestedInputSchema,
       )
       .optional(),
   });
 
-export const MensagemUncheckedUpdateWithoutConversaInputSchema: z.ZodType<Prisma.MensagemUncheckedUpdateWithoutConversaInput> =
+export const ConversationUncheckedUpdateManyWithoutDriverInputSchema: z.ZodType<Prisma.ConversationUncheckedUpdateManyWithoutDriverInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    texto: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    dataDeEnvio: z
-      .union([
-        z.coerce.date(),
-        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
-      ])
-      .optional(),
-    quemMandouId: z
+    attendantId: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
   });
 
-export const MensagemUncheckedUpdateManyWithoutConversaInputSchema: z.ZodType<Prisma.MensagemUncheckedUpdateManyWithoutConversaInput> =
+export const MessageUpdateWithoutSenderInputSchema: z.ZodType<Prisma.MessageUpdateWithoutSenderInput> =
   z.strictObject({
     id: z
       .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    texto: z
+    text: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
-    dataDeEnvio: z
+    sentAt: z
       .union([
         z.coerce.date(),
         z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
       ])
       .optional(),
-    quemMandouId: z
+    conversation: z
+      .lazy(() => ConversationUpdateOneRequiredWithoutMessagesNestedInputSchema)
+      .optional(),
+  });
+
+export const MessageUncheckedUpdateWithoutSenderInputSchema: z.ZodType<Prisma.MessageUncheckedUpdateWithoutSenderInput> =
+  z.strictObject({
+    id: z
+      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    text: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    sentAt: z
+      .union([
+        z.coerce.date(),
+        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
+      ])
+      .optional(),
+    conversationId: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+  });
+
+export const MessageUncheckedUpdateManyWithoutSenderInputSchema: z.ZodType<Prisma.MessageUncheckedUpdateManyWithoutSenderInput> =
+  z.strictObject({
+    id: z
+      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    text: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    sentAt: z
+      .union([
+        z.coerce.date(),
+        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
+      ])
+      .optional(),
+    conversationId: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+  });
+
+export const VehicleEmergencyCallCreateManyVehicleInputSchema: z.ZodType<Prisma.VehicleEmergencyCallCreateManyVehicleInput> =
+  z.strictObject({
+    id: z.uuid().optional(),
+    status: z.lazy(() => EmergencyCallStatusSchema).optional(),
+    emergencyCallId: z.string(),
+  });
+
+export const VehicleEmergencyCallUpdateWithoutVehicleInputSchema: z.ZodType<Prisma.VehicleEmergencyCallUpdateWithoutVehicleInput> =
+  z.strictObject({
+    id: z
+      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    status: z
+      .union([
+        z.lazy(() => EmergencyCallStatusSchema),
+        z.lazy(() => EnumEmergencyCallStatusFieldUpdateOperationsInputSchema),
+      ])
+      .optional(),
+    emergencyCall: z
+      .lazy(
+        () => EmergencyCallUpdateOneRequiredWithoutVehiclesNestedInputSchema,
+      )
+      .optional(),
+  });
+
+export const VehicleEmergencyCallUncheckedUpdateWithoutVehicleInputSchema: z.ZodType<Prisma.VehicleEmergencyCallUncheckedUpdateWithoutVehicleInput> =
+  z.strictObject({
+    id: z
+      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    status: z
+      .union([
+        z.lazy(() => EmergencyCallStatusSchema),
+        z.lazy(() => EnumEmergencyCallStatusFieldUpdateOperationsInputSchema),
+      ])
+      .optional(),
+    emergencyCallId: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+  });
+
+export const VehicleEmergencyCallUncheckedUpdateManyWithoutVehicleInputSchema: z.ZodType<Prisma.VehicleEmergencyCallUncheckedUpdateManyWithoutVehicleInput> =
+  z.strictObject({
+    id: z
+      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    status: z
+      .union([
+        z.lazy(() => EmergencyCallStatusSchema),
+        z.lazy(() => EnumEmergencyCallStatusFieldUpdateOperationsInputSchema),
+      ])
+      .optional(),
+    emergencyCallId: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+  });
+
+export const VehicleEmergencyCallCreateManyEmergencyCallInputSchema: z.ZodType<Prisma.VehicleEmergencyCallCreateManyEmergencyCallInput> =
+  z.strictObject({
+    id: z.uuid().optional(),
+    status: z.lazy(() => EmergencyCallStatusSchema).optional(),
+    vehicleId: z.string(),
+  });
+
+export const NotificationCreateManyEmergencyCallInputSchema: z.ZodType<Prisma.NotificationCreateManyEmergencyCallInput> =
+  z.strictObject({
+    id: z.uuid().optional(),
+    message: z.string(),
+    notifiedAt: z.coerce.date().optional(),
+  });
+
+export const VehicleEmergencyCallUpdateWithoutEmergencyCallInputSchema: z.ZodType<Prisma.VehicleEmergencyCallUpdateWithoutEmergencyCallInput> =
+  z.strictObject({
+    id: z
+      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    status: z
+      .union([
+        z.lazy(() => EmergencyCallStatusSchema),
+        z.lazy(() => EnumEmergencyCallStatusFieldUpdateOperationsInputSchema),
+      ])
+      .optional(),
+    vehicle: z
+      .lazy(
+        () => VehicleUpdateOneRequiredWithoutEmergencyCallsNestedInputSchema,
+      )
+      .optional(),
+  });
+
+export const VehicleEmergencyCallUncheckedUpdateWithoutEmergencyCallInputSchema: z.ZodType<Prisma.VehicleEmergencyCallUncheckedUpdateWithoutEmergencyCallInput> =
+  z.strictObject({
+    id: z
+      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    status: z
+      .union([
+        z.lazy(() => EmergencyCallStatusSchema),
+        z.lazy(() => EnumEmergencyCallStatusFieldUpdateOperationsInputSchema),
+      ])
+      .optional(),
+    vehicleId: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+  });
+
+export const VehicleEmergencyCallUncheckedUpdateManyWithoutEmergencyCallInputSchema: z.ZodType<Prisma.VehicleEmergencyCallUncheckedUpdateManyWithoutEmergencyCallInput> =
+  z.strictObject({
+    id: z
+      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    status: z
+      .union([
+        z.lazy(() => EmergencyCallStatusSchema),
+        z.lazy(() => EnumEmergencyCallStatusFieldUpdateOperationsInputSchema),
+      ])
+      .optional(),
+    vehicleId: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+  });
+
+export const NotificationUpdateWithoutEmergencyCallInputSchema: z.ZodType<Prisma.NotificationUpdateWithoutEmergencyCallInput> =
+  z.strictObject({
+    id: z
+      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    message: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    notifiedAt: z
+      .union([
+        z.coerce.date(),
+        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
+      ])
+      .optional(),
+  });
+
+export const NotificationUncheckedUpdateWithoutEmergencyCallInputSchema: z.ZodType<Prisma.NotificationUncheckedUpdateWithoutEmergencyCallInput> =
+  z.strictObject({
+    id: z
+      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    message: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    notifiedAt: z
+      .union([
+        z.coerce.date(),
+        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
+      ])
+      .optional(),
+  });
+
+export const NotificationUncheckedUpdateManyWithoutEmergencyCallInputSchema: z.ZodType<Prisma.NotificationUncheckedUpdateManyWithoutEmergencyCallInput> =
+  z.strictObject({
+    id: z
+      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    message: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    notifiedAt: z
+      .union([
+        z.coerce.date(),
+        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
+      ])
+      .optional(),
+  });
+
+export const MessageCreateManyConversationInputSchema: z.ZodType<Prisma.MessageCreateManyConversationInput> =
+  z.strictObject({
+    id: z.uuid().optional(),
+    text: z.string(),
+    sentAt: z.coerce.date().optional(),
+    senderId: z.string(),
+  });
+
+export const MessageUpdateWithoutConversationInputSchema: z.ZodType<Prisma.MessageUpdateWithoutConversationInput> =
+  z.strictObject({
+    id: z
+      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    text: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    sentAt: z
+      .union([
+        z.coerce.date(),
+        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
+      ])
+      .optional(),
+    sender: z
+      .lazy(() => UserUpdateOneRequiredWithoutSentMessagesNestedInputSchema)
+      .optional(),
+  });
+
+export const MessageUncheckedUpdateWithoutConversationInputSchema: z.ZodType<Prisma.MessageUncheckedUpdateWithoutConversationInput> =
+  z.strictObject({
+    id: z
+      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    text: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    sentAt: z
+      .union([
+        z.coerce.date(),
+        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
+      ])
+      .optional(),
+    senderId: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+  });
+
+export const MessageUncheckedUpdateManyWithoutConversationInputSchema: z.ZodType<Prisma.MessageUncheckedUpdateManyWithoutConversationInput> =
+  z.strictObject({
+    id: z
+      .union([z.uuid(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    text: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    sentAt: z
+      .union([
+        z.coerce.date(),
+        z.lazy(() => DateTimeFieldUpdateOperationsInputSchema),
+      ])
+      .optional(),
+    senderId: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
   });
@@ -9248,1580 +9405,1556 @@ export const MensagemUncheckedUpdateManyWithoutConversaInputSchema: z.ZodType<Pr
 // ARGS
 /////////////////////////////////////////
 
-export const UsuarioFindFirstArgsSchema: z.ZodType<Prisma.UsuarioFindFirstArgs> =
-  z
-    .object({
-      select: UsuarioSelectSchema.optional(),
-      include: UsuarioIncludeSchema.optional(),
-      where: UsuarioWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          UsuarioOrderByWithRelationInputSchema.array(),
-          UsuarioOrderByWithRelationInputSchema,
-        ])
-        .optional(),
-      cursor: UsuarioWhereUniqueInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-      distinct: z
-        .union([
-          UsuarioScalarFieldEnumSchema,
-          UsuarioScalarFieldEnumSchema.array(),
-        ])
-        .optional(),
-    })
-    .strict();
-
-export const UsuarioFindFirstOrThrowArgsSchema: z.ZodType<Prisma.UsuarioFindFirstOrThrowArgs> =
-  z
-    .object({
-      select: UsuarioSelectSchema.optional(),
-      include: UsuarioIncludeSchema.optional(),
-      where: UsuarioWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          UsuarioOrderByWithRelationInputSchema.array(),
-          UsuarioOrderByWithRelationInputSchema,
-        ])
-        .optional(),
-      cursor: UsuarioWhereUniqueInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-      distinct: z
-        .union([
-          UsuarioScalarFieldEnumSchema,
-          UsuarioScalarFieldEnumSchema.array(),
-        ])
-        .optional(),
-    })
-    .strict();
-
-export const UsuarioFindManyArgsSchema: z.ZodType<Prisma.UsuarioFindManyArgs> =
-  z
-    .object({
-      select: UsuarioSelectSchema.optional(),
-      include: UsuarioIncludeSchema.optional(),
-      where: UsuarioWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          UsuarioOrderByWithRelationInputSchema.array(),
-          UsuarioOrderByWithRelationInputSchema,
-        ])
-        .optional(),
-      cursor: UsuarioWhereUniqueInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-      distinct: z
-        .union([
-          UsuarioScalarFieldEnumSchema,
-          UsuarioScalarFieldEnumSchema.array(),
-        ])
-        .optional(),
-    })
-    .strict();
-
-export const UsuarioAggregateArgsSchema: z.ZodType<Prisma.UsuarioAggregateArgs> =
-  z
-    .object({
-      where: UsuarioWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          UsuarioOrderByWithRelationInputSchema.array(),
-          UsuarioOrderByWithRelationInputSchema,
-        ])
-        .optional(),
-      cursor: UsuarioWhereUniqueInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-    })
-    .strict();
-
-export const UsuarioGroupByArgsSchema: z.ZodType<Prisma.UsuarioGroupByArgs> = z
+export const UserFindFirstArgsSchema: z.ZodType<Prisma.UserFindFirstArgs> = z
   .object({
-    where: UsuarioWhereInputSchema.optional(),
+    select: UserSelectSchema.optional(),
+    include: UserIncludeSchema.optional(),
+    where: UserWhereInputSchema.optional(),
     orderBy: z
       .union([
-        UsuarioOrderByWithAggregationInputSchema.array(),
-        UsuarioOrderByWithAggregationInputSchema,
+        UserOrderByWithRelationInputSchema.array(),
+        UserOrderByWithRelationInputSchema,
       ])
       .optional(),
-    by: UsuarioScalarFieldEnumSchema.array(),
-    having: UsuarioScalarWhereWithAggregatesInputSchema.optional(),
+    cursor: UserWhereUniqueInputSchema.optional(),
+    take: z.number().optional(),
+    skip: z.number().optional(),
+    distinct: z
+      .union([UserScalarFieldEnumSchema, UserScalarFieldEnumSchema.array()])
+      .optional(),
+  })
+  .strict();
+
+export const UserFindFirstOrThrowArgsSchema: z.ZodType<Prisma.UserFindFirstOrThrowArgs> =
+  z
+    .object({
+      select: UserSelectSchema.optional(),
+      include: UserIncludeSchema.optional(),
+      where: UserWhereInputSchema.optional(),
+      orderBy: z
+        .union([
+          UserOrderByWithRelationInputSchema.array(),
+          UserOrderByWithRelationInputSchema,
+        ])
+        .optional(),
+      cursor: UserWhereUniqueInputSchema.optional(),
+      take: z.number().optional(),
+      skip: z.number().optional(),
+      distinct: z
+        .union([UserScalarFieldEnumSchema, UserScalarFieldEnumSchema.array()])
+        .optional(),
+    })
+    .strict();
+
+export const UserFindManyArgsSchema: z.ZodType<Prisma.UserFindManyArgs> = z
+  .object({
+    select: UserSelectSchema.optional(),
+    include: UserIncludeSchema.optional(),
+    where: UserWhereInputSchema.optional(),
+    orderBy: z
+      .union([
+        UserOrderByWithRelationInputSchema.array(),
+        UserOrderByWithRelationInputSchema,
+      ])
+      .optional(),
+    cursor: UserWhereUniqueInputSchema.optional(),
+    take: z.number().optional(),
+    skip: z.number().optional(),
+    distinct: z
+      .union([UserScalarFieldEnumSchema, UserScalarFieldEnumSchema.array()])
+      .optional(),
+  })
+  .strict();
+
+export const UserAggregateArgsSchema: z.ZodType<Prisma.UserAggregateArgs> = z
+  .object({
+    where: UserWhereInputSchema.optional(),
+    orderBy: z
+      .union([
+        UserOrderByWithRelationInputSchema.array(),
+        UserOrderByWithRelationInputSchema,
+      ])
+      .optional(),
+    cursor: UserWhereUniqueInputSchema.optional(),
     take: z.number().optional(),
     skip: z.number().optional(),
   })
   .strict();
 
-export const UsuarioFindUniqueArgsSchema: z.ZodType<Prisma.UsuarioFindUniqueArgs> =
-  z
-    .object({
-      select: UsuarioSelectSchema.optional(),
-      include: UsuarioIncludeSchema.optional(),
-      where: UsuarioWhereUniqueInputSchema,
-    })
-    .strict();
-
-export const UsuarioFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.UsuarioFindUniqueOrThrowArgs> =
-  z
-    .object({
-      select: UsuarioSelectSchema.optional(),
-      include: UsuarioIncludeSchema.optional(),
-      where: UsuarioWhereUniqueInputSchema,
-    })
-    .strict();
-
-export const VeiculoFindFirstArgsSchema: z.ZodType<Prisma.VeiculoFindFirstArgs> =
-  z
-    .object({
-      select: VeiculoSelectSchema.optional(),
-      include: VeiculoIncludeSchema.optional(),
-      where: VeiculoWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          VeiculoOrderByWithRelationInputSchema.array(),
-          VeiculoOrderByWithRelationInputSchema,
-        ])
-        .optional(),
-      cursor: VeiculoWhereUniqueInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-      distinct: z
-        .union([
-          VeiculoScalarFieldEnumSchema,
-          VeiculoScalarFieldEnumSchema.array(),
-        ])
-        .optional(),
-    })
-    .strict();
-
-export const VeiculoFindFirstOrThrowArgsSchema: z.ZodType<Prisma.VeiculoFindFirstOrThrowArgs> =
-  z
-    .object({
-      select: VeiculoSelectSchema.optional(),
-      include: VeiculoIncludeSchema.optional(),
-      where: VeiculoWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          VeiculoOrderByWithRelationInputSchema.array(),
-          VeiculoOrderByWithRelationInputSchema,
-        ])
-        .optional(),
-      cursor: VeiculoWhereUniqueInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-      distinct: z
-        .union([
-          VeiculoScalarFieldEnumSchema,
-          VeiculoScalarFieldEnumSchema.array(),
-        ])
-        .optional(),
-    })
-    .strict();
-
-export const VeiculoFindManyArgsSchema: z.ZodType<Prisma.VeiculoFindManyArgs> =
-  z
-    .object({
-      select: VeiculoSelectSchema.optional(),
-      include: VeiculoIncludeSchema.optional(),
-      where: VeiculoWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          VeiculoOrderByWithRelationInputSchema.array(),
-          VeiculoOrderByWithRelationInputSchema,
-        ])
-        .optional(),
-      cursor: VeiculoWhereUniqueInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-      distinct: z
-        .union([
-          VeiculoScalarFieldEnumSchema,
-          VeiculoScalarFieldEnumSchema.array(),
-        ])
-        .optional(),
-    })
-    .strict();
-
-export const VeiculoAggregateArgsSchema: z.ZodType<Prisma.VeiculoAggregateArgs> =
-  z
-    .object({
-      where: VeiculoWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          VeiculoOrderByWithRelationInputSchema.array(),
-          VeiculoOrderByWithRelationInputSchema,
-        ])
-        .optional(),
-      cursor: VeiculoWhereUniqueInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-    })
-    .strict();
-
-export const VeiculoGroupByArgsSchema: z.ZodType<Prisma.VeiculoGroupByArgs> = z
+export const UserGroupByArgsSchema: z.ZodType<Prisma.UserGroupByArgs> = z
   .object({
-    where: VeiculoWhereInputSchema.optional(),
+    where: UserWhereInputSchema.optional(),
     orderBy: z
       .union([
-        VeiculoOrderByWithAggregationInputSchema.array(),
-        VeiculoOrderByWithAggregationInputSchema,
+        UserOrderByWithAggregationInputSchema.array(),
+        UserOrderByWithAggregationInputSchema,
       ])
       .optional(),
-    by: VeiculoScalarFieldEnumSchema.array(),
-    having: VeiculoScalarWhereWithAggregatesInputSchema.optional(),
+    by: UserScalarFieldEnumSchema.array(),
+    having: UserScalarWhereWithAggregatesInputSchema.optional(),
     take: z.number().optional(),
     skip: z.number().optional(),
   })
   .strict();
 
-export const VeiculoFindUniqueArgsSchema: z.ZodType<Prisma.VeiculoFindUniqueArgs> =
-  z
-    .object({
-      select: VeiculoSelectSchema.optional(),
-      include: VeiculoIncludeSchema.optional(),
-      where: VeiculoWhereUniqueInputSchema,
-    })
-    .strict();
-
-export const VeiculoFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.VeiculoFindUniqueOrThrowArgs> =
-  z
-    .object({
-      select: VeiculoSelectSchema.optional(),
-      include: VeiculoIncludeSchema.optional(),
-      where: VeiculoWhereUniqueInputSchema,
-    })
-    .strict();
-
-export const AtendimentoFindFirstArgsSchema: z.ZodType<Prisma.AtendimentoFindFirstArgs> =
-  z
-    .object({
-      select: AtendimentoSelectSchema.optional(),
-      include: AtendimentoIncludeSchema.optional(),
-      where: AtendimentoWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          AtendimentoOrderByWithRelationInputSchema.array(),
-          AtendimentoOrderByWithRelationInputSchema,
-        ])
-        .optional(),
-      cursor: AtendimentoWhereUniqueInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-      distinct: z
-        .union([
-          AtendimentoScalarFieldEnumSchema,
-          AtendimentoScalarFieldEnumSchema.array(),
-        ])
-        .optional(),
-    })
-    .strict();
-
-export const AtendimentoFindFirstOrThrowArgsSchema: z.ZodType<Prisma.AtendimentoFindFirstOrThrowArgs> =
-  z
-    .object({
-      select: AtendimentoSelectSchema.optional(),
-      include: AtendimentoIncludeSchema.optional(),
-      where: AtendimentoWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          AtendimentoOrderByWithRelationInputSchema.array(),
-          AtendimentoOrderByWithRelationInputSchema,
-        ])
-        .optional(),
-      cursor: AtendimentoWhereUniqueInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-      distinct: z
-        .union([
-          AtendimentoScalarFieldEnumSchema,
-          AtendimentoScalarFieldEnumSchema.array(),
-        ])
-        .optional(),
-    })
-    .strict();
-
-export const AtendimentoFindManyArgsSchema: z.ZodType<Prisma.AtendimentoFindManyArgs> =
-  z
-    .object({
-      select: AtendimentoSelectSchema.optional(),
-      include: AtendimentoIncludeSchema.optional(),
-      where: AtendimentoWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          AtendimentoOrderByWithRelationInputSchema.array(),
-          AtendimentoOrderByWithRelationInputSchema,
-        ])
-        .optional(),
-      cursor: AtendimentoWhereUniqueInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-      distinct: z
-        .union([
-          AtendimentoScalarFieldEnumSchema,
-          AtendimentoScalarFieldEnumSchema.array(),
-        ])
-        .optional(),
-    })
-    .strict();
-
-export const AtendimentoAggregateArgsSchema: z.ZodType<Prisma.AtendimentoAggregateArgs> =
-  z
-    .object({
-      where: AtendimentoWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          AtendimentoOrderByWithRelationInputSchema.array(),
-          AtendimentoOrderByWithRelationInputSchema,
-        ])
-        .optional(),
-      cursor: AtendimentoWhereUniqueInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-    })
-    .strict();
-
-export const AtendimentoGroupByArgsSchema: z.ZodType<Prisma.AtendimentoGroupByArgs> =
-  z
-    .object({
-      where: AtendimentoWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          AtendimentoOrderByWithAggregationInputSchema.array(),
-          AtendimentoOrderByWithAggregationInputSchema,
-        ])
-        .optional(),
-      by: AtendimentoScalarFieldEnumSchema.array(),
-      having: AtendimentoScalarWhereWithAggregatesInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-    })
-    .strict();
-
-export const AtendimentoFindUniqueArgsSchema: z.ZodType<Prisma.AtendimentoFindUniqueArgs> =
-  z
-    .object({
-      select: AtendimentoSelectSchema.optional(),
-      include: AtendimentoIncludeSchema.optional(),
-      where: AtendimentoWhereUniqueInputSchema,
-    })
-    .strict();
-
-export const AtendimentoFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.AtendimentoFindUniqueOrThrowArgs> =
-  z
-    .object({
-      select: AtendimentoSelectSchema.optional(),
-      include: AtendimentoIncludeSchema.optional(),
-      where: AtendimentoWhereUniqueInputSchema,
-    })
-    .strict();
-
-export const VeiculoAtendimentoFindFirstArgsSchema: z.ZodType<Prisma.VeiculoAtendimentoFindFirstArgs> =
-  z
-    .object({
-      select: VeiculoAtendimentoSelectSchema.optional(),
-      include: VeiculoAtendimentoIncludeSchema.optional(),
-      where: VeiculoAtendimentoWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          VeiculoAtendimentoOrderByWithRelationInputSchema.array(),
-          VeiculoAtendimentoOrderByWithRelationInputSchema,
-        ])
-        .optional(),
-      cursor: VeiculoAtendimentoWhereUniqueInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-      distinct: z
-        .union([
-          VeiculoAtendimentoScalarFieldEnumSchema,
-          VeiculoAtendimentoScalarFieldEnumSchema.array(),
-        ])
-        .optional(),
-    })
-    .strict();
-
-export const VeiculoAtendimentoFindFirstOrThrowArgsSchema: z.ZodType<Prisma.VeiculoAtendimentoFindFirstOrThrowArgs> =
-  z
-    .object({
-      select: VeiculoAtendimentoSelectSchema.optional(),
-      include: VeiculoAtendimentoIncludeSchema.optional(),
-      where: VeiculoAtendimentoWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          VeiculoAtendimentoOrderByWithRelationInputSchema.array(),
-          VeiculoAtendimentoOrderByWithRelationInputSchema,
-        ])
-        .optional(),
-      cursor: VeiculoAtendimentoWhereUniqueInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-      distinct: z
-        .union([
-          VeiculoAtendimentoScalarFieldEnumSchema,
-          VeiculoAtendimentoScalarFieldEnumSchema.array(),
-        ])
-        .optional(),
-    })
-    .strict();
-
-export const VeiculoAtendimentoFindManyArgsSchema: z.ZodType<Prisma.VeiculoAtendimentoFindManyArgs> =
-  z
-    .object({
-      select: VeiculoAtendimentoSelectSchema.optional(),
-      include: VeiculoAtendimentoIncludeSchema.optional(),
-      where: VeiculoAtendimentoWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          VeiculoAtendimentoOrderByWithRelationInputSchema.array(),
-          VeiculoAtendimentoOrderByWithRelationInputSchema,
-        ])
-        .optional(),
-      cursor: VeiculoAtendimentoWhereUniqueInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-      distinct: z
-        .union([
-          VeiculoAtendimentoScalarFieldEnumSchema,
-          VeiculoAtendimentoScalarFieldEnumSchema.array(),
-        ])
-        .optional(),
-    })
-    .strict();
-
-export const VeiculoAtendimentoAggregateArgsSchema: z.ZodType<Prisma.VeiculoAtendimentoAggregateArgs> =
-  z
-    .object({
-      where: VeiculoAtendimentoWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          VeiculoAtendimentoOrderByWithRelationInputSchema.array(),
-          VeiculoAtendimentoOrderByWithRelationInputSchema,
-        ])
-        .optional(),
-      cursor: VeiculoAtendimentoWhereUniqueInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-    })
-    .strict();
-
-export const VeiculoAtendimentoGroupByArgsSchema: z.ZodType<Prisma.VeiculoAtendimentoGroupByArgs> =
-  z
-    .object({
-      where: VeiculoAtendimentoWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          VeiculoAtendimentoOrderByWithAggregationInputSchema.array(),
-          VeiculoAtendimentoOrderByWithAggregationInputSchema,
-        ])
-        .optional(),
-      by: VeiculoAtendimentoScalarFieldEnumSchema.array(),
-      having: VeiculoAtendimentoScalarWhereWithAggregatesInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-    })
-    .strict();
-
-export const VeiculoAtendimentoFindUniqueArgsSchema: z.ZodType<Prisma.VeiculoAtendimentoFindUniqueArgs> =
-  z
-    .object({
-      select: VeiculoAtendimentoSelectSchema.optional(),
-      include: VeiculoAtendimentoIncludeSchema.optional(),
-      where: VeiculoAtendimentoWhereUniqueInputSchema,
-    })
-    .strict();
-
-export const VeiculoAtendimentoFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.VeiculoAtendimentoFindUniqueOrThrowArgs> =
-  z
-    .object({
-      select: VeiculoAtendimentoSelectSchema.optional(),
-      include: VeiculoAtendimentoIncludeSchema.optional(),
-      where: VeiculoAtendimentoWhereUniqueInputSchema,
-    })
-    .strict();
-
-export const ConversaFindFirstArgsSchema: z.ZodType<Prisma.ConversaFindFirstArgs> =
-  z
-    .object({
-      select: ConversaSelectSchema.optional(),
-      include: ConversaIncludeSchema.optional(),
-      where: ConversaWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          ConversaOrderByWithRelationInputSchema.array(),
-          ConversaOrderByWithRelationInputSchema,
-        ])
-        .optional(),
-      cursor: ConversaWhereUniqueInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-      distinct: z
-        .union([
-          ConversaScalarFieldEnumSchema,
-          ConversaScalarFieldEnumSchema.array(),
-        ])
-        .optional(),
-    })
-    .strict();
-
-export const ConversaFindFirstOrThrowArgsSchema: z.ZodType<Prisma.ConversaFindFirstOrThrowArgs> =
-  z
-    .object({
-      select: ConversaSelectSchema.optional(),
-      include: ConversaIncludeSchema.optional(),
-      where: ConversaWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          ConversaOrderByWithRelationInputSchema.array(),
-          ConversaOrderByWithRelationInputSchema,
-        ])
-        .optional(),
-      cursor: ConversaWhereUniqueInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-      distinct: z
-        .union([
-          ConversaScalarFieldEnumSchema,
-          ConversaScalarFieldEnumSchema.array(),
-        ])
-        .optional(),
-    })
-    .strict();
-
-export const ConversaFindManyArgsSchema: z.ZodType<Prisma.ConversaFindManyArgs> =
-  z
-    .object({
-      select: ConversaSelectSchema.optional(),
-      include: ConversaIncludeSchema.optional(),
-      where: ConversaWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          ConversaOrderByWithRelationInputSchema.array(),
-          ConversaOrderByWithRelationInputSchema,
-        ])
-        .optional(),
-      cursor: ConversaWhereUniqueInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-      distinct: z
-        .union([
-          ConversaScalarFieldEnumSchema,
-          ConversaScalarFieldEnumSchema.array(),
-        ])
-        .optional(),
-    })
-    .strict();
-
-export const ConversaAggregateArgsSchema: z.ZodType<Prisma.ConversaAggregateArgs> =
-  z
-    .object({
-      where: ConversaWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          ConversaOrderByWithRelationInputSchema.array(),
-          ConversaOrderByWithRelationInputSchema,
-        ])
-        .optional(),
-      cursor: ConversaWhereUniqueInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-    })
-    .strict();
-
-export const ConversaGroupByArgsSchema: z.ZodType<Prisma.ConversaGroupByArgs> =
-  z
-    .object({
-      where: ConversaWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          ConversaOrderByWithAggregationInputSchema.array(),
-          ConversaOrderByWithAggregationInputSchema,
-        ])
-        .optional(),
-      by: ConversaScalarFieldEnumSchema.array(),
-      having: ConversaScalarWhereWithAggregatesInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-    })
-    .strict();
-
-export const ConversaFindUniqueArgsSchema: z.ZodType<Prisma.ConversaFindUniqueArgs> =
-  z
-    .object({
-      select: ConversaSelectSchema.optional(),
-      include: ConversaIncludeSchema.optional(),
-      where: ConversaWhereUniqueInputSchema,
-    })
-    .strict();
-
-export const ConversaFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.ConversaFindUniqueOrThrowArgs> =
-  z
-    .object({
-      select: ConversaSelectSchema.optional(),
-      include: ConversaIncludeSchema.optional(),
-      where: ConversaWhereUniqueInputSchema,
-    })
-    .strict();
-
-export const MensagemFindFirstArgsSchema: z.ZodType<Prisma.MensagemFindFirstArgs> =
-  z
-    .object({
-      select: MensagemSelectSchema.optional(),
-      include: MensagemIncludeSchema.optional(),
-      where: MensagemWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          MensagemOrderByWithRelationInputSchema.array(),
-          MensagemOrderByWithRelationInputSchema,
-        ])
-        .optional(),
-      cursor: MensagemWhereUniqueInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-      distinct: z
-        .union([
-          MensagemScalarFieldEnumSchema,
-          MensagemScalarFieldEnumSchema.array(),
-        ])
-        .optional(),
-    })
-    .strict();
-
-export const MensagemFindFirstOrThrowArgsSchema: z.ZodType<Prisma.MensagemFindFirstOrThrowArgs> =
-  z
-    .object({
-      select: MensagemSelectSchema.optional(),
-      include: MensagemIncludeSchema.optional(),
-      where: MensagemWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          MensagemOrderByWithRelationInputSchema.array(),
-          MensagemOrderByWithRelationInputSchema,
-        ])
-        .optional(),
-      cursor: MensagemWhereUniqueInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-      distinct: z
-        .union([
-          MensagemScalarFieldEnumSchema,
-          MensagemScalarFieldEnumSchema.array(),
-        ])
-        .optional(),
-    })
-    .strict();
-
-export const MensagemFindManyArgsSchema: z.ZodType<Prisma.MensagemFindManyArgs> =
-  z
-    .object({
-      select: MensagemSelectSchema.optional(),
-      include: MensagemIncludeSchema.optional(),
-      where: MensagemWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          MensagemOrderByWithRelationInputSchema.array(),
-          MensagemOrderByWithRelationInputSchema,
-        ])
-        .optional(),
-      cursor: MensagemWhereUniqueInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-      distinct: z
-        .union([
-          MensagemScalarFieldEnumSchema,
-          MensagemScalarFieldEnumSchema.array(),
-        ])
-        .optional(),
-    })
-    .strict();
-
-export const MensagemAggregateArgsSchema: z.ZodType<Prisma.MensagemAggregateArgs> =
-  z
-    .object({
-      where: MensagemWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          MensagemOrderByWithRelationInputSchema.array(),
-          MensagemOrderByWithRelationInputSchema,
-        ])
-        .optional(),
-      cursor: MensagemWhereUniqueInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-    })
-    .strict();
-
-export const MensagemGroupByArgsSchema: z.ZodType<Prisma.MensagemGroupByArgs> =
-  z
-    .object({
-      where: MensagemWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          MensagemOrderByWithAggregationInputSchema.array(),
-          MensagemOrderByWithAggregationInputSchema,
-        ])
-        .optional(),
-      by: MensagemScalarFieldEnumSchema.array(),
-      having: MensagemScalarWhereWithAggregatesInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-    })
-    .strict();
-
-export const MensagemFindUniqueArgsSchema: z.ZodType<Prisma.MensagemFindUniqueArgs> =
-  z
-    .object({
-      select: MensagemSelectSchema.optional(),
-      include: MensagemIncludeSchema.optional(),
-      where: MensagemWhereUniqueInputSchema,
-    })
-    .strict();
-
-export const MensagemFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.MensagemFindUniqueOrThrowArgs> =
-  z
-    .object({
-      select: MensagemSelectSchema.optional(),
-      include: MensagemIncludeSchema.optional(),
-      where: MensagemWhereUniqueInputSchema,
-    })
-    .strict();
-
-export const NotificacaoFindFirstArgsSchema: z.ZodType<Prisma.NotificacaoFindFirstArgs> =
-  z
-    .object({
-      select: NotificacaoSelectSchema.optional(),
-      include: NotificacaoIncludeSchema.optional(),
-      where: NotificacaoWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          NotificacaoOrderByWithRelationInputSchema.array(),
-          NotificacaoOrderByWithRelationInputSchema,
-        ])
-        .optional(),
-      cursor: NotificacaoWhereUniqueInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-      distinct: z
-        .union([
-          NotificacaoScalarFieldEnumSchema,
-          NotificacaoScalarFieldEnumSchema.array(),
-        ])
-        .optional(),
-    })
-    .strict();
-
-export const NotificacaoFindFirstOrThrowArgsSchema: z.ZodType<Prisma.NotificacaoFindFirstOrThrowArgs> =
-  z
-    .object({
-      select: NotificacaoSelectSchema.optional(),
-      include: NotificacaoIncludeSchema.optional(),
-      where: NotificacaoWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          NotificacaoOrderByWithRelationInputSchema.array(),
-          NotificacaoOrderByWithRelationInputSchema,
-        ])
-        .optional(),
-      cursor: NotificacaoWhereUniqueInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-      distinct: z
-        .union([
-          NotificacaoScalarFieldEnumSchema,
-          NotificacaoScalarFieldEnumSchema.array(),
-        ])
-        .optional(),
-    })
-    .strict();
-
-export const NotificacaoFindManyArgsSchema: z.ZodType<Prisma.NotificacaoFindManyArgs> =
-  z
-    .object({
-      select: NotificacaoSelectSchema.optional(),
-      include: NotificacaoIncludeSchema.optional(),
-      where: NotificacaoWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          NotificacaoOrderByWithRelationInputSchema.array(),
-          NotificacaoOrderByWithRelationInputSchema,
-        ])
-        .optional(),
-      cursor: NotificacaoWhereUniqueInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-      distinct: z
-        .union([
-          NotificacaoScalarFieldEnumSchema,
-          NotificacaoScalarFieldEnumSchema.array(),
-        ])
-        .optional(),
-    })
-    .strict();
-
-export const NotificacaoAggregateArgsSchema: z.ZodType<Prisma.NotificacaoAggregateArgs> =
-  z
-    .object({
-      where: NotificacaoWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          NotificacaoOrderByWithRelationInputSchema.array(),
-          NotificacaoOrderByWithRelationInputSchema,
-        ])
-        .optional(),
-      cursor: NotificacaoWhereUniqueInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-    })
-    .strict();
-
-export const NotificacaoGroupByArgsSchema: z.ZodType<Prisma.NotificacaoGroupByArgs> =
-  z
-    .object({
-      where: NotificacaoWhereInputSchema.optional(),
-      orderBy: z
-        .union([
-          NotificacaoOrderByWithAggregationInputSchema.array(),
-          NotificacaoOrderByWithAggregationInputSchema,
-        ])
-        .optional(),
-      by: NotificacaoScalarFieldEnumSchema.array(),
-      having: NotificacaoScalarWhereWithAggregatesInputSchema.optional(),
-      take: z.number().optional(),
-      skip: z.number().optional(),
-    })
-    .strict();
-
-export const NotificacaoFindUniqueArgsSchema: z.ZodType<Prisma.NotificacaoFindUniqueArgs> =
-  z
-    .object({
-      select: NotificacaoSelectSchema.optional(),
-      include: NotificacaoIncludeSchema.optional(),
-      where: NotificacaoWhereUniqueInputSchema,
-    })
-    .strict();
-
-export const NotificacaoFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.NotificacaoFindUniqueOrThrowArgs> =
-  z
-    .object({
-      select: NotificacaoSelectSchema.optional(),
-      include: NotificacaoIncludeSchema.optional(),
-      where: NotificacaoWhereUniqueInputSchema,
-    })
-    .strict();
-
-export const UsuarioCreateArgsSchema: z.ZodType<Prisma.UsuarioCreateArgs> = z
+export const UserFindUniqueArgsSchema: z.ZodType<Prisma.UserFindUniqueArgs> = z
   .object({
-    select: UsuarioSelectSchema.optional(),
-    include: UsuarioIncludeSchema.optional(),
+    select: UserSelectSchema.optional(),
+    include: UserIncludeSchema.optional(),
+    where: UserWhereUniqueInputSchema,
+  })
+  .strict();
+
+export const UserFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.UserFindUniqueOrThrowArgs> =
+  z
+    .object({
+      select: UserSelectSchema.optional(),
+      include: UserIncludeSchema.optional(),
+      where: UserWhereUniqueInputSchema,
+    })
+    .strict();
+
+export const VehicleFindFirstArgsSchema: z.ZodType<Prisma.VehicleFindFirstArgs> =
+  z
+    .object({
+      select: VehicleSelectSchema.optional(),
+      include: VehicleIncludeSchema.optional(),
+      where: VehicleWhereInputSchema.optional(),
+      orderBy: z
+        .union([
+          VehicleOrderByWithRelationInputSchema.array(),
+          VehicleOrderByWithRelationInputSchema,
+        ])
+        .optional(),
+      cursor: VehicleWhereUniqueInputSchema.optional(),
+      take: z.number().optional(),
+      skip: z.number().optional(),
+      distinct: z
+        .union([
+          VehicleScalarFieldEnumSchema,
+          VehicleScalarFieldEnumSchema.array(),
+        ])
+        .optional(),
+    })
+    .strict();
+
+export const VehicleFindFirstOrThrowArgsSchema: z.ZodType<Prisma.VehicleFindFirstOrThrowArgs> =
+  z
+    .object({
+      select: VehicleSelectSchema.optional(),
+      include: VehicleIncludeSchema.optional(),
+      where: VehicleWhereInputSchema.optional(),
+      orderBy: z
+        .union([
+          VehicleOrderByWithRelationInputSchema.array(),
+          VehicleOrderByWithRelationInputSchema,
+        ])
+        .optional(),
+      cursor: VehicleWhereUniqueInputSchema.optional(),
+      take: z.number().optional(),
+      skip: z.number().optional(),
+      distinct: z
+        .union([
+          VehicleScalarFieldEnumSchema,
+          VehicleScalarFieldEnumSchema.array(),
+        ])
+        .optional(),
+    })
+    .strict();
+
+export const VehicleFindManyArgsSchema: z.ZodType<Prisma.VehicleFindManyArgs> =
+  z
+    .object({
+      select: VehicleSelectSchema.optional(),
+      include: VehicleIncludeSchema.optional(),
+      where: VehicleWhereInputSchema.optional(),
+      orderBy: z
+        .union([
+          VehicleOrderByWithRelationInputSchema.array(),
+          VehicleOrderByWithRelationInputSchema,
+        ])
+        .optional(),
+      cursor: VehicleWhereUniqueInputSchema.optional(),
+      take: z.number().optional(),
+      skip: z.number().optional(),
+      distinct: z
+        .union([
+          VehicleScalarFieldEnumSchema,
+          VehicleScalarFieldEnumSchema.array(),
+        ])
+        .optional(),
+    })
+    .strict();
+
+export const VehicleAggregateArgsSchema: z.ZodType<Prisma.VehicleAggregateArgs> =
+  z
+    .object({
+      where: VehicleWhereInputSchema.optional(),
+      orderBy: z
+        .union([
+          VehicleOrderByWithRelationInputSchema.array(),
+          VehicleOrderByWithRelationInputSchema,
+        ])
+        .optional(),
+      cursor: VehicleWhereUniqueInputSchema.optional(),
+      take: z.number().optional(),
+      skip: z.number().optional(),
+    })
+    .strict();
+
+export const VehicleGroupByArgsSchema: z.ZodType<Prisma.VehicleGroupByArgs> = z
+  .object({
+    where: VehicleWhereInputSchema.optional(),
+    orderBy: z
+      .union([
+        VehicleOrderByWithAggregationInputSchema.array(),
+        VehicleOrderByWithAggregationInputSchema,
+      ])
+      .optional(),
+    by: VehicleScalarFieldEnumSchema.array(),
+    having: VehicleScalarWhereWithAggregatesInputSchema.optional(),
+    take: z.number().optional(),
+    skip: z.number().optional(),
+  })
+  .strict();
+
+export const VehicleFindUniqueArgsSchema: z.ZodType<Prisma.VehicleFindUniqueArgs> =
+  z
+    .object({
+      select: VehicleSelectSchema.optional(),
+      include: VehicleIncludeSchema.optional(),
+      where: VehicleWhereUniqueInputSchema,
+    })
+    .strict();
+
+export const VehicleFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.VehicleFindUniqueOrThrowArgs> =
+  z
+    .object({
+      select: VehicleSelectSchema.optional(),
+      include: VehicleIncludeSchema.optional(),
+      where: VehicleWhereUniqueInputSchema,
+    })
+    .strict();
+
+export const EmergencyCallFindFirstArgsSchema: z.ZodType<Prisma.EmergencyCallFindFirstArgs> =
+  z
+    .object({
+      select: EmergencyCallSelectSchema.optional(),
+      include: EmergencyCallIncludeSchema.optional(),
+      where: EmergencyCallWhereInputSchema.optional(),
+      orderBy: z
+        .union([
+          EmergencyCallOrderByWithRelationInputSchema.array(),
+          EmergencyCallOrderByWithRelationInputSchema,
+        ])
+        .optional(),
+      cursor: EmergencyCallWhereUniqueInputSchema.optional(),
+      take: z.number().optional(),
+      skip: z.number().optional(),
+      distinct: z
+        .union([
+          EmergencyCallScalarFieldEnumSchema,
+          EmergencyCallScalarFieldEnumSchema.array(),
+        ])
+        .optional(),
+    })
+    .strict();
+
+export const EmergencyCallFindFirstOrThrowArgsSchema: z.ZodType<Prisma.EmergencyCallFindFirstOrThrowArgs> =
+  z
+    .object({
+      select: EmergencyCallSelectSchema.optional(),
+      include: EmergencyCallIncludeSchema.optional(),
+      where: EmergencyCallWhereInputSchema.optional(),
+      orderBy: z
+        .union([
+          EmergencyCallOrderByWithRelationInputSchema.array(),
+          EmergencyCallOrderByWithRelationInputSchema,
+        ])
+        .optional(),
+      cursor: EmergencyCallWhereUniqueInputSchema.optional(),
+      take: z.number().optional(),
+      skip: z.number().optional(),
+      distinct: z
+        .union([
+          EmergencyCallScalarFieldEnumSchema,
+          EmergencyCallScalarFieldEnumSchema.array(),
+        ])
+        .optional(),
+    })
+    .strict();
+
+export const EmergencyCallFindManyArgsSchema: z.ZodType<Prisma.EmergencyCallFindManyArgs> =
+  z
+    .object({
+      select: EmergencyCallSelectSchema.optional(),
+      include: EmergencyCallIncludeSchema.optional(),
+      where: EmergencyCallWhereInputSchema.optional(),
+      orderBy: z
+        .union([
+          EmergencyCallOrderByWithRelationInputSchema.array(),
+          EmergencyCallOrderByWithRelationInputSchema,
+        ])
+        .optional(),
+      cursor: EmergencyCallWhereUniqueInputSchema.optional(),
+      take: z.number().optional(),
+      skip: z.number().optional(),
+      distinct: z
+        .union([
+          EmergencyCallScalarFieldEnumSchema,
+          EmergencyCallScalarFieldEnumSchema.array(),
+        ])
+        .optional(),
+    })
+    .strict();
+
+export const EmergencyCallAggregateArgsSchema: z.ZodType<Prisma.EmergencyCallAggregateArgs> =
+  z
+    .object({
+      where: EmergencyCallWhereInputSchema.optional(),
+      orderBy: z
+        .union([
+          EmergencyCallOrderByWithRelationInputSchema.array(),
+          EmergencyCallOrderByWithRelationInputSchema,
+        ])
+        .optional(),
+      cursor: EmergencyCallWhereUniqueInputSchema.optional(),
+      take: z.number().optional(),
+      skip: z.number().optional(),
+    })
+    .strict();
+
+export const EmergencyCallGroupByArgsSchema: z.ZodType<Prisma.EmergencyCallGroupByArgs> =
+  z
+    .object({
+      where: EmergencyCallWhereInputSchema.optional(),
+      orderBy: z
+        .union([
+          EmergencyCallOrderByWithAggregationInputSchema.array(),
+          EmergencyCallOrderByWithAggregationInputSchema,
+        ])
+        .optional(),
+      by: EmergencyCallScalarFieldEnumSchema.array(),
+      having: EmergencyCallScalarWhereWithAggregatesInputSchema.optional(),
+      take: z.number().optional(),
+      skip: z.number().optional(),
+    })
+    .strict();
+
+export const EmergencyCallFindUniqueArgsSchema: z.ZodType<Prisma.EmergencyCallFindUniqueArgs> =
+  z
+    .object({
+      select: EmergencyCallSelectSchema.optional(),
+      include: EmergencyCallIncludeSchema.optional(),
+      where: EmergencyCallWhereUniqueInputSchema,
+    })
+    .strict();
+
+export const EmergencyCallFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.EmergencyCallFindUniqueOrThrowArgs> =
+  z
+    .object({
+      select: EmergencyCallSelectSchema.optional(),
+      include: EmergencyCallIncludeSchema.optional(),
+      where: EmergencyCallWhereUniqueInputSchema,
+    })
+    .strict();
+
+export const VehicleEmergencyCallFindFirstArgsSchema: z.ZodType<Prisma.VehicleEmergencyCallFindFirstArgs> =
+  z
+    .object({
+      select: VehicleEmergencyCallSelectSchema.optional(),
+      include: VehicleEmergencyCallIncludeSchema.optional(),
+      where: VehicleEmergencyCallWhereInputSchema.optional(),
+      orderBy: z
+        .union([
+          VehicleEmergencyCallOrderByWithRelationInputSchema.array(),
+          VehicleEmergencyCallOrderByWithRelationInputSchema,
+        ])
+        .optional(),
+      cursor: VehicleEmergencyCallWhereUniqueInputSchema.optional(),
+      take: z.number().optional(),
+      skip: z.number().optional(),
+      distinct: z
+        .union([
+          VehicleEmergencyCallScalarFieldEnumSchema,
+          VehicleEmergencyCallScalarFieldEnumSchema.array(),
+        ])
+        .optional(),
+    })
+    .strict();
+
+export const VehicleEmergencyCallFindFirstOrThrowArgsSchema: z.ZodType<Prisma.VehicleEmergencyCallFindFirstOrThrowArgs> =
+  z
+    .object({
+      select: VehicleEmergencyCallSelectSchema.optional(),
+      include: VehicleEmergencyCallIncludeSchema.optional(),
+      where: VehicleEmergencyCallWhereInputSchema.optional(),
+      orderBy: z
+        .union([
+          VehicleEmergencyCallOrderByWithRelationInputSchema.array(),
+          VehicleEmergencyCallOrderByWithRelationInputSchema,
+        ])
+        .optional(),
+      cursor: VehicleEmergencyCallWhereUniqueInputSchema.optional(),
+      take: z.number().optional(),
+      skip: z.number().optional(),
+      distinct: z
+        .union([
+          VehicleEmergencyCallScalarFieldEnumSchema,
+          VehicleEmergencyCallScalarFieldEnumSchema.array(),
+        ])
+        .optional(),
+    })
+    .strict();
+
+export const VehicleEmergencyCallFindManyArgsSchema: z.ZodType<Prisma.VehicleEmergencyCallFindManyArgs> =
+  z
+    .object({
+      select: VehicleEmergencyCallSelectSchema.optional(),
+      include: VehicleEmergencyCallIncludeSchema.optional(),
+      where: VehicleEmergencyCallWhereInputSchema.optional(),
+      orderBy: z
+        .union([
+          VehicleEmergencyCallOrderByWithRelationInputSchema.array(),
+          VehicleEmergencyCallOrderByWithRelationInputSchema,
+        ])
+        .optional(),
+      cursor: VehicleEmergencyCallWhereUniqueInputSchema.optional(),
+      take: z.number().optional(),
+      skip: z.number().optional(),
+      distinct: z
+        .union([
+          VehicleEmergencyCallScalarFieldEnumSchema,
+          VehicleEmergencyCallScalarFieldEnumSchema.array(),
+        ])
+        .optional(),
+    })
+    .strict();
+
+export const VehicleEmergencyCallAggregateArgsSchema: z.ZodType<Prisma.VehicleEmergencyCallAggregateArgs> =
+  z
+    .object({
+      where: VehicleEmergencyCallWhereInputSchema.optional(),
+      orderBy: z
+        .union([
+          VehicleEmergencyCallOrderByWithRelationInputSchema.array(),
+          VehicleEmergencyCallOrderByWithRelationInputSchema,
+        ])
+        .optional(),
+      cursor: VehicleEmergencyCallWhereUniqueInputSchema.optional(),
+      take: z.number().optional(),
+      skip: z.number().optional(),
+    })
+    .strict();
+
+export const VehicleEmergencyCallGroupByArgsSchema: z.ZodType<Prisma.VehicleEmergencyCallGroupByArgs> =
+  z
+    .object({
+      where: VehicleEmergencyCallWhereInputSchema.optional(),
+      orderBy: z
+        .union([
+          VehicleEmergencyCallOrderByWithAggregationInputSchema.array(),
+          VehicleEmergencyCallOrderByWithAggregationInputSchema,
+        ])
+        .optional(),
+      by: VehicleEmergencyCallScalarFieldEnumSchema.array(),
+      having:
+        VehicleEmergencyCallScalarWhereWithAggregatesInputSchema.optional(),
+      take: z.number().optional(),
+      skip: z.number().optional(),
+    })
+    .strict();
+
+export const VehicleEmergencyCallFindUniqueArgsSchema: z.ZodType<Prisma.VehicleEmergencyCallFindUniqueArgs> =
+  z
+    .object({
+      select: VehicleEmergencyCallSelectSchema.optional(),
+      include: VehicleEmergencyCallIncludeSchema.optional(),
+      where: VehicleEmergencyCallWhereUniqueInputSchema,
+    })
+    .strict();
+
+export const VehicleEmergencyCallFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.VehicleEmergencyCallFindUniqueOrThrowArgs> =
+  z
+    .object({
+      select: VehicleEmergencyCallSelectSchema.optional(),
+      include: VehicleEmergencyCallIncludeSchema.optional(),
+      where: VehicleEmergencyCallWhereUniqueInputSchema,
+    })
+    .strict();
+
+export const ConversationFindFirstArgsSchema: z.ZodType<Prisma.ConversationFindFirstArgs> =
+  z
+    .object({
+      select: ConversationSelectSchema.optional(),
+      include: ConversationIncludeSchema.optional(),
+      where: ConversationWhereInputSchema.optional(),
+      orderBy: z
+        .union([
+          ConversationOrderByWithRelationInputSchema.array(),
+          ConversationOrderByWithRelationInputSchema,
+        ])
+        .optional(),
+      cursor: ConversationWhereUniqueInputSchema.optional(),
+      take: z.number().optional(),
+      skip: z.number().optional(),
+      distinct: z
+        .union([
+          ConversationScalarFieldEnumSchema,
+          ConversationScalarFieldEnumSchema.array(),
+        ])
+        .optional(),
+    })
+    .strict();
+
+export const ConversationFindFirstOrThrowArgsSchema: z.ZodType<Prisma.ConversationFindFirstOrThrowArgs> =
+  z
+    .object({
+      select: ConversationSelectSchema.optional(),
+      include: ConversationIncludeSchema.optional(),
+      where: ConversationWhereInputSchema.optional(),
+      orderBy: z
+        .union([
+          ConversationOrderByWithRelationInputSchema.array(),
+          ConversationOrderByWithRelationInputSchema,
+        ])
+        .optional(),
+      cursor: ConversationWhereUniqueInputSchema.optional(),
+      take: z.number().optional(),
+      skip: z.number().optional(),
+      distinct: z
+        .union([
+          ConversationScalarFieldEnumSchema,
+          ConversationScalarFieldEnumSchema.array(),
+        ])
+        .optional(),
+    })
+    .strict();
+
+export const ConversationFindManyArgsSchema: z.ZodType<Prisma.ConversationFindManyArgs> =
+  z
+    .object({
+      select: ConversationSelectSchema.optional(),
+      include: ConversationIncludeSchema.optional(),
+      where: ConversationWhereInputSchema.optional(),
+      orderBy: z
+        .union([
+          ConversationOrderByWithRelationInputSchema.array(),
+          ConversationOrderByWithRelationInputSchema,
+        ])
+        .optional(),
+      cursor: ConversationWhereUniqueInputSchema.optional(),
+      take: z.number().optional(),
+      skip: z.number().optional(),
+      distinct: z
+        .union([
+          ConversationScalarFieldEnumSchema,
+          ConversationScalarFieldEnumSchema.array(),
+        ])
+        .optional(),
+    })
+    .strict();
+
+export const ConversationAggregateArgsSchema: z.ZodType<Prisma.ConversationAggregateArgs> =
+  z
+    .object({
+      where: ConversationWhereInputSchema.optional(),
+      orderBy: z
+        .union([
+          ConversationOrderByWithRelationInputSchema.array(),
+          ConversationOrderByWithRelationInputSchema,
+        ])
+        .optional(),
+      cursor: ConversationWhereUniqueInputSchema.optional(),
+      take: z.number().optional(),
+      skip: z.number().optional(),
+    })
+    .strict();
+
+export const ConversationGroupByArgsSchema: z.ZodType<Prisma.ConversationGroupByArgs> =
+  z
+    .object({
+      where: ConversationWhereInputSchema.optional(),
+      orderBy: z
+        .union([
+          ConversationOrderByWithAggregationInputSchema.array(),
+          ConversationOrderByWithAggregationInputSchema,
+        ])
+        .optional(),
+      by: ConversationScalarFieldEnumSchema.array(),
+      having: ConversationScalarWhereWithAggregatesInputSchema.optional(),
+      take: z.number().optional(),
+      skip: z.number().optional(),
+    })
+    .strict();
+
+export const ConversationFindUniqueArgsSchema: z.ZodType<Prisma.ConversationFindUniqueArgs> =
+  z
+    .object({
+      select: ConversationSelectSchema.optional(),
+      include: ConversationIncludeSchema.optional(),
+      where: ConversationWhereUniqueInputSchema,
+    })
+    .strict();
+
+export const ConversationFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.ConversationFindUniqueOrThrowArgs> =
+  z
+    .object({
+      select: ConversationSelectSchema.optional(),
+      include: ConversationIncludeSchema.optional(),
+      where: ConversationWhereUniqueInputSchema,
+    })
+    .strict();
+
+export const MessageFindFirstArgsSchema: z.ZodType<Prisma.MessageFindFirstArgs> =
+  z
+    .object({
+      select: MessageSelectSchema.optional(),
+      include: MessageIncludeSchema.optional(),
+      where: MessageWhereInputSchema.optional(),
+      orderBy: z
+        .union([
+          MessageOrderByWithRelationInputSchema.array(),
+          MessageOrderByWithRelationInputSchema,
+        ])
+        .optional(),
+      cursor: MessageWhereUniqueInputSchema.optional(),
+      take: z.number().optional(),
+      skip: z.number().optional(),
+      distinct: z
+        .union([
+          MessageScalarFieldEnumSchema,
+          MessageScalarFieldEnumSchema.array(),
+        ])
+        .optional(),
+    })
+    .strict();
+
+export const MessageFindFirstOrThrowArgsSchema: z.ZodType<Prisma.MessageFindFirstOrThrowArgs> =
+  z
+    .object({
+      select: MessageSelectSchema.optional(),
+      include: MessageIncludeSchema.optional(),
+      where: MessageWhereInputSchema.optional(),
+      orderBy: z
+        .union([
+          MessageOrderByWithRelationInputSchema.array(),
+          MessageOrderByWithRelationInputSchema,
+        ])
+        .optional(),
+      cursor: MessageWhereUniqueInputSchema.optional(),
+      take: z.number().optional(),
+      skip: z.number().optional(),
+      distinct: z
+        .union([
+          MessageScalarFieldEnumSchema,
+          MessageScalarFieldEnumSchema.array(),
+        ])
+        .optional(),
+    })
+    .strict();
+
+export const MessageFindManyArgsSchema: z.ZodType<Prisma.MessageFindManyArgs> =
+  z
+    .object({
+      select: MessageSelectSchema.optional(),
+      include: MessageIncludeSchema.optional(),
+      where: MessageWhereInputSchema.optional(),
+      orderBy: z
+        .union([
+          MessageOrderByWithRelationInputSchema.array(),
+          MessageOrderByWithRelationInputSchema,
+        ])
+        .optional(),
+      cursor: MessageWhereUniqueInputSchema.optional(),
+      take: z.number().optional(),
+      skip: z.number().optional(),
+      distinct: z
+        .union([
+          MessageScalarFieldEnumSchema,
+          MessageScalarFieldEnumSchema.array(),
+        ])
+        .optional(),
+    })
+    .strict();
+
+export const MessageAggregateArgsSchema: z.ZodType<Prisma.MessageAggregateArgs> =
+  z
+    .object({
+      where: MessageWhereInputSchema.optional(),
+      orderBy: z
+        .union([
+          MessageOrderByWithRelationInputSchema.array(),
+          MessageOrderByWithRelationInputSchema,
+        ])
+        .optional(),
+      cursor: MessageWhereUniqueInputSchema.optional(),
+      take: z.number().optional(),
+      skip: z.number().optional(),
+    })
+    .strict();
+
+export const MessageGroupByArgsSchema: z.ZodType<Prisma.MessageGroupByArgs> = z
+  .object({
+    where: MessageWhereInputSchema.optional(),
+    orderBy: z
+      .union([
+        MessageOrderByWithAggregationInputSchema.array(),
+        MessageOrderByWithAggregationInputSchema,
+      ])
+      .optional(),
+    by: MessageScalarFieldEnumSchema.array(),
+    having: MessageScalarWhereWithAggregatesInputSchema.optional(),
+    take: z.number().optional(),
+    skip: z.number().optional(),
+  })
+  .strict();
+
+export const MessageFindUniqueArgsSchema: z.ZodType<Prisma.MessageFindUniqueArgs> =
+  z
+    .object({
+      select: MessageSelectSchema.optional(),
+      include: MessageIncludeSchema.optional(),
+      where: MessageWhereUniqueInputSchema,
+    })
+    .strict();
+
+export const MessageFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.MessageFindUniqueOrThrowArgs> =
+  z
+    .object({
+      select: MessageSelectSchema.optional(),
+      include: MessageIncludeSchema.optional(),
+      where: MessageWhereUniqueInputSchema,
+    })
+    .strict();
+
+export const NotificationFindFirstArgsSchema: z.ZodType<Prisma.NotificationFindFirstArgs> =
+  z
+    .object({
+      select: NotificationSelectSchema.optional(),
+      include: NotificationIncludeSchema.optional(),
+      where: NotificationWhereInputSchema.optional(),
+      orderBy: z
+        .union([
+          NotificationOrderByWithRelationInputSchema.array(),
+          NotificationOrderByWithRelationInputSchema,
+        ])
+        .optional(),
+      cursor: NotificationWhereUniqueInputSchema.optional(),
+      take: z.number().optional(),
+      skip: z.number().optional(),
+      distinct: z
+        .union([
+          NotificationScalarFieldEnumSchema,
+          NotificationScalarFieldEnumSchema.array(),
+        ])
+        .optional(),
+    })
+    .strict();
+
+export const NotificationFindFirstOrThrowArgsSchema: z.ZodType<Prisma.NotificationFindFirstOrThrowArgs> =
+  z
+    .object({
+      select: NotificationSelectSchema.optional(),
+      include: NotificationIncludeSchema.optional(),
+      where: NotificationWhereInputSchema.optional(),
+      orderBy: z
+        .union([
+          NotificationOrderByWithRelationInputSchema.array(),
+          NotificationOrderByWithRelationInputSchema,
+        ])
+        .optional(),
+      cursor: NotificationWhereUniqueInputSchema.optional(),
+      take: z.number().optional(),
+      skip: z.number().optional(),
+      distinct: z
+        .union([
+          NotificationScalarFieldEnumSchema,
+          NotificationScalarFieldEnumSchema.array(),
+        ])
+        .optional(),
+    })
+    .strict();
+
+export const NotificationFindManyArgsSchema: z.ZodType<Prisma.NotificationFindManyArgs> =
+  z
+    .object({
+      select: NotificationSelectSchema.optional(),
+      include: NotificationIncludeSchema.optional(),
+      where: NotificationWhereInputSchema.optional(),
+      orderBy: z
+        .union([
+          NotificationOrderByWithRelationInputSchema.array(),
+          NotificationOrderByWithRelationInputSchema,
+        ])
+        .optional(),
+      cursor: NotificationWhereUniqueInputSchema.optional(),
+      take: z.number().optional(),
+      skip: z.number().optional(),
+      distinct: z
+        .union([
+          NotificationScalarFieldEnumSchema,
+          NotificationScalarFieldEnumSchema.array(),
+        ])
+        .optional(),
+    })
+    .strict();
+
+export const NotificationAggregateArgsSchema: z.ZodType<Prisma.NotificationAggregateArgs> =
+  z
+    .object({
+      where: NotificationWhereInputSchema.optional(),
+      orderBy: z
+        .union([
+          NotificationOrderByWithRelationInputSchema.array(),
+          NotificationOrderByWithRelationInputSchema,
+        ])
+        .optional(),
+      cursor: NotificationWhereUniqueInputSchema.optional(),
+      take: z.number().optional(),
+      skip: z.number().optional(),
+    })
+    .strict();
+
+export const NotificationGroupByArgsSchema: z.ZodType<Prisma.NotificationGroupByArgs> =
+  z
+    .object({
+      where: NotificationWhereInputSchema.optional(),
+      orderBy: z
+        .union([
+          NotificationOrderByWithAggregationInputSchema.array(),
+          NotificationOrderByWithAggregationInputSchema,
+        ])
+        .optional(),
+      by: NotificationScalarFieldEnumSchema.array(),
+      having: NotificationScalarWhereWithAggregatesInputSchema.optional(),
+      take: z.number().optional(),
+      skip: z.number().optional(),
+    })
+    .strict();
+
+export const NotificationFindUniqueArgsSchema: z.ZodType<Prisma.NotificationFindUniqueArgs> =
+  z
+    .object({
+      select: NotificationSelectSchema.optional(),
+      include: NotificationIncludeSchema.optional(),
+      where: NotificationWhereUniqueInputSchema,
+    })
+    .strict();
+
+export const NotificationFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.NotificationFindUniqueOrThrowArgs> =
+  z
+    .object({
+      select: NotificationSelectSchema.optional(),
+      include: NotificationIncludeSchema.optional(),
+      where: NotificationWhereUniqueInputSchema,
+    })
+    .strict();
+
+export const UserCreateArgsSchema: z.ZodType<Prisma.UserCreateArgs> = z
+  .object({
+    select: UserSelectSchema.optional(),
+    include: UserIncludeSchema.optional(),
+    data: z.union([UserCreateInputSchema, UserUncheckedCreateInputSchema]),
+  })
+  .strict();
+
+export const UserUpsertArgsSchema: z.ZodType<Prisma.UserUpsertArgs> = z
+  .object({
+    select: UserSelectSchema.optional(),
+    include: UserIncludeSchema.optional(),
+    where: UserWhereUniqueInputSchema,
+    create: z.union([UserCreateInputSchema, UserUncheckedCreateInputSchema]),
+    update: z.union([UserUpdateInputSchema, UserUncheckedUpdateInputSchema]),
+  })
+  .strict();
+
+export const UserCreateManyArgsSchema: z.ZodType<Prisma.UserCreateManyArgs> = z
+  .object({
     data: z.union([
-      UsuarioCreateInputSchema,
-      UsuarioUncheckedCreateInputSchema,
+      UserCreateManyInputSchema,
+      UserCreateManyInputSchema.array(),
+    ]),
+    skipDuplicates: z.boolean().optional(),
+  })
+  .strict();
+
+export const UserCreateManyAndReturnArgsSchema: z.ZodType<Prisma.UserCreateManyAndReturnArgs> =
+  z
+    .object({
+      data: z.union([
+        UserCreateManyInputSchema,
+        UserCreateManyInputSchema.array(),
+      ]),
+      skipDuplicates: z.boolean().optional(),
+    })
+    .strict();
+
+export const UserDeleteArgsSchema: z.ZodType<Prisma.UserDeleteArgs> = z
+  .object({
+    select: UserSelectSchema.optional(),
+    include: UserIncludeSchema.optional(),
+    where: UserWhereUniqueInputSchema,
+  })
+  .strict();
+
+export const UserUpdateArgsSchema: z.ZodType<Prisma.UserUpdateArgs> = z
+  .object({
+    select: UserSelectSchema.optional(),
+    include: UserIncludeSchema.optional(),
+    data: z.union([UserUpdateInputSchema, UserUncheckedUpdateInputSchema]),
+    where: UserWhereUniqueInputSchema,
+  })
+  .strict();
+
+export const UserUpdateManyArgsSchema: z.ZodType<Prisma.UserUpdateManyArgs> = z
+  .object({
+    data: z.union([
+      UserUpdateManyMutationInputSchema,
+      UserUncheckedUpdateManyInputSchema,
+    ]),
+    where: UserWhereInputSchema.optional(),
+    limit: z.number().optional(),
+  })
+  .strict();
+
+export const UserUpdateManyAndReturnArgsSchema: z.ZodType<Prisma.UserUpdateManyAndReturnArgs> =
+  z
+    .object({
+      data: z.union([
+        UserUpdateManyMutationInputSchema,
+        UserUncheckedUpdateManyInputSchema,
+      ]),
+      where: UserWhereInputSchema.optional(),
+      limit: z.number().optional(),
+    })
+    .strict();
+
+export const UserDeleteManyArgsSchema: z.ZodType<Prisma.UserDeleteManyArgs> = z
+  .object({
+    where: UserWhereInputSchema.optional(),
+    limit: z.number().optional(),
+  })
+  .strict();
+
+export const VehicleCreateArgsSchema: z.ZodType<Prisma.VehicleCreateArgs> = z
+  .object({
+    select: VehicleSelectSchema.optional(),
+    include: VehicleIncludeSchema.optional(),
+    data: z.union([
+      VehicleCreateInputSchema,
+      VehicleUncheckedCreateInputSchema,
     ]),
   })
   .strict();
 
-export const UsuarioUpsertArgsSchema: z.ZodType<Prisma.UsuarioUpsertArgs> = z
+export const VehicleUpsertArgsSchema: z.ZodType<Prisma.VehicleUpsertArgs> = z
   .object({
-    select: UsuarioSelectSchema.optional(),
-    include: UsuarioIncludeSchema.optional(),
-    where: UsuarioWhereUniqueInputSchema,
+    select: VehicleSelectSchema.optional(),
+    include: VehicleIncludeSchema.optional(),
+    where: VehicleWhereUniqueInputSchema,
     create: z.union([
-      UsuarioCreateInputSchema,
-      UsuarioUncheckedCreateInputSchema,
+      VehicleCreateInputSchema,
+      VehicleUncheckedCreateInputSchema,
     ]),
     update: z.union([
-      UsuarioUpdateInputSchema,
-      UsuarioUncheckedUpdateInputSchema,
+      VehicleUpdateInputSchema,
+      VehicleUncheckedUpdateInputSchema,
     ]),
   })
   .strict();
 
-export const UsuarioCreateManyArgsSchema: z.ZodType<Prisma.UsuarioCreateManyArgs> =
+export const VehicleCreateManyArgsSchema: z.ZodType<Prisma.VehicleCreateManyArgs> =
   z
     .object({
       data: z.union([
-        UsuarioCreateManyInputSchema,
-        UsuarioCreateManyInputSchema.array(),
+        VehicleCreateManyInputSchema,
+        VehicleCreateManyInputSchema.array(),
       ]),
       skipDuplicates: z.boolean().optional(),
     })
     .strict();
 
-export const UsuarioCreateManyAndReturnArgsSchema: z.ZodType<Prisma.UsuarioCreateManyAndReturnArgs> =
+export const VehicleCreateManyAndReturnArgsSchema: z.ZodType<Prisma.VehicleCreateManyAndReturnArgs> =
   z
     .object({
       data: z.union([
-        UsuarioCreateManyInputSchema,
-        UsuarioCreateManyInputSchema.array(),
+        VehicleCreateManyInputSchema,
+        VehicleCreateManyInputSchema.array(),
       ]),
       skipDuplicates: z.boolean().optional(),
     })
     .strict();
 
-export const UsuarioDeleteArgsSchema: z.ZodType<Prisma.UsuarioDeleteArgs> = z
+export const VehicleDeleteArgsSchema: z.ZodType<Prisma.VehicleDeleteArgs> = z
   .object({
-    select: UsuarioSelectSchema.optional(),
-    include: UsuarioIncludeSchema.optional(),
-    where: UsuarioWhereUniqueInputSchema,
+    select: VehicleSelectSchema.optional(),
+    include: VehicleIncludeSchema.optional(),
+    where: VehicleWhereUniqueInputSchema,
   })
   .strict();
 
-export const UsuarioUpdateArgsSchema: z.ZodType<Prisma.UsuarioUpdateArgs> = z
+export const VehicleUpdateArgsSchema: z.ZodType<Prisma.VehicleUpdateArgs> = z
   .object({
-    select: UsuarioSelectSchema.optional(),
-    include: UsuarioIncludeSchema.optional(),
+    select: VehicleSelectSchema.optional(),
+    include: VehicleIncludeSchema.optional(),
     data: z.union([
-      UsuarioUpdateInputSchema,
-      UsuarioUncheckedUpdateInputSchema,
+      VehicleUpdateInputSchema,
+      VehicleUncheckedUpdateInputSchema,
     ]),
-    where: UsuarioWhereUniqueInputSchema,
+    where: VehicleWhereUniqueInputSchema,
   })
   .strict();
 
-export const UsuarioUpdateManyArgsSchema: z.ZodType<Prisma.UsuarioUpdateManyArgs> =
+export const VehicleUpdateManyArgsSchema: z.ZodType<Prisma.VehicleUpdateManyArgs> =
   z
     .object({
       data: z.union([
-        UsuarioUpdateManyMutationInputSchema,
-        UsuarioUncheckedUpdateManyInputSchema,
+        VehicleUpdateManyMutationInputSchema,
+        VehicleUncheckedUpdateManyInputSchema,
       ]),
-      where: UsuarioWhereInputSchema.optional(),
+      where: VehicleWhereInputSchema.optional(),
       limit: z.number().optional(),
     })
     .strict();
 
-export const UsuarioUpdateManyAndReturnArgsSchema: z.ZodType<Prisma.UsuarioUpdateManyAndReturnArgs> =
+export const VehicleUpdateManyAndReturnArgsSchema: z.ZodType<Prisma.VehicleUpdateManyAndReturnArgs> =
   z
     .object({
       data: z.union([
-        UsuarioUpdateManyMutationInputSchema,
-        UsuarioUncheckedUpdateManyInputSchema,
+        VehicleUpdateManyMutationInputSchema,
+        VehicleUncheckedUpdateManyInputSchema,
       ]),
-      where: UsuarioWhereInputSchema.optional(),
+      where: VehicleWhereInputSchema.optional(),
       limit: z.number().optional(),
     })
     .strict();
 
-export const UsuarioDeleteManyArgsSchema: z.ZodType<Prisma.UsuarioDeleteManyArgs> =
+export const VehicleDeleteManyArgsSchema: z.ZodType<Prisma.VehicleDeleteManyArgs> =
   z
     .object({
-      where: UsuarioWhereInputSchema.optional(),
+      where: VehicleWhereInputSchema.optional(),
       limit: z.number().optional(),
     })
     .strict();
 
-export const VeiculoCreateArgsSchema: z.ZodType<Prisma.VeiculoCreateArgs> = z
-  .object({
-    select: VeiculoSelectSchema.optional(),
-    include: VeiculoIncludeSchema.optional(),
-    data: z.union([
-      VeiculoCreateInputSchema,
-      VeiculoUncheckedCreateInputSchema,
-    ]),
-  })
-  .strict();
-
-export const VeiculoUpsertArgsSchema: z.ZodType<Prisma.VeiculoUpsertArgs> = z
-  .object({
-    select: VeiculoSelectSchema.optional(),
-    include: VeiculoIncludeSchema.optional(),
-    where: VeiculoWhereUniqueInputSchema,
-    create: z.union([
-      VeiculoCreateInputSchema,
-      VeiculoUncheckedCreateInputSchema,
-    ]),
-    update: z.union([
-      VeiculoUpdateInputSchema,
-      VeiculoUncheckedUpdateInputSchema,
-    ]),
-  })
-  .strict();
-
-export const VeiculoCreateManyArgsSchema: z.ZodType<Prisma.VeiculoCreateManyArgs> =
+export const EmergencyCallCreateArgsSchema: z.ZodType<Prisma.EmergencyCallCreateArgs> =
   z
     .object({
+      select: EmergencyCallSelectSchema.optional(),
+      include: EmergencyCallIncludeSchema.optional(),
       data: z.union([
-        VeiculoCreateManyInputSchema,
-        VeiculoCreateManyInputSchema.array(),
-      ]),
-      skipDuplicates: z.boolean().optional(),
-    })
-    .strict();
-
-export const VeiculoCreateManyAndReturnArgsSchema: z.ZodType<Prisma.VeiculoCreateManyAndReturnArgs> =
-  z
-    .object({
-      data: z.union([
-        VeiculoCreateManyInputSchema,
-        VeiculoCreateManyInputSchema.array(),
-      ]),
-      skipDuplicates: z.boolean().optional(),
-    })
-    .strict();
-
-export const VeiculoDeleteArgsSchema: z.ZodType<Prisma.VeiculoDeleteArgs> = z
-  .object({
-    select: VeiculoSelectSchema.optional(),
-    include: VeiculoIncludeSchema.optional(),
-    where: VeiculoWhereUniqueInputSchema,
-  })
-  .strict();
-
-export const VeiculoUpdateArgsSchema: z.ZodType<Prisma.VeiculoUpdateArgs> = z
-  .object({
-    select: VeiculoSelectSchema.optional(),
-    include: VeiculoIncludeSchema.optional(),
-    data: z.union([
-      VeiculoUpdateInputSchema,
-      VeiculoUncheckedUpdateInputSchema,
-    ]),
-    where: VeiculoWhereUniqueInputSchema,
-  })
-  .strict();
-
-export const VeiculoUpdateManyArgsSchema: z.ZodType<Prisma.VeiculoUpdateManyArgs> =
-  z
-    .object({
-      data: z.union([
-        VeiculoUpdateManyMutationInputSchema,
-        VeiculoUncheckedUpdateManyInputSchema,
-      ]),
-      where: VeiculoWhereInputSchema.optional(),
-      limit: z.number().optional(),
-    })
-    .strict();
-
-export const VeiculoUpdateManyAndReturnArgsSchema: z.ZodType<Prisma.VeiculoUpdateManyAndReturnArgs> =
-  z
-    .object({
-      data: z.union([
-        VeiculoUpdateManyMutationInputSchema,
-        VeiculoUncheckedUpdateManyInputSchema,
-      ]),
-      where: VeiculoWhereInputSchema.optional(),
-      limit: z.number().optional(),
-    })
-    .strict();
-
-export const VeiculoDeleteManyArgsSchema: z.ZodType<Prisma.VeiculoDeleteManyArgs> =
-  z
-    .object({
-      where: VeiculoWhereInputSchema.optional(),
-      limit: z.number().optional(),
-    })
-    .strict();
-
-export const AtendimentoCreateArgsSchema: z.ZodType<Prisma.AtendimentoCreateArgs> =
-  z
-    .object({
-      select: AtendimentoSelectSchema.optional(),
-      include: AtendimentoIncludeSchema.optional(),
-      data: z.union([
-        AtendimentoCreateInputSchema,
-        AtendimentoUncheckedCreateInputSchema,
+        EmergencyCallCreateInputSchema,
+        EmergencyCallUncheckedCreateInputSchema,
       ]),
     })
     .strict();
 
-export const AtendimentoUpsertArgsSchema: z.ZodType<Prisma.AtendimentoUpsertArgs> =
+export const EmergencyCallUpsertArgsSchema: z.ZodType<Prisma.EmergencyCallUpsertArgs> =
   z
     .object({
-      select: AtendimentoSelectSchema.optional(),
-      include: AtendimentoIncludeSchema.optional(),
-      where: AtendimentoWhereUniqueInputSchema,
+      select: EmergencyCallSelectSchema.optional(),
+      include: EmergencyCallIncludeSchema.optional(),
+      where: EmergencyCallWhereUniqueInputSchema,
       create: z.union([
-        AtendimentoCreateInputSchema,
-        AtendimentoUncheckedCreateInputSchema,
+        EmergencyCallCreateInputSchema,
+        EmergencyCallUncheckedCreateInputSchema,
       ]),
       update: z.union([
-        AtendimentoUpdateInputSchema,
-        AtendimentoUncheckedUpdateInputSchema,
+        EmergencyCallUpdateInputSchema,
+        EmergencyCallUncheckedUpdateInputSchema,
       ]),
     })
     .strict();
 
-export const AtendimentoCreateManyArgsSchema: z.ZodType<Prisma.AtendimentoCreateManyArgs> =
+export const EmergencyCallCreateManyArgsSchema: z.ZodType<Prisma.EmergencyCallCreateManyArgs> =
   z
     .object({
       data: z.union([
-        AtendimentoCreateManyInputSchema,
-        AtendimentoCreateManyInputSchema.array(),
+        EmergencyCallCreateManyInputSchema,
+        EmergencyCallCreateManyInputSchema.array(),
       ]),
       skipDuplicates: z.boolean().optional(),
     })
     .strict();
 
-export const AtendimentoCreateManyAndReturnArgsSchema: z.ZodType<Prisma.AtendimentoCreateManyAndReturnArgs> =
+export const EmergencyCallCreateManyAndReturnArgsSchema: z.ZodType<Prisma.EmergencyCallCreateManyAndReturnArgs> =
   z
     .object({
       data: z.union([
-        AtendimentoCreateManyInputSchema,
-        AtendimentoCreateManyInputSchema.array(),
+        EmergencyCallCreateManyInputSchema,
+        EmergencyCallCreateManyInputSchema.array(),
       ]),
       skipDuplicates: z.boolean().optional(),
     })
     .strict();
 
-export const AtendimentoDeleteArgsSchema: z.ZodType<Prisma.AtendimentoDeleteArgs> =
+export const EmergencyCallDeleteArgsSchema: z.ZodType<Prisma.EmergencyCallDeleteArgs> =
   z
     .object({
-      select: AtendimentoSelectSchema.optional(),
-      include: AtendimentoIncludeSchema.optional(),
-      where: AtendimentoWhereUniqueInputSchema,
+      select: EmergencyCallSelectSchema.optional(),
+      include: EmergencyCallIncludeSchema.optional(),
+      where: EmergencyCallWhereUniqueInputSchema,
     })
     .strict();
 
-export const AtendimentoUpdateArgsSchema: z.ZodType<Prisma.AtendimentoUpdateArgs> =
+export const EmergencyCallUpdateArgsSchema: z.ZodType<Prisma.EmergencyCallUpdateArgs> =
   z
     .object({
-      select: AtendimentoSelectSchema.optional(),
-      include: AtendimentoIncludeSchema.optional(),
+      select: EmergencyCallSelectSchema.optional(),
+      include: EmergencyCallIncludeSchema.optional(),
       data: z.union([
-        AtendimentoUpdateInputSchema,
-        AtendimentoUncheckedUpdateInputSchema,
+        EmergencyCallUpdateInputSchema,
+        EmergencyCallUncheckedUpdateInputSchema,
       ]),
-      where: AtendimentoWhereUniqueInputSchema,
+      where: EmergencyCallWhereUniqueInputSchema,
     })
     .strict();
 
-export const AtendimentoUpdateManyArgsSchema: z.ZodType<Prisma.AtendimentoUpdateManyArgs> =
+export const EmergencyCallUpdateManyArgsSchema: z.ZodType<Prisma.EmergencyCallUpdateManyArgs> =
   z
     .object({
       data: z.union([
-        AtendimentoUpdateManyMutationInputSchema,
-        AtendimentoUncheckedUpdateManyInputSchema,
+        EmergencyCallUpdateManyMutationInputSchema,
+        EmergencyCallUncheckedUpdateManyInputSchema,
       ]),
-      where: AtendimentoWhereInputSchema.optional(),
+      where: EmergencyCallWhereInputSchema.optional(),
       limit: z.number().optional(),
     })
     .strict();
 
-export const AtendimentoUpdateManyAndReturnArgsSchema: z.ZodType<Prisma.AtendimentoUpdateManyAndReturnArgs> =
+export const EmergencyCallUpdateManyAndReturnArgsSchema: z.ZodType<Prisma.EmergencyCallUpdateManyAndReturnArgs> =
   z
     .object({
       data: z.union([
-        AtendimentoUpdateManyMutationInputSchema,
-        AtendimentoUncheckedUpdateManyInputSchema,
+        EmergencyCallUpdateManyMutationInputSchema,
+        EmergencyCallUncheckedUpdateManyInputSchema,
       ]),
-      where: AtendimentoWhereInputSchema.optional(),
+      where: EmergencyCallWhereInputSchema.optional(),
       limit: z.number().optional(),
     })
     .strict();
 
-export const AtendimentoDeleteManyArgsSchema: z.ZodType<Prisma.AtendimentoDeleteManyArgs> =
+export const EmergencyCallDeleteManyArgsSchema: z.ZodType<Prisma.EmergencyCallDeleteManyArgs> =
   z
     .object({
-      where: AtendimentoWhereInputSchema.optional(),
+      where: EmergencyCallWhereInputSchema.optional(),
       limit: z.number().optional(),
     })
     .strict();
 
-export const VeiculoAtendimentoCreateArgsSchema: z.ZodType<Prisma.VeiculoAtendimentoCreateArgs> =
+export const VehicleEmergencyCallCreateArgsSchema: z.ZodType<Prisma.VehicleEmergencyCallCreateArgs> =
   z
     .object({
-      select: VeiculoAtendimentoSelectSchema.optional(),
-      include: VeiculoAtendimentoIncludeSchema.optional(),
+      select: VehicleEmergencyCallSelectSchema.optional(),
+      include: VehicleEmergencyCallIncludeSchema.optional(),
       data: z.union([
-        VeiculoAtendimentoCreateInputSchema,
-        VeiculoAtendimentoUncheckedCreateInputSchema,
+        VehicleEmergencyCallCreateInputSchema,
+        VehicleEmergencyCallUncheckedCreateInputSchema,
       ]),
     })
     .strict();
 
-export const VeiculoAtendimentoUpsertArgsSchema: z.ZodType<Prisma.VeiculoAtendimentoUpsertArgs> =
+export const VehicleEmergencyCallUpsertArgsSchema: z.ZodType<Prisma.VehicleEmergencyCallUpsertArgs> =
   z
     .object({
-      select: VeiculoAtendimentoSelectSchema.optional(),
-      include: VeiculoAtendimentoIncludeSchema.optional(),
-      where: VeiculoAtendimentoWhereUniqueInputSchema,
+      select: VehicleEmergencyCallSelectSchema.optional(),
+      include: VehicleEmergencyCallIncludeSchema.optional(),
+      where: VehicleEmergencyCallWhereUniqueInputSchema,
       create: z.union([
-        VeiculoAtendimentoCreateInputSchema,
-        VeiculoAtendimentoUncheckedCreateInputSchema,
+        VehicleEmergencyCallCreateInputSchema,
+        VehicleEmergencyCallUncheckedCreateInputSchema,
       ]),
       update: z.union([
-        VeiculoAtendimentoUpdateInputSchema,
-        VeiculoAtendimentoUncheckedUpdateInputSchema,
+        VehicleEmergencyCallUpdateInputSchema,
+        VehicleEmergencyCallUncheckedUpdateInputSchema,
       ]),
     })
     .strict();
 
-export const VeiculoAtendimentoCreateManyArgsSchema: z.ZodType<Prisma.VeiculoAtendimentoCreateManyArgs> =
+export const VehicleEmergencyCallCreateManyArgsSchema: z.ZodType<Prisma.VehicleEmergencyCallCreateManyArgs> =
   z
     .object({
       data: z.union([
-        VeiculoAtendimentoCreateManyInputSchema,
-        VeiculoAtendimentoCreateManyInputSchema.array(),
+        VehicleEmergencyCallCreateManyInputSchema,
+        VehicleEmergencyCallCreateManyInputSchema.array(),
       ]),
       skipDuplicates: z.boolean().optional(),
     })
     .strict();
 
-export const VeiculoAtendimentoCreateManyAndReturnArgsSchema: z.ZodType<Prisma.VeiculoAtendimentoCreateManyAndReturnArgs> =
+export const VehicleEmergencyCallCreateManyAndReturnArgsSchema: z.ZodType<Prisma.VehicleEmergencyCallCreateManyAndReturnArgs> =
   z
     .object({
       data: z.union([
-        VeiculoAtendimentoCreateManyInputSchema,
-        VeiculoAtendimentoCreateManyInputSchema.array(),
+        VehicleEmergencyCallCreateManyInputSchema,
+        VehicleEmergencyCallCreateManyInputSchema.array(),
       ]),
       skipDuplicates: z.boolean().optional(),
     })
     .strict();
 
-export const VeiculoAtendimentoDeleteArgsSchema: z.ZodType<Prisma.VeiculoAtendimentoDeleteArgs> =
+export const VehicleEmergencyCallDeleteArgsSchema: z.ZodType<Prisma.VehicleEmergencyCallDeleteArgs> =
   z
     .object({
-      select: VeiculoAtendimentoSelectSchema.optional(),
-      include: VeiculoAtendimentoIncludeSchema.optional(),
-      where: VeiculoAtendimentoWhereUniqueInputSchema,
+      select: VehicleEmergencyCallSelectSchema.optional(),
+      include: VehicleEmergencyCallIncludeSchema.optional(),
+      where: VehicleEmergencyCallWhereUniqueInputSchema,
     })
     .strict();
 
-export const VeiculoAtendimentoUpdateArgsSchema: z.ZodType<Prisma.VeiculoAtendimentoUpdateArgs> =
+export const VehicleEmergencyCallUpdateArgsSchema: z.ZodType<Prisma.VehicleEmergencyCallUpdateArgs> =
   z
     .object({
-      select: VeiculoAtendimentoSelectSchema.optional(),
-      include: VeiculoAtendimentoIncludeSchema.optional(),
+      select: VehicleEmergencyCallSelectSchema.optional(),
+      include: VehicleEmergencyCallIncludeSchema.optional(),
       data: z.union([
-        VeiculoAtendimentoUpdateInputSchema,
-        VeiculoAtendimentoUncheckedUpdateInputSchema,
+        VehicleEmergencyCallUpdateInputSchema,
+        VehicleEmergencyCallUncheckedUpdateInputSchema,
       ]),
-      where: VeiculoAtendimentoWhereUniqueInputSchema,
+      where: VehicleEmergencyCallWhereUniqueInputSchema,
     })
     .strict();
 
-export const VeiculoAtendimentoUpdateManyArgsSchema: z.ZodType<Prisma.VeiculoAtendimentoUpdateManyArgs> =
+export const VehicleEmergencyCallUpdateManyArgsSchema: z.ZodType<Prisma.VehicleEmergencyCallUpdateManyArgs> =
   z
     .object({
       data: z.union([
-        VeiculoAtendimentoUpdateManyMutationInputSchema,
-        VeiculoAtendimentoUncheckedUpdateManyInputSchema,
+        VehicleEmergencyCallUpdateManyMutationInputSchema,
+        VehicleEmergencyCallUncheckedUpdateManyInputSchema,
       ]),
-      where: VeiculoAtendimentoWhereInputSchema.optional(),
+      where: VehicleEmergencyCallWhereInputSchema.optional(),
       limit: z.number().optional(),
     })
     .strict();
 
-export const VeiculoAtendimentoUpdateManyAndReturnArgsSchema: z.ZodType<Prisma.VeiculoAtendimentoUpdateManyAndReturnArgs> =
+export const VehicleEmergencyCallUpdateManyAndReturnArgsSchema: z.ZodType<Prisma.VehicleEmergencyCallUpdateManyAndReturnArgs> =
   z
     .object({
       data: z.union([
-        VeiculoAtendimentoUpdateManyMutationInputSchema,
-        VeiculoAtendimentoUncheckedUpdateManyInputSchema,
+        VehicleEmergencyCallUpdateManyMutationInputSchema,
+        VehicleEmergencyCallUncheckedUpdateManyInputSchema,
       ]),
-      where: VeiculoAtendimentoWhereInputSchema.optional(),
+      where: VehicleEmergencyCallWhereInputSchema.optional(),
       limit: z.number().optional(),
     })
     .strict();
 
-export const VeiculoAtendimentoDeleteManyArgsSchema: z.ZodType<Prisma.VeiculoAtendimentoDeleteManyArgs> =
+export const VehicleEmergencyCallDeleteManyArgsSchema: z.ZodType<Prisma.VehicleEmergencyCallDeleteManyArgs> =
   z
     .object({
-      where: VeiculoAtendimentoWhereInputSchema.optional(),
+      where: VehicleEmergencyCallWhereInputSchema.optional(),
       limit: z.number().optional(),
     })
     .strict();
 
-export const ConversaCreateArgsSchema: z.ZodType<Prisma.ConversaCreateArgs> = z
-  .object({
-    select: ConversaSelectSchema.optional(),
-    include: ConversaIncludeSchema.optional(),
-    data: z.union([
-      ConversaCreateInputSchema,
-      ConversaUncheckedCreateInputSchema,
-    ]),
-  })
-  .strict();
-
-export const ConversaUpsertArgsSchema: z.ZodType<Prisma.ConversaUpsertArgs> = z
-  .object({
-    select: ConversaSelectSchema.optional(),
-    include: ConversaIncludeSchema.optional(),
-    where: ConversaWhereUniqueInputSchema,
-    create: z.union([
-      ConversaCreateInputSchema,
-      ConversaUncheckedCreateInputSchema,
-    ]),
-    update: z.union([
-      ConversaUpdateInputSchema,
-      ConversaUncheckedUpdateInputSchema,
-    ]),
-  })
-  .strict();
-
-export const ConversaCreateManyArgsSchema: z.ZodType<Prisma.ConversaCreateManyArgs> =
+export const ConversationCreateArgsSchema: z.ZodType<Prisma.ConversationCreateArgs> =
   z
     .object({
+      select: ConversationSelectSchema.optional(),
+      include: ConversationIncludeSchema.optional(),
       data: z.union([
-        ConversaCreateManyInputSchema,
-        ConversaCreateManyInputSchema.array(),
-      ]),
-      skipDuplicates: z.boolean().optional(),
-    })
-    .strict();
-
-export const ConversaCreateManyAndReturnArgsSchema: z.ZodType<Prisma.ConversaCreateManyAndReturnArgs> =
-  z
-    .object({
-      data: z.union([
-        ConversaCreateManyInputSchema,
-        ConversaCreateManyInputSchema.array(),
-      ]),
-      skipDuplicates: z.boolean().optional(),
-    })
-    .strict();
-
-export const ConversaDeleteArgsSchema: z.ZodType<Prisma.ConversaDeleteArgs> = z
-  .object({
-    select: ConversaSelectSchema.optional(),
-    include: ConversaIncludeSchema.optional(),
-    where: ConversaWhereUniqueInputSchema,
-  })
-  .strict();
-
-export const ConversaUpdateArgsSchema: z.ZodType<Prisma.ConversaUpdateArgs> = z
-  .object({
-    select: ConversaSelectSchema.optional(),
-    include: ConversaIncludeSchema.optional(),
-    data: z.union([
-      ConversaUpdateInputSchema,
-      ConversaUncheckedUpdateInputSchema,
-    ]),
-    where: ConversaWhereUniqueInputSchema,
-  })
-  .strict();
-
-export const ConversaUpdateManyArgsSchema: z.ZodType<Prisma.ConversaUpdateManyArgs> =
-  z
-    .object({
-      data: z.union([
-        ConversaUpdateManyMutationInputSchema,
-        ConversaUncheckedUpdateManyInputSchema,
-      ]),
-      where: ConversaWhereInputSchema.optional(),
-      limit: z.number().optional(),
-    })
-    .strict();
-
-export const ConversaUpdateManyAndReturnArgsSchema: z.ZodType<Prisma.ConversaUpdateManyAndReturnArgs> =
-  z
-    .object({
-      data: z.union([
-        ConversaUpdateManyMutationInputSchema,
-        ConversaUncheckedUpdateManyInputSchema,
-      ]),
-      where: ConversaWhereInputSchema.optional(),
-      limit: z.number().optional(),
-    })
-    .strict();
-
-export const ConversaDeleteManyArgsSchema: z.ZodType<Prisma.ConversaDeleteManyArgs> =
-  z
-    .object({
-      where: ConversaWhereInputSchema.optional(),
-      limit: z.number().optional(),
-    })
-    .strict();
-
-export const MensagemCreateArgsSchema: z.ZodType<Prisma.MensagemCreateArgs> = z
-  .object({
-    select: MensagemSelectSchema.optional(),
-    include: MensagemIncludeSchema.optional(),
-    data: z.union([
-      MensagemCreateInputSchema,
-      MensagemUncheckedCreateInputSchema,
-    ]),
-  })
-  .strict();
-
-export const MensagemUpsertArgsSchema: z.ZodType<Prisma.MensagemUpsertArgs> = z
-  .object({
-    select: MensagemSelectSchema.optional(),
-    include: MensagemIncludeSchema.optional(),
-    where: MensagemWhereUniqueInputSchema,
-    create: z.union([
-      MensagemCreateInputSchema,
-      MensagemUncheckedCreateInputSchema,
-    ]),
-    update: z.union([
-      MensagemUpdateInputSchema,
-      MensagemUncheckedUpdateInputSchema,
-    ]),
-  })
-  .strict();
-
-export const MensagemCreateManyArgsSchema: z.ZodType<Prisma.MensagemCreateManyArgs> =
-  z
-    .object({
-      data: z.union([
-        MensagemCreateManyInputSchema,
-        MensagemCreateManyInputSchema.array(),
-      ]),
-      skipDuplicates: z.boolean().optional(),
-    })
-    .strict();
-
-export const MensagemCreateManyAndReturnArgsSchema: z.ZodType<Prisma.MensagemCreateManyAndReturnArgs> =
-  z
-    .object({
-      data: z.union([
-        MensagemCreateManyInputSchema,
-        MensagemCreateManyInputSchema.array(),
-      ]),
-      skipDuplicates: z.boolean().optional(),
-    })
-    .strict();
-
-export const MensagemDeleteArgsSchema: z.ZodType<Prisma.MensagemDeleteArgs> = z
-  .object({
-    select: MensagemSelectSchema.optional(),
-    include: MensagemIncludeSchema.optional(),
-    where: MensagemWhereUniqueInputSchema,
-  })
-  .strict();
-
-export const MensagemUpdateArgsSchema: z.ZodType<Prisma.MensagemUpdateArgs> = z
-  .object({
-    select: MensagemSelectSchema.optional(),
-    include: MensagemIncludeSchema.optional(),
-    data: z.union([
-      MensagemUpdateInputSchema,
-      MensagemUncheckedUpdateInputSchema,
-    ]),
-    where: MensagemWhereUniqueInputSchema,
-  })
-  .strict();
-
-export const MensagemUpdateManyArgsSchema: z.ZodType<Prisma.MensagemUpdateManyArgs> =
-  z
-    .object({
-      data: z.union([
-        MensagemUpdateManyMutationInputSchema,
-        MensagemUncheckedUpdateManyInputSchema,
-      ]),
-      where: MensagemWhereInputSchema.optional(),
-      limit: z.number().optional(),
-    })
-    .strict();
-
-export const MensagemUpdateManyAndReturnArgsSchema: z.ZodType<Prisma.MensagemUpdateManyAndReturnArgs> =
-  z
-    .object({
-      data: z.union([
-        MensagemUpdateManyMutationInputSchema,
-        MensagemUncheckedUpdateManyInputSchema,
-      ]),
-      where: MensagemWhereInputSchema.optional(),
-      limit: z.number().optional(),
-    })
-    .strict();
-
-export const MensagemDeleteManyArgsSchema: z.ZodType<Prisma.MensagemDeleteManyArgs> =
-  z
-    .object({
-      where: MensagemWhereInputSchema.optional(),
-      limit: z.number().optional(),
-    })
-    .strict();
-
-export const NotificacaoCreateArgsSchema: z.ZodType<Prisma.NotificacaoCreateArgs> =
-  z
-    .object({
-      select: NotificacaoSelectSchema.optional(),
-      include: NotificacaoIncludeSchema.optional(),
-      data: z.union([
-        NotificacaoCreateInputSchema,
-        NotificacaoUncheckedCreateInputSchema,
+        ConversationCreateInputSchema,
+        ConversationUncheckedCreateInputSchema,
       ]),
     })
     .strict();
 
-export const NotificacaoUpsertArgsSchema: z.ZodType<Prisma.NotificacaoUpsertArgs> =
+export const ConversationUpsertArgsSchema: z.ZodType<Prisma.ConversationUpsertArgs> =
   z
     .object({
-      select: NotificacaoSelectSchema.optional(),
-      include: NotificacaoIncludeSchema.optional(),
-      where: NotificacaoWhereUniqueInputSchema,
+      select: ConversationSelectSchema.optional(),
+      include: ConversationIncludeSchema.optional(),
+      where: ConversationWhereUniqueInputSchema,
       create: z.union([
-        NotificacaoCreateInputSchema,
-        NotificacaoUncheckedCreateInputSchema,
+        ConversationCreateInputSchema,
+        ConversationUncheckedCreateInputSchema,
       ]),
       update: z.union([
-        NotificacaoUpdateInputSchema,
-        NotificacaoUncheckedUpdateInputSchema,
+        ConversationUpdateInputSchema,
+        ConversationUncheckedUpdateInputSchema,
       ]),
     })
     .strict();
 
-export const NotificacaoCreateManyArgsSchema: z.ZodType<Prisma.NotificacaoCreateManyArgs> =
+export const ConversationCreateManyArgsSchema: z.ZodType<Prisma.ConversationCreateManyArgs> =
   z
     .object({
       data: z.union([
-        NotificacaoCreateManyInputSchema,
-        NotificacaoCreateManyInputSchema.array(),
+        ConversationCreateManyInputSchema,
+        ConversationCreateManyInputSchema.array(),
       ]),
       skipDuplicates: z.boolean().optional(),
     })
     .strict();
 
-export const NotificacaoCreateManyAndReturnArgsSchema: z.ZodType<Prisma.NotificacaoCreateManyAndReturnArgs> =
+export const ConversationCreateManyAndReturnArgsSchema: z.ZodType<Prisma.ConversationCreateManyAndReturnArgs> =
   z
     .object({
       data: z.union([
-        NotificacaoCreateManyInputSchema,
-        NotificacaoCreateManyInputSchema.array(),
+        ConversationCreateManyInputSchema,
+        ConversationCreateManyInputSchema.array(),
       ]),
       skipDuplicates: z.boolean().optional(),
     })
     .strict();
 
-export const NotificacaoDeleteArgsSchema: z.ZodType<Prisma.NotificacaoDeleteArgs> =
+export const ConversationDeleteArgsSchema: z.ZodType<Prisma.ConversationDeleteArgs> =
   z
     .object({
-      select: NotificacaoSelectSchema.optional(),
-      include: NotificacaoIncludeSchema.optional(),
-      where: NotificacaoWhereUniqueInputSchema,
+      select: ConversationSelectSchema.optional(),
+      include: ConversationIncludeSchema.optional(),
+      where: ConversationWhereUniqueInputSchema,
     })
     .strict();
 
-export const NotificacaoUpdateArgsSchema: z.ZodType<Prisma.NotificacaoUpdateArgs> =
+export const ConversationUpdateArgsSchema: z.ZodType<Prisma.ConversationUpdateArgs> =
   z
     .object({
-      select: NotificacaoSelectSchema.optional(),
-      include: NotificacaoIncludeSchema.optional(),
+      select: ConversationSelectSchema.optional(),
+      include: ConversationIncludeSchema.optional(),
       data: z.union([
-        NotificacaoUpdateInputSchema,
-        NotificacaoUncheckedUpdateInputSchema,
+        ConversationUpdateInputSchema,
+        ConversationUncheckedUpdateInputSchema,
       ]),
-      where: NotificacaoWhereUniqueInputSchema,
+      where: ConversationWhereUniqueInputSchema,
     })
     .strict();
 
-export const NotificacaoUpdateManyArgsSchema: z.ZodType<Prisma.NotificacaoUpdateManyArgs> =
+export const ConversationUpdateManyArgsSchema: z.ZodType<Prisma.ConversationUpdateManyArgs> =
   z
     .object({
       data: z.union([
-        NotificacaoUpdateManyMutationInputSchema,
-        NotificacaoUncheckedUpdateManyInputSchema,
+        ConversationUpdateManyMutationInputSchema,
+        ConversationUncheckedUpdateManyInputSchema,
       ]),
-      where: NotificacaoWhereInputSchema.optional(),
+      where: ConversationWhereInputSchema.optional(),
       limit: z.number().optional(),
     })
     .strict();
 
-export const NotificacaoUpdateManyAndReturnArgsSchema: z.ZodType<Prisma.NotificacaoUpdateManyAndReturnArgs> =
+export const ConversationUpdateManyAndReturnArgsSchema: z.ZodType<Prisma.ConversationUpdateManyAndReturnArgs> =
   z
     .object({
       data: z.union([
-        NotificacaoUpdateManyMutationInputSchema,
-        NotificacaoUncheckedUpdateManyInputSchema,
+        ConversationUpdateManyMutationInputSchema,
+        ConversationUncheckedUpdateManyInputSchema,
       ]),
-      where: NotificacaoWhereInputSchema.optional(),
+      where: ConversationWhereInputSchema.optional(),
       limit: z.number().optional(),
     })
     .strict();
 
-export const NotificacaoDeleteManyArgsSchema: z.ZodType<Prisma.NotificacaoDeleteManyArgs> =
+export const ConversationDeleteManyArgsSchema: z.ZodType<Prisma.ConversationDeleteManyArgs> =
   z
     .object({
-      where: NotificacaoWhereInputSchema.optional(),
+      where: ConversationWhereInputSchema.optional(),
+      limit: z.number().optional(),
+    })
+    .strict();
+
+export const MessageCreateArgsSchema: z.ZodType<Prisma.MessageCreateArgs> = z
+  .object({
+    select: MessageSelectSchema.optional(),
+    include: MessageIncludeSchema.optional(),
+    data: z.union([
+      MessageCreateInputSchema,
+      MessageUncheckedCreateInputSchema,
+    ]),
+  })
+  .strict();
+
+export const MessageUpsertArgsSchema: z.ZodType<Prisma.MessageUpsertArgs> = z
+  .object({
+    select: MessageSelectSchema.optional(),
+    include: MessageIncludeSchema.optional(),
+    where: MessageWhereUniqueInputSchema,
+    create: z.union([
+      MessageCreateInputSchema,
+      MessageUncheckedCreateInputSchema,
+    ]),
+    update: z.union([
+      MessageUpdateInputSchema,
+      MessageUncheckedUpdateInputSchema,
+    ]),
+  })
+  .strict();
+
+export const MessageCreateManyArgsSchema: z.ZodType<Prisma.MessageCreateManyArgs> =
+  z
+    .object({
+      data: z.union([
+        MessageCreateManyInputSchema,
+        MessageCreateManyInputSchema.array(),
+      ]),
+      skipDuplicates: z.boolean().optional(),
+    })
+    .strict();
+
+export const MessageCreateManyAndReturnArgsSchema: z.ZodType<Prisma.MessageCreateManyAndReturnArgs> =
+  z
+    .object({
+      data: z.union([
+        MessageCreateManyInputSchema,
+        MessageCreateManyInputSchema.array(),
+      ]),
+      skipDuplicates: z.boolean().optional(),
+    })
+    .strict();
+
+export const MessageDeleteArgsSchema: z.ZodType<Prisma.MessageDeleteArgs> = z
+  .object({
+    select: MessageSelectSchema.optional(),
+    include: MessageIncludeSchema.optional(),
+    where: MessageWhereUniqueInputSchema,
+  })
+  .strict();
+
+export const MessageUpdateArgsSchema: z.ZodType<Prisma.MessageUpdateArgs> = z
+  .object({
+    select: MessageSelectSchema.optional(),
+    include: MessageIncludeSchema.optional(),
+    data: z.union([
+      MessageUpdateInputSchema,
+      MessageUncheckedUpdateInputSchema,
+    ]),
+    where: MessageWhereUniqueInputSchema,
+  })
+  .strict();
+
+export const MessageUpdateManyArgsSchema: z.ZodType<Prisma.MessageUpdateManyArgs> =
+  z
+    .object({
+      data: z.union([
+        MessageUpdateManyMutationInputSchema,
+        MessageUncheckedUpdateManyInputSchema,
+      ]),
+      where: MessageWhereInputSchema.optional(),
+      limit: z.number().optional(),
+    })
+    .strict();
+
+export const MessageUpdateManyAndReturnArgsSchema: z.ZodType<Prisma.MessageUpdateManyAndReturnArgs> =
+  z
+    .object({
+      data: z.union([
+        MessageUpdateManyMutationInputSchema,
+        MessageUncheckedUpdateManyInputSchema,
+      ]),
+      where: MessageWhereInputSchema.optional(),
+      limit: z.number().optional(),
+    })
+    .strict();
+
+export const MessageDeleteManyArgsSchema: z.ZodType<Prisma.MessageDeleteManyArgs> =
+  z
+    .object({
+      where: MessageWhereInputSchema.optional(),
+      limit: z.number().optional(),
+    })
+    .strict();
+
+export const NotificationCreateArgsSchema: z.ZodType<Prisma.NotificationCreateArgs> =
+  z
+    .object({
+      select: NotificationSelectSchema.optional(),
+      include: NotificationIncludeSchema.optional(),
+      data: z.union([
+        NotificationCreateInputSchema,
+        NotificationUncheckedCreateInputSchema,
+      ]),
+    })
+    .strict();
+
+export const NotificationUpsertArgsSchema: z.ZodType<Prisma.NotificationUpsertArgs> =
+  z
+    .object({
+      select: NotificationSelectSchema.optional(),
+      include: NotificationIncludeSchema.optional(),
+      where: NotificationWhereUniqueInputSchema,
+      create: z.union([
+        NotificationCreateInputSchema,
+        NotificationUncheckedCreateInputSchema,
+      ]),
+      update: z.union([
+        NotificationUpdateInputSchema,
+        NotificationUncheckedUpdateInputSchema,
+      ]),
+    })
+    .strict();
+
+export const NotificationCreateManyArgsSchema: z.ZodType<Prisma.NotificationCreateManyArgs> =
+  z
+    .object({
+      data: z.union([
+        NotificationCreateManyInputSchema,
+        NotificationCreateManyInputSchema.array(),
+      ]),
+      skipDuplicates: z.boolean().optional(),
+    })
+    .strict();
+
+export const NotificationCreateManyAndReturnArgsSchema: z.ZodType<Prisma.NotificationCreateManyAndReturnArgs> =
+  z
+    .object({
+      data: z.union([
+        NotificationCreateManyInputSchema,
+        NotificationCreateManyInputSchema.array(),
+      ]),
+      skipDuplicates: z.boolean().optional(),
+    })
+    .strict();
+
+export const NotificationDeleteArgsSchema: z.ZodType<Prisma.NotificationDeleteArgs> =
+  z
+    .object({
+      select: NotificationSelectSchema.optional(),
+      include: NotificationIncludeSchema.optional(),
+      where: NotificationWhereUniqueInputSchema,
+    })
+    .strict();
+
+export const NotificationUpdateArgsSchema: z.ZodType<Prisma.NotificationUpdateArgs> =
+  z
+    .object({
+      select: NotificationSelectSchema.optional(),
+      include: NotificationIncludeSchema.optional(),
+      data: z.union([
+        NotificationUpdateInputSchema,
+        NotificationUncheckedUpdateInputSchema,
+      ]),
+      where: NotificationWhereUniqueInputSchema,
+    })
+    .strict();
+
+export const NotificationUpdateManyArgsSchema: z.ZodType<Prisma.NotificationUpdateManyArgs> =
+  z
+    .object({
+      data: z.union([
+        NotificationUpdateManyMutationInputSchema,
+        NotificationUncheckedUpdateManyInputSchema,
+      ]),
+      where: NotificationWhereInputSchema.optional(),
+      limit: z.number().optional(),
+    })
+    .strict();
+
+export const NotificationUpdateManyAndReturnArgsSchema: z.ZodType<Prisma.NotificationUpdateManyAndReturnArgs> =
+  z
+    .object({
+      data: z.union([
+        NotificationUpdateManyMutationInputSchema,
+        NotificationUncheckedUpdateManyInputSchema,
+      ]),
+      where: NotificationWhereInputSchema.optional(),
+      limit: z.number().optional(),
+    })
+    .strict();
+
+export const NotificationDeleteManyArgsSchema: z.ZodType<Prisma.NotificationDeleteManyArgs> =
+  z
+    .object({
+      where: NotificationWhereInputSchema.optional(),
       limit: z.number().optional(),
     })
     .strict();
