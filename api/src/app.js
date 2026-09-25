@@ -7,11 +7,12 @@ import {
   jsonSchemaTransform,
 } from "@fastify/type-provider-zod";
 
-import attendantsRoutes from "./modules/attendants/attendants.routes.js";
-import driversRoutes from "./modules/drivers/drivers.routes.js";
-import emergencyCallsRoutes from "./modules/emergency-calls/emergency-calls.routes.js";
-import conversationsRoutes from "./modules/conversations/conversations.routes.js";
-import notificationsRoutes from "./modules/notifications/notifications.routes.js";
+import { AppError } from "#utils/errors.js";
+
+import attendantsRoutes from "#modules/attendants/attendants.routes.js";
+import driversRoutes from "#modules/drivers/drivers.routes.js";
+import emergencyCallsRoutes from "#modules/emergency-calls/emergency-calls.routes.js";
+import conversationsRoutes from "#modules/conversations/conversations.routes.js";
 
 export async function buildApp() {
   const app = Fastify({ logger: true });
@@ -26,6 +27,24 @@ export async function buildApp() {
         description: "API documentation for the RotaSAMU system",
         version: "1.0.0",
       },
+      tags: [
+        {
+          name: "Atendentes",
+          description: "Gerenciamento e autenticação de atendentes",
+        },
+        {
+          name: "Motoristas",
+          description: "Gerenciamento e autenticação de motoristas",
+        },
+        {
+          name: "Chamados de Emergência",
+          description: "Despacho e acompanhamento de chamados",
+        },
+        {
+          name: "Conversas",
+          description: "Mensagens entre atendentes e motoristas",
+        },
+      ],
     },
     transform: jsonSchemaTransform,
   });
@@ -38,7 +57,21 @@ export async function buildApp() {
   app.register(driversRoutes, { prefix: "/drivers" });
   app.register(emergencyCallsRoutes, { prefix: "/emergency-calls" });
   app.register(conversationsRoutes, { prefix: "/conversations" });
-  app.register(notificationsRoutes, { prefix: "/notifications" });
+
+  app.setErrorHandler((error, request, reply) => {
+    if (error instanceof AppError) {
+      return reply.code(error.statusCode).send({ message: error.message });
+    }
+
+    if (error.validation) {
+      return reply
+        .code(400)
+        .send({ message: "Validation error", details: error.validation });
+    }
+
+    request.log.error(error);
+    return reply.code(500).send({ message: "Internal server error" });
+  });
 
   return app;
 }
