@@ -13,6 +13,7 @@ import attendantsRoutes from "#modules/attendants/attendants.routes.js";
 import driversRoutes from "#modules/drivers/drivers.routes.js";
 import emergencyCallsRoutes from "#modules/emergency-calls/emergency-calls.routes.js";
 import conversationsRoutes from "#modules/conversations/conversations.routes.js";
+import routingRoutes from "#modules/routing/routing.routes.js";
 
 export async function buildApp() {
   const app = Fastify({ logger: true });
@@ -44,6 +45,11 @@ export async function buildApp() {
           name: "Conversas",
           description: "Mensagens entre atendentes e motoristas",
         },
+        {
+          name: "Rotas (GPS)",
+          description:
+            "Cálculo de rotas (OSRM) e simulação de movimentação dos veículos",
+        },
       ],
     },
     transform: jsonSchemaTransform,
@@ -57,6 +63,7 @@ export async function buildApp() {
   app.register(driversRoutes, { prefix: "/drivers" });
   app.register(emergencyCallsRoutes, { prefix: "/emergency-calls" });
   app.register(conversationsRoutes, { prefix: "/conversations" });
+  app.register(routingRoutes, { prefix: "/routing" });
 
   app.setErrorHandler((error, request, reply) => {
     if (error instanceof AppError) {
